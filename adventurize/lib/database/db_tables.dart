@@ -13,6 +13,7 @@ String challenges = '''
       CREATE TABLE IF NOT EXISTS challenges (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         title TEXT,
+        info TEXT,
         photoPath TEXT,
         dateCompleted TEXT,
         shared INTEGER

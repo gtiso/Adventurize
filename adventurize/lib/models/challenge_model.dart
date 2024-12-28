@@ -1,41 +1,63 @@
 import 'dart:convert';
 
-Challenge challengeFromMap(String str) => Challenge.fromMap(json.decode(str));
+Challenge challengesFromMap(String str) => Challenge.fromMap(json.decode(str));
 
-String challengeToMap(Challenge data) => json.encode(data.toMap());
+String challengesToMap(Challenge data) => json.encode(data.toMap());
 
 class Challenge {
-  final int? challengeId;
+  int? id;
   final String title;
-  final int points;
-  final String category;
-  final String infoText;
-  final String? imageFilePath; // Added image field
+  final String info;
+  final String? photoPath;
+  final String? dateCompleted;
+  final int shared;
 
   Challenge({
-    this.challengeId,
+    this.id,
     required this.title,
-    required this.points,
-    required this.category,
-    required this.infoText,
-    this.imageFilePath,
+    required this.info,
+    this.photoPath,
+    this.dateCompleted,
+    this.shared = 0,
   });
 
-  factory Challenge.fromMap(Map<String, dynamic> json) => Challenge(
-        challengeId: json["challengeId"],
-        title: json["title"],
-        points: json["points"],
-        category: json["category"],
-        infoText: json["infoText"],
-        imageFilePath: json["imageFilePath"],
-      );
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'title': title,
+      'info': info,
+      'photoPath': photoPath,
+      'dateCompleted': dateCompleted,
+      'shared': shared,
+    };
+  }
 
-  Map<String, dynamic> toMap() => {
-        "challengeId": challengeId,
-        "title": title,
-        "points": points,
-        "category": category,
-        "infoText": infoText,
-        "imageFilePath": imageFilePath,
-      };
+  factory Challenge.fromMap(Map<String, dynamic> map) {
+    return Challenge(
+      id: map['id'],
+      title: map['title'],
+      info: map['info'],
+      photoPath: map['photoPath'],
+      dateCompleted: map['dateCompleted'],
+      shared: map['shared'],
+    );
+  }
+
+  Challenge copyWith({
+    int? id,
+    String? title,
+    String? info,
+    String? photoPath,
+    String? dateCompleted,
+    int? shared,
+  }) {
+    return Challenge(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      info: info ?? this.info,
+      photoPath: photoPath ?? this.photoPath,
+      dateCompleted: dateCompleted ?? this.dateCompleted,
+      shared: shared ?? this.shared,
+    );
+  }
 }
