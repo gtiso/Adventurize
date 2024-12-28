@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'register_page.dart';
+import 'package:adventurize/database/db_helper.dart';
+import 'package:adventurize/models/user_model.dart';
+import 'package:adventurize/pages/main_page.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -10,18 +13,24 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  void _login() {
-    String email = _emailController.text;
-    String password = _passwordController.text;
+  final db = DatabaseHelper();
 
-    // Simulate checking user in database
-    if (email == "test@example.com" && password == "password123") {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Login Successful!")),
-      );
+  void _login() async {
+    String emailFromInput = _emailController.text;
+    String passwordFromInput = _passwordController.text;
+
+    // Users? usrDetails = await db.getUser(emailFromInput);
+    var res = await db.authenticate(
+        Users(email: emailFromInput, password: passwordFromInput));
+
+    if (res) {
+      if (!mounted) return;
+      _navigateToMainPage();
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Invalid credentials")),
+        SnackBar(
+            duration: const Duration(seconds: 1),
+            content: Text("Invalid credentials")),
       );
     }
   }
@@ -30,6 +39,13 @@ class _LoginPageState extends State<LoginPage> {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => RegisterPage()),
+    );
+  }
+
+  void _navigateToMainPage() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => MainPage()),
     );
   }
 
@@ -43,7 +59,7 @@ class _LoginPageState extends State<LoginPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Image.asset(
-                'assets/logo.png',
+                'lib/assets/logo.png',
                 height: 170,
               ),
               Text("LOGIN", style: TextStyle(fontSize: 25)),

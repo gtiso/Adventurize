@@ -1,5 +1,9 @@
+import 'package:adventurize/database/db_helper.dart';
+import 'package:adventurize/models/user_model.dart';
+import 'package:adventurize/pages/main_page.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'login_page.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -27,21 +31,35 @@ class _RegisterPageState extends State<RegisterPage> {
     }
   }
 
-  void _register() {
-    String email = _emailController.text;
-    String password = _passwordController.text;
-    String fullname = _fullnameController.text;
-    String birthdate = _birthdateController.text;
+  void _register() async {
+    String emailFromInput = _emailController.text;
+    String passwordFromInput = _passwordController.text;
+    String fullnameFromInput = _fullnameController.text;
+    String birthdateFromInput = _birthdateController.text;
 
-    // Simulate saving user to database
-    if (email.isNotEmpty && password.isNotEmpty && fullname.isNotEmpty && birthdate.isNotEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Registration Successful!")),
-      );
-      Navigator.pop(context);
+    final db = DatabaseHelper();
+    sqfliteFfiInit();
+    databaseFactory = databaseFactoryFfi;
+
+    if (emailFromInput.isNotEmpty &&
+        passwordFromInput.isNotEmpty &&
+        fullnameFromInput.isNotEmpty &&
+        birthdateFromInput.isNotEmpty) {
+      if (!mounted) return;
+      int userId = await db.createUser(Users(
+          birthdate: birthdateFromInput,
+          fullname: fullnameFromInput,
+          email: emailFromInput,
+          password: passwordFromInput,
+          username: fullnameFromInput.trimLeft()));
+      print("New UserID : ");
+      print(userId);
+      _navigateToMainPage();
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Please fill all fields")),
+        SnackBar(
+            duration: const Duration(seconds: 1),
+            content: Text("Please fill all fields")),
       );
     }
   }
@@ -50,6 +68,13 @@ class _RegisterPageState extends State<RegisterPage> {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => LoginPage()),
+    );
+  }
+
+  void _navigateToMainPage() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => MainPage()),
     );
   }
 
@@ -63,7 +88,7 @@ class _RegisterPageState extends State<RegisterPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Image.asset(
-                'assets/logo.png',
+                'lib/assets/logo.png',
                 height: 170,
               ),
               Text("REGISTER", style: TextStyle(fontSize: 25)),

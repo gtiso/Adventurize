@@ -1,6 +1,8 @@
 import 'dart:async';
-import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+import 'db_tables.dart';
+import 'package:adventurize/models/user_model.dart';
 
 class DatabaseHelper {
   static final DatabaseHelper _instance = DatabaseHelper._();
@@ -10,39 +12,47 @@ class DatabaseHelper {
 
   factory DatabaseHelper() => _instance;
 
-  Future<Database> get database async {
-    if (_database != null) return _database!;
+  Future<Database> _initDatabase() async {
+    String? dbPath;
+    sqfliteFfiInit(); // Initialize the database factory
+    databaseFactory = databaseFactoryFfi; //Set the database factory to useFFI
+    final databasePath = await getDatabasesPath();
+    dbPath = join(databasePath, "adventurize.db");
+
+    return openDatabase(dbPath!, version: 1, onCreate: (db, version) async {
+      await db.execute(users);
+      await db.execute(challenges);
+    });
+  }
+
+  Future<Database> getDatabase() async {
+    if (_database != null) {
+      return _database!;
+    }
     _database = await _initDatabase();
     return _database!;
   }
 
-  Future<Database> _initDatabase() async {
-    final dbPath = await getDatabasesPath();
-    final path = join(dbPath, 'adventurize.db');
-
-    return await openDatabase(
-      path,
-      version: 1,
-      onCreate: _createTables,
+  Future<bool> authenticate(Users usr) async {
+    final Database db = await getDatabase();
+    var result = await db.rawQuery(
+      "SELECT * FROM users WHERE email = ? AND password = ?",
+      [usr.email, usr.password],
     );
+    print(result);
+    return result.isNotEmpty;
   }
 
-  Future<void> _createTables(Database db, int version) async {
-    await db.execute('''
-      CREATE TABLE IF NOT EXISTS challenges (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        title TEXT,
-        photoPath TEXT,
-        dateCompleted TEXT,
-        shared INTEGER
-      )''');
-    await db.execute('''
-      CREATE TABLE IF NOT EXISTS users (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      fullname TEXT,
-      email TEXT,
-      passHash TEXT,
-      birthdate INTEGER
-      )''');
+  Future<Users?> getUser(String email) async {
+    final Database db = await getDatabase();
+    var res = await db.query("users", where: "email = ?", whereArgs: [email]);
+    //insertData();
+    return res.isNotEmpty ? Users.fromMap(res.first) : null;
+  }
+
+  Future<int> createUser(Users usr) async {
+    final Database db = await getDatabase();
+    int userId = await db.insert("users", usr.toMap());
+    return userId;
   }
 }
