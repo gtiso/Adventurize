@@ -1,8 +1,21 @@
 import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'db_helper.dart'; // Import the database helper file
+import 'package:sqflite_common_ffi/sqflite_ffi.dart'; // Import sqflite_common_ffi
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding
+      .ensureInitialized(); // Ensure Flutter is initialized before database setup
+
+  // Initialize sqflite for desktop platforms
+  sqfliteFfiInit();
+  databaseFactory = databaseFactoryFfi;
+
+  // Initialize the database
+  final dbHelper = DatabaseHelper();
+  await dbHelper.database;
+
   runApp(MyApp());
 }
 
