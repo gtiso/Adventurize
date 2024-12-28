@@ -29,13 +29,20 @@ class DatabaseHelper {
 
   Future<void> _createTables(Database db, int version) async {
     await db.execute('''
-      CREATE TABLE challenges (
+      CREATE TABLE IF NOT EXISTS challenges (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         title TEXT,
         photoPath TEXT,
         dateCompleted TEXT,
         shared INTEGER
-      )
-    ''');
+      )''');
+    await db.execute('''
+      CREATE TABLE IF NOT EXISTS users (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      fullname TEXT,
+      email TEXT,
+      passHash TEXT,
+      birthdate INTEGER
+      )''');
   }
 }

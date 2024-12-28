@@ -17,6 +17,8 @@ dependencies:
   sqflite: ^2.0.0+4
   sqflite_common_ffi: ^2.0.0
   path: ^1.8.2
+  date_field: ^6.0.0
+  intl: ^0.20.1
 
 dev_dependencies:
   flutter_test:
@@ -26,3 +28,5 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - lib/assets/logo.png
