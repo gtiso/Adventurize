@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class LeaderboardPage extends StatelessWidget {
   final String? username;
 
-  LeaderboardPage({Key? key, this.username}) : super(key: key);
+  LeaderboardPage({super.key, this.username});
 
   @override
   Widget build(BuildContext context) {

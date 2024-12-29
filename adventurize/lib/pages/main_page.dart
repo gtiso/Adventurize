@@ -1,4 +1,9 @@
-import 'dart:async';
+import 'package:adventurize/components/level_progress_circle.dart';
+import 'package:adventurize/components/shaped_button.dart';
+import 'package:adventurize/pages/camera_page.dart';
+import 'package:adventurize/pages/challenges_page.dart';
+import 'package:adventurize/pages/leaderboard_page.dart';
+import 'package:adventurize/pages/memory_history_page.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -8,28 +13,128 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  Completer<GoogleMapController> _controller = Completer();
+  late GoogleMapController _mapController;
 
-  static final CameraPosition _initialCameraPosition = CameraPosition(
-    target: LatLng(37.974966, 23.770003),
-    zoom: 12.6, // showing Zografou!
-  );
+  void _navigateToProfile() {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) => Center(child: Text("Profile Menu")),
+    );
+  }
+
+  void _navigateToChallenges() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => ChallengesPage()),
+    );
+  }
+
+  void _navigateToLeaderboard() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => LeaderboardPage()),
+    );
+  }
+
+  void _navigateToMemories() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => MemoryHistoryPage()),
+    );
+  }
+
+  void _navigateToCamera() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => CameraPage()),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Maps Sample App'),
-          backgroundColor: Colors.green[700],
-        ),
-        body: GoogleMap(
-          onMapCreated: (GoogleMapController controller) {
-            _controller.complete(controller);
-          },
-          mapType: MapType.normal,
-          initialCameraPosition: _initialCameraPosition,
-        ),
+    return Scaffold(
+      body: Stack(
+        children: [
+          GoogleMap(
+            zoomControlsEnabled: false,
+            mapType: MapType.normal,
+            initialCameraPosition: CameraPosition(
+              target: LatLng(36.1627, -86.7816),
+              zoom: 12,
+            ),
+            onMapCreated: (controller) => _mapController = controller,
+          ),
+          Align(
+            alignment: Alignment(0.95, -0.95),
+            child: IconButton.filled(
+              iconSize: 25,
+              onPressed: () {
+                _navigateToProfile();
+              },
+              icon: Icon(Icons.person),
+            ),
+          ),
+          Align(
+            alignment: Alignment(-0.95, -0.95),
+            child: ProgressLevelCircle(
+              progress: 0.75, // percentage progress
+              level: 32,
+            ),
+          ),
+          Align(
+            alignment: Alignment(0.0, 0.6),
+            child: ShapedButton(
+              onPressed: () {
+                _navigateToCamera();
+              },
+            ),
+          ),
+          Align(
+            alignment: Alignment(0.0, 0.9),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                IconButton.filled(
+                  iconSize: 25,
+                  onPressed: () {
+                    _navigateToChallenges();
+                  },
+                  icon: Icon(Icons.diamond),
+                ),
+                IconButton.filled(
+                  iconSize: 25,
+                  onPressed: () {
+                    _navigateToLeaderboard();
+                  },
+                  icon: Icon(Icons.people),
+                ),
+                IconButton.filled(
+                  iconSize: 25,
+                  onPressed: () {
+                    _navigateToMemories();
+                  },
+                  icon: Icon(Icons.public),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class PlaceholderPage extends StatelessWidget {
+  final String title;
+
+  PlaceholderPage(this.title);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text(title)),
+      body: Center(
+        child: Text("This is the $title page."),
       ),
     );
   }

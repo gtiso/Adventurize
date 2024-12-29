@@ -19,8 +19,8 @@ dependencies:
   path: ^1.8.2
   date_field: ^6.0.0
   intl: ^0.20.1
-  google_maps_flutter: ^2.5.2
-  google_maps_flutter_web: ^0.5.4+3
+  google_maps_flutter: ^2.10.0
+  google_maps_flutter_web: ^0.5.10
 
 dev_dependencies:
   flutter_test:
@@ -36,3 +36,7 @@ flutter:
     - lib/assets/challenges/step.jpg
     - lib/assets/challenges/vibe.jpg
     - lib/assets/challenges/view.jpg
+  fonts:
+    - family: SansitaOne
+      fonts:
+        - asset: lib/assets/fonts/SansitaOne.ttf

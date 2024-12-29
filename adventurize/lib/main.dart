@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'pages/login_page.dart';
-import 'package:adventurize/pages/challenges_page.dart';
+import 'package:adventurize/pages/main_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); 
@@ -28,11 +28,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Login & Register',
+      title: 'Adventurize',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: ChallengesPage(),
+      home: MainPage(),
     );
   }
 }
