@@ -3,6 +3,8 @@ import 'package:path/path.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'db_tables.dart';
 import 'package:adventurize/models/user_model.dart';
+import 'package:adventurize/models/challenge_model.dart';
+import 'package:adventurize/database/demo_data.dart';
 
 class DatabaseHelper {
   static final DatabaseHelper _instance = DatabaseHelper._();
@@ -14,8 +16,8 @@ class DatabaseHelper {
 
   Future<Database> _initDatabase() async {
     String? dbPath;
-    sqfliteFfiInit(); // Initialize the database factory
-    databaseFactory = databaseFactoryFfi; //Set the database factory to useFFI
+    sqfliteFfiInit();
+    databaseFactory = databaseFactoryFfi;
     final databasePath = await getDatabasesPath();
     dbPath = join(databasePath, "adventurize.db");
 
@@ -33,7 +35,7 @@ class DatabaseHelper {
     return _database!;
   }
 
-  Future<bool> authenticate(Users usr) async {
+  Future<bool> auth(Users usr) async {
     final Database db = await getDatabase();
     var result = await db.rawQuery(
       "SELECT * FROM users WHERE email = ? AND password = ?",
@@ -43,16 +45,48 @@ class DatabaseHelper {
     return result.isNotEmpty;
   }
 
-  Future<Users?> getUser(String email) async {
+  Future<Users?> getUsr(String email) async {
     final Database db = await getDatabase();
     var res = await db.query("users", where: "email = ?", whereArgs: [email]);
-    //insertData();
     return res.isNotEmpty ? Users.fromMap(res.first) : null;
   }
 
-  Future<int> createUser(Users usr) async {
+  Future<int> createUsr(Users usr) async {
     final Database db = await getDatabase();
     int userId = await db.insert("users", usr.toMap());
     return userId;
+  }
+
+  Future<void> insChall(Challenge chall) async {
+    final Database db = await getDatabase();
+    List<Map<String, dynamic>> existingChallenges = await db.query(
+      'challenges',
+      where: 'title = ? AND desc = ?',
+      whereArgs: [chall.title, chall.desc],
+    );
+
+    if (existingChallenges.isEmpty) {
+      await db.insert('challenges', chall.toMap());
+    }
+  }
+
+  Future<List<Challenge>> getChalls() async {
+    final Database db = await getDatabase();
+    final List<Map<String, dynamic>> maps = await db.query('challenges');
+    return List.generate(maps.length, (i) {
+      return Challenge(
+        challengeID: maps[i]['challengeId'],
+        title: maps[i]['title'],
+        desc: maps[i]['desc'],
+        photoPath: maps[i]['photoPath'],
+        status: maps[i]['status'],
+        points: maps[i]['points'],
+        shared: maps[i]['shared'],
+      );
+    });
+  }
+
+  Future<void> insDemoData() async {
+    await insData();
   }
 }

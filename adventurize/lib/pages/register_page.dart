@@ -46,7 +46,7 @@ class _RegisterPageState extends State<RegisterPage> {
         fullnameFromInput.isNotEmpty &&
         birthdateFromInput.isNotEmpty) {
       if (!mounted) return;
-      int userId = await db.createUser(Users(
+      int userId = await db.createUsr(Users(
           birthdate: birthdateFromInput,
           fullname: fullnameFromInput,
           email: emailFromInput,

@@ -20,13 +20,14 @@ class _LoginPageState extends State<LoginPage> {
     String passwordFromInput = _passwordController.text;
 
     // Users? usrDetails = await db.getUser(emailFromInput);
-    var res = await db.authenticate(
+    var res = await db.auth(
         Users(email: emailFromInput, password: passwordFromInput));
 
     if (res) {
       if (!mounted) return;
       _navigateToMainPage();
     } else {
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
             duration: const Duration(seconds: 1),

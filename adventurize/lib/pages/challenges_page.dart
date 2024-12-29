@@ -6,7 +6,7 @@ import 'package:adventurize/models/challenge_model.dart';
 
 class ChallengesPage extends StatefulWidget {
   @override
-  _ChallengesPageState createState() => _ChallengesPageState();
+  State<ChallengesPage> createState() => _ChallengesPageState();
 }
 
 class _ChallengesPageState extends State<ChallengesPage> {
@@ -19,14 +19,17 @@ class _ChallengesPageState extends State<ChallengesPage> {
     _fetchChallenges(); // Fetch challenges from the database
   }
 
+  final db = DatabaseHelper();
+
   // Add dummy data to the database
   Future<void> _addDummyData() async {
-    await DatabaseHelper().insertDummyData();
+    await db.insDemoData();
   }
 
   // Fetch all challenges from the database
   Future<void> _fetchChallenges() async {
-    List<Challenge> data = await DatabaseHelper().getChallenges();
+    List<Challenge> data = await db.getChalls();
+    print(data);
     setState(() {
       challenges = data; // Update the state with the fetched challenges
     });

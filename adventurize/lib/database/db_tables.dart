@@ -11,10 +11,11 @@ String users = '''
 
 String challenges = '''
       CREATE TABLE IF NOT EXISTS challenges (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        challengeID INTEGER PRIMARY KEY AUTOINCREMENT,
         title TEXT,
-        info TEXT,
+        desc TEXT,
         photoPath TEXT,
-        dateCompleted TEXT,
+        status TEXT,
+        points INTEGER,
         shared INTEGER
       )''';

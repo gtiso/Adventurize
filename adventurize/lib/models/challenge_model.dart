@@ -5,59 +5,65 @@ Challenge challengesFromMap(String str) => Challenge.fromMap(json.decode(str));
 String challengesToMap(Challenge data) => json.encode(data.toMap());
 
 class Challenge {
-  int? id;
+  int? challengeID;
   final String title;
-  final String info;
+  final String desc;
   final String? photoPath;
-  final String? dateCompleted;
+  final String status;
   final int shared;
+  final int? points;
 
   Challenge({
-    this.id,
+    this.challengeID,
     required this.title,
-    required this.info,
+    required this.desc,
     this.photoPath,
-    this.dateCompleted,
+    required this.status,
     this.shared = 0,
+    this.points,
   });
 
   Map<String, dynamic> toMap() {
     return {
-      'id': id,
+      'challengeID': challengeID,
       'title': title,
-      'info': info,
+      'desc': desc,
       'photoPath': photoPath,
-      'dateCompleted': dateCompleted,
+      'status': status,
       'shared': shared,
+      'points': points,
     };
   }
 
   factory Challenge.fromMap(Map<String, dynamic> map) {
     return Challenge(
-      id: map['id'],
+      challengeID: map['challengeID'],
       title: map['title'],
-      info: map['info'],
+      desc: map['desc'],
       photoPath: map['photoPath'],
-      dateCompleted: map['dateCompleted'],
+      status: map['status'],
       shared: map['shared'],
+      points: map['points'],
     );
   }
 
   Challenge copyWith({
-    int? id,
+    int? challengeID,
     String? title,
-    String? info,
+    String? desc,
     String? photoPath,
-    String? dateCompleted,
+    String? status,
     int? shared,
+    int? points,
   }) {
     return Challenge(
-      id: id ?? this.id,
+      challengeID: challengeID ?? this.challengeID,
       title: title ?? this.title,
-      info: info ?? this.info,
+      desc: desc ?? this.desc,
       photoPath: photoPath ?? this.photoPath,
-      dateCompleted: dateCompleted ?? this.dateCompleted,
+      status: status ?? this.status,
       shared: shared ?? this.shared,
+      points: points ?? this.points,
     );
   }
 }

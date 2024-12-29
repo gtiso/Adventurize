@@ -9,8 +9,8 @@ class SmallCard extends StatelessWidget {
     required this.title,
     required this.photoPath,
     required this.status,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
