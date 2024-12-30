@@ -7,6 +7,7 @@ String users = '''
       password TEXT,
       birthdate TEXT,
       points INTEGER DEFAULT 0
+      avatarPath TEXT
       )''';
 
 String challenges = '''

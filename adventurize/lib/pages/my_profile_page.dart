@@ -8,7 +8,7 @@ class MyProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Replace with actual user retrieval logic
-    final Users user = Users(
+    final User user = User(
       fullname: "George",
       email: "george@example.com",
       password: "password123",

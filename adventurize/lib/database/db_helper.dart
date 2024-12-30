@@ -54,7 +54,7 @@ class DatabaseHelper {
     });
   }
 
-  Future<bool> auth(Users usr) async {
+  Future<bool> auth(User usr) async {
     final Database db = await getDB();
     var result = await db.rawQuery(
       "SELECT * FROM users WHERE email = ? AND password = ?",
@@ -64,15 +64,15 @@ class DatabaseHelper {
     return result.isNotEmpty;
   }
 
-  Future<Users?> getUsr(String email) async {
+  Future<User?> getUsr(String email) async {
     final Database db = await getDB();
-    var res = await db.query("users", where: "email = ?", whereArgs: [email]);
-    return res.isNotEmpty ? Users.fromMap(res.first) : null;
+    var res = await db.query("user", where: "email = ?", whereArgs: [email]);
+    return res.isNotEmpty ? User.fromMap(res.first) : null;
   }
 
-  Future<int> createUsr(Users usr) async {
+  Future<int> createUsr(User usr) async {
     final Database db = await getDB();
-    int userId = await db.insert("users", usr.toMap());
+    int userId = await db.insert("user", usr.toMap());
     return userId;
   }
 

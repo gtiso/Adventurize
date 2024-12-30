@@ -22,7 +22,7 @@ class _LoginPageState extends State<LoginPage> {
     if (emailFromInput.isNotEmpty && passwordFromInput.isNotEmpty) {
       // Users? usrDetails = await db.getUser(emailFromInput);
       var res = await db
-          .auth(Users(email: emailFromInput, password: passwordFromInput));
+          .auth(User(email: emailFromInput, password: passwordFromInput));
 
       if (res) {
         if (!mounted) return;
@@ -37,11 +37,11 @@ class _LoginPageState extends State<LoginPage> {
       }
     } else {
       if (!mounted) return;
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-              duration: const Duration(seconds: 1),
-              content: Text("Please fill all fields")),
-        );
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+            duration: const Duration(seconds: 1),
+            content: Text("Please fill all fields")),
+      );
     }
   }
 

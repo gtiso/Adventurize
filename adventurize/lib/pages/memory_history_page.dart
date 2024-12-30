@@ -61,42 +61,32 @@ class _MemoryHistoryPageState extends State<MemoryHistoryPage> {
                     ))
                 .toSet(),
           ),
-          // Title
-          Positioned(
-            top: 15,
-            left: 0,
-            right: 0,
-            child: TitleWidget(
-              icon: Icons.public,
-              text: "Memories",
-            ),
-          ),
-          // SmallMemoryCards List at Bottom
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Container(
-              padding: const EdgeInsets.all(16.0),
-              decoration: BoxDecoration(
-                color: Colors.transparent,
-                borderRadius: BorderRadius.vertical(top: Radius.circular(16.0)),
+          Column(
+            children: [
+              // Title
+              TitleWidget(
+                icon: Icons.public,
+                text: "Memories",
               ),
-              child: ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: memories.length,
-                itemBuilder: (context, index) {
-                  final memory = memories[index];
-                  return SmallMemoryCard(
-                    memory: memory,
-                    onTap: () {
-                      setState(() {
-                        selectedMemory = memory;
-                      });
-                    },
-                  );
-                },
+              SizedBox(height: 240),
+              // User List
+              Expanded(
+                child: ListView.builder(
+                  itemCount: memories.length,
+                  itemBuilder: (context, index) {
+                    final memory = memories[index];
+                    return SmallMemoryCard(
+                      memory: memory,
+                      onTap: () {
+                        setState(() {
+                          selectedMemory = memory;
+                        });
+                      },
+                    );
+                  },
+                ),
               ),
-            ),
+            ],
           ),
           // BigMemoryCard Pop-up
           if (selectedMemory != null)

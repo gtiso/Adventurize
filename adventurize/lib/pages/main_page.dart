@@ -78,8 +78,7 @@ class _MainPageState extends State<MainPage> {
           Align(
             alignment: Alignment(-0.95, -0.95),
             child: ProgressLevelCircle(
-              progress: 0.75, // percentage progress
-              level: 32,
+              points: 775,
             ),
           ),
           Align(

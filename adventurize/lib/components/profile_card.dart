@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:adventurize/models/user_model.dart';
 
 class ProfileCard extends StatelessWidget {
-  final Users user;
+  final User user;
 
   const ProfileCard({Key? key, required this.user}) : super(key: key);
 

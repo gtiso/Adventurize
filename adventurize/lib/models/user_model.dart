@@ -1,10 +1,10 @@
 import 'dart:convert';
 
-Users usersFromMap(String str) => Users.fromMap(json.decode(str));
+User usersFromMap(String str) => User.fromMap(json.decode(str));
 
-String usersToMap(Users data) => json.encode(data.toMap());
+String usersToMap(User data) => json.encode(data.toMap());
 
-class Users {
+class User {
   int? userId;
   final String? fullname;
   final String? username;
@@ -12,8 +12,9 @@ class Users {
   final String? birthdate;
   final String password;
   final int points;
+  final String? avatarPath;
 
-  Users({
+  User({
     this.userId,
     this.fullname,
     this.username,
@@ -21,6 +22,7 @@ class Users {
     required this.email,
     this.birthdate,
     this.points = 0,
+    this.avatarPath,
   });
 
   Map<String, dynamic> toMap() {
@@ -32,11 +34,12 @@ class Users {
       'birthdate': birthdate,
       'password': password,
       'points': points,
+      'avatarPath': avatarPath,
     };
   }
 
-  factory Users.fromMap(Map<String, dynamic> map) {
-    return Users(
+  factory User.fromMap(Map<String, dynamic> map) {
+    return User(
       userId: map['userId'],
       fullname: map['fullname'],
       username: map['username'],
@@ -44,10 +47,11 @@ class Users {
       birthdate: map['birthdate'],
       password: map['password'],
       points: map['points'],
+      avatarPath: map['avatarPath'],
     );
   }
 
-  Users copyWith({
+  User copyWith({
     int? userId,
     String? fullname,
     String? username,
@@ -55,8 +59,9 @@ class Users {
     String? birthdate,
     String? password,
     int? points,
+    String? avatarPath,
   }) {
-    return Users(
+    return User(
       userId: userId ?? this.userId,
       fullname: fullname ?? this.fullname,
       username: username ?? this.username,
@@ -64,6 +69,7 @@ class Users {
       birthdate: birthdate ?? this.birthdate,
       password: password ?? this.password,
       points: points ?? this.points,
+      avatarPath: avatarPath ?? this.avatarPath,
     );
   }
 }
