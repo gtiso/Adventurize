@@ -40,6 +40,19 @@ class SmallCard extends StatelessWidget {
                     ),
                   ),
                 ),
+                Positioned(
+                  top: 10,
+                  right: 10,
+                  child: Text(
+                    challenge.shared == 0 ? "Not Started!" : "Completed!",
+                    style: TextStyle(
+                      color: challenge.shared == 1 ? Colors.green : Colors.red,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      shadows: [Shadow(color: Colors.black, blurRadius: 5)],
+                    ),
+                  ),
+                ),
               ],
             ),
           ),

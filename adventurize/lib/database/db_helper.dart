@@ -79,7 +79,6 @@ class DatabaseHelper {
         title: maps[i]['title'],
         desc: maps[i]['desc'],
         photoPath: maps[i]['photoPath'],
-        status: maps[i]['status'],
         points: maps[i]['points'],
         shared: maps[i]['shared'],
       );

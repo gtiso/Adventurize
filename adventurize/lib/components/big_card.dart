@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:adventurize/models/challenge_model.dart';
+import 'package:adventurize/pages/memory_history_page.dart';
+import 'package:adventurize/pages/camera_page.dart';
 
 class BigCard extends StatelessWidget {
   final Challenge challenge;
@@ -65,7 +67,23 @@ class BigCard extends StatelessWidget {
                 Center(
                   child: ElevatedButton(
                     onPressed: () {
-                      // Handle the challenge action here
+                      if (challenge.shared == 0) {
+                        // Navigate to the CameraPage
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => CameraPage(),
+                          ),
+                        );
+                      } else {
+                        // Navigate to the "View Memory" page
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => MemoryHistoryPage(),
+                          ),
+                        );
+                      }
                     },
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(
@@ -74,9 +92,9 @@ class BigCard extends StatelessWidget {
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),
-                    child: const Text(
-                      "START CHALLENGE",
-                      style: TextStyle(fontSize: 14),
+                    child: Text(
+                      challenge.shared == 0 ? "START CHALLENGE" : "VIEW MEMORY",
+                      style: const TextStyle(fontSize: 14),
                     ),
                   ),
                 ),
