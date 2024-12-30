@@ -17,24 +17,24 @@ class _MemoryHistoryPageState extends State<MemoryHistoryPage> {
       description: "Visited the iconic Eiffel Tower and enjoyed the view.",
       imagePath: "lib/assets/challenges/food.jpg",
       date: "July 12, 2023",
-      latitude: 48.8584,
-      longitude: 2.2945,
+      latitude: 36.1627,
+      longitude: -86.7816,
     ),
     Memory(
       title: "Louvre Museum, Paris",
       description: "Explored the world-famous art museum.",
       imagePath: "lib/assets/challenges/view.jpg",
       date: "July 13, 2023",
-      latitude: 48.8606,
-      longitude: 2.3376,
+      latitude: 36.1627,
+      longitude: -86.7500,
     ),
     Memory(
       title: "Arc De Triomphe, Paris",
       description: "Experienced the historic Arc de Triomphe.",
       imagePath: "lib/assets/challenges/step.jpg",
       date: "July 14, 2023",
-      latitude: 48.8738,
-      longitude: 2.2950,
+      latitude: 36.1400,
+      longitude: -86.7816,
     ),
   ];
 
@@ -63,7 +63,7 @@ class _MemoryHistoryPageState extends State<MemoryHistoryPage> {
           ),
           // Title
           Positioned(
-            top: 20,
+            top: 15,
             left: 0,
             right: 0,
             child: TitleWidget(
