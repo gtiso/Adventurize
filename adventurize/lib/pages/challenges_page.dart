@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:adventurize/components/small_card.dart';
+import 'package:adventurize/components/small_challenge_card.dart';
 import 'package:adventurize/components/title.dart';
 import 'package:adventurize/database/db_helper.dart';
 import 'package:adventurize/models/challenge_model.dart';
-import 'package:adventurize/components/big_card.dart';
+import 'package:adventurize/components/big_challenge_card.dart';
 
 class ChallengesPage extends StatefulWidget {
   @override
@@ -53,7 +53,7 @@ class _ChallengesPageState extends State<ChallengesPage> {
                         itemCount: challenges.length,
                         itemBuilder: (context, index) {
                           final challenge = challenges[index];
-                          return SmallCard(
+                          return SmallChallengeCard(
                             challenge: challenge,
                             onTap: () {
                               setState(() {
@@ -79,7 +79,7 @@ class _ChallengesPageState extends State<ChallengesPage> {
                 child: Container(
                   color: Colors.black.withOpacity(0.5),
                   child: Center(
-                    child: BigCard(
+                    child: BigChallengeCard(
                       challenge: selectedChallenge!,
                       onClose: () {
                         setState(() {

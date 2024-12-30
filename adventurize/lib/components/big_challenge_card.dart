@@ -3,11 +3,12 @@ import 'package:adventurize/models/challenge_model.dart';
 import 'package:adventurize/pages/memory_history_page.dart';
 import 'package:adventurize/pages/camera_page.dart';
 
-class BigCard extends StatelessWidget {
+class BigChallengeCard extends StatelessWidget {
   final Challenge challenge;
   final VoidCallback onClose;
 
-  const BigCard({required this.challenge, required this.onClose, Key? key})
+  const BigChallengeCard(
+      {required this.challenge, required this.onClose, Key? key})
       : super(key: key);
 
   @override

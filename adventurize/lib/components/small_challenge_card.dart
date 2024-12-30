@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:adventurize/models/challenge_model.dart';
 
-class SmallCard extends StatelessWidget {
+class SmallChallengeCard extends StatelessWidget {
   final Challenge challenge;
   final VoidCallback onTap;
 
-  const SmallCard({required this.challenge, required this.onTap, Key? key})
+  const SmallChallengeCard(
+      {required this.challenge, required this.onTap, Key? key})
       : super(key: key);
 
   @override
