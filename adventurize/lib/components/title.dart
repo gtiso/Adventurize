@@ -17,17 +17,14 @@ class TitleWidget extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(icon, size: 24, color: Colors.black),
+          Icon(icon, size: 30, color: Colors.black),
           SizedBox(width: 10),
           Text(
             text,
-            style: TextStyle(
-              fontSize: 30,
-              fontWeight: FontWeight.bold,
-            ),
+            style: TextStyle(fontSize: 30, fontFamily: 'SansitaOne'),
           ),
           SizedBox(width: 10),
-          Icon(icon, size: 24, color: Colors.black),
+          Icon(icon, size: 30, color: Colors.black),
         ],
       ),
     );

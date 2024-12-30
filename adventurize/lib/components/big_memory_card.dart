@@ -42,8 +42,8 @@ class BigMemoryCard extends StatelessWidget {
                   Text(
                     memory.title,
                     style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                      fontFamily: 'SansitaOne',
                       color: Colors.white,
                     ),
                   ),
@@ -51,7 +51,8 @@ class BigMemoryCard extends StatelessWidget {
                   Text(
                     memory.description,
                     style: const TextStyle(
-                      fontSize: 14,
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
                       color: Colors.white,
                     ),
                   ),
@@ -60,7 +61,6 @@ class BigMemoryCard extends StatelessWidget {
                     "Memory captured on ${memory.date}",
                     style: const TextStyle(
                       fontSize: 14,
-                      fontWeight: FontWeight.bold,
                       color: Colors.white,
                     ),
                   ),

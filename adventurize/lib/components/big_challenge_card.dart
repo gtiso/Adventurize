@@ -44,6 +44,7 @@ class BigChallengeCard extends StatelessWidget {
                   style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
+                    fontFamily: 'SansitaOne',
                     color: Colors.white,
                   ),
                 ),
@@ -95,7 +96,10 @@ class BigChallengeCard extends StatelessWidget {
                     ),
                     child: Text(
                       challenge.shared == 0 ? "START CHALLENGE" : "VIEW MEMORY",
-                      style: const TextStyle(fontSize: 14),
+                      style: TextStyle(
+                          fontSize: 20,
+                          fontFamily: 'SansitaOne',
+                          color: Colors.black),
                     ),
                   ),
                 ),

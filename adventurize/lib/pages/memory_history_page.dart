@@ -67,7 +67,7 @@ class _MemoryHistoryPageState extends State<MemoryHistoryPage> {
             left: 0,
             right: 0,
             child: TitleWidget(
-              icon: Icons.language,
+              icon: Icons.public,
               text: "Memories",
             ),
           ),

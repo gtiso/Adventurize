@@ -36,7 +36,7 @@ class SmallChallengeCard extends StatelessWidget {
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 16,
-                      fontWeight: FontWeight.bold,
+                      fontFamily: 'SansitaOne',
                       shadows: [Shadow(color: Colors.black, blurRadius: 5)],
                     ),
                   ),
@@ -49,7 +49,7 @@ class SmallChallengeCard extends StatelessWidget {
                     style: TextStyle(
                       color: challenge.shared == 1 ? Colors.green : Colors.red,
                       fontSize: 16,
-                      fontWeight: FontWeight.bold,
+                      fontFamily: 'SansitaOne',
                       shadows: [Shadow(color: Colors.black, blurRadius: 5)],
                     ),
                   ),

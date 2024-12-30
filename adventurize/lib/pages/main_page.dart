@@ -95,22 +95,25 @@ class _MainPageState extends State<MainPage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                IconButton.filled(
-                  iconSize: 25,
+                IconButton(
+                  iconSize: 35,
+                  color: Colors.black,
                   onPressed: () {
                     _navigateToChallenges();
                   },
                   icon: Icon(Icons.diamond),
                 ),
-                IconButton.filled(
-                  iconSize: 25,
+                IconButton(
+                  iconSize: 35,
+                  color: Colors.black,
                   onPressed: () {
                     _navigateToLeaderboard();
                   },
                   icon: Icon(Icons.people),
                 ),
-                IconButton.filled(
-                  iconSize: 25,
+                IconButton(
+                  iconSize: 35,
+                  color: Colors.black,
                   onPressed: () {
                     _navigateToMemories();
                   },
