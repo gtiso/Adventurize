@@ -18,6 +18,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
     super.initState();
     // Initialize the user object
     _user = User(
+      userId: 0,
       fullname: "George",
       email: "george@example.com",
       avatarPath: "lib/assets/avatars/avatar2.png",
@@ -39,9 +40,6 @@ class _MyProfilePageState extends State<MyProfilePage> {
             ),
             zoomControlsEnabled: false,
             myLocationButtonEnabled: false,
-            onMapCreated: (controller) {
-              // Optionally store controller for future use
-            },
           ),
           // Semi-transparent overlay to dim the map
           Container(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:adventurize/models/user_model.dart';
+import 'package:adventurize/components/qr_code_display.dart';
 
 class ProfileCard extends StatelessWidget {
   final User user;
@@ -36,66 +37,79 @@ class ProfileCard extends StatelessWidget {
         child: Container(
           width: 300,
           padding: const EdgeInsets.all(16),
-          child: Stack(
+          decoration: BoxDecoration(
+            color: Colors.white, // Set background color to white
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              // Settings Button
-              Align(
-                alignment: Alignment.topLeft,
-                child: IconButton(
-                  onPressed: _navigateToSettings,
-                  icon: const Icon(Icons.settings),
-                  color: Colors.black,
-                ),
-              ),
-              // Edit Button
-              Align(
-                alignment: Alignment.topRight,
-                child: IconButton(
-                  onPressed: _navigateToEdit,
-                  icon: const Icon(Icons.edit),
-                  color: Colors.black,
-                ),
-              ),
-              // Main Profile Content
-              Column(
-                mainAxisSize: MainAxisSize.min,
+              // Top Row with Settings and Edit Icons
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const SizedBox(height: 16),
-                  Center(
-                    child: CircleAvatar(
-                      radius: 50,
-                      backgroundImage: AssetImage(user.avatarPath ?? ""),
-                    ),
+                  IconButton(
+                    onPressed: _navigateToSettings,
+                    icon: const Icon(Icons.settings),
+                    color: Colors.black,
                   ),
-                  const SizedBox(height: 8),
-                  Center(
-                    child: Text(
-                      user.fullname ?? "",
-                      style: const TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'SansitaOne',
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  Center(
-                    child: ElevatedButton.icon(
-                      onPressed: () {
-                        // Implement QR scanning logic here
-                      },
-                      icon: const Icon(Icons.camera_alt, color: Colors.black),
-                      label: const Text(
-                        'Scan QR',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontFamily: 'SansitaOne',
-                        ),
-                      ),
-                    ),
+                  IconButton(
+                    onPressed: _navigateToEdit,
+                    icon: const Icon(Icons.edit),
+                    color: Colors.black,
                   ),
                 ],
-              )
+              ),
+              const SizedBox(height: 8),
+              // Profile Avatar
+              CircleAvatar(
+                radius: 50,
+                backgroundImage: AssetImage(user.avatarPath ?? ""),
+              ),
+              const SizedBox(height: 8),
+              // Full Name
+              Text(
+                user.fullname ?? "",
+                style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'SansitaOne',
+                ),
+              ),
+              const SizedBox(height: 16),
+              // QR Code
+              QRCodeDisplay(
+                data: user.email ?? 'No email available',
+                size: 150.0,
+              ),
+              const SizedBox(height: 16),
+              // Scan QR Button
+              ElevatedButton.icon(
+                onPressed: () {
+                  // Placeholder for Scan QR functionality
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.black,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 12,
+                    horizontal: 16,
+                  ),
+                ),
+                icon: const Icon(
+                  Icons.camera_alt,
+                  color: Colors.white,
+                ),
+                label: const Text(
+                  'SCAN QR',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontFamily: 'SansitaOne',
+                  ),
+                ),
+              ),
             ],
           ),
         ),
