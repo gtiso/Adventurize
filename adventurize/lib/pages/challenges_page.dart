@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:adventurize/components/small_challenge_card.dart';
 import 'package:adventurize/components/title.dart';
 import 'package:adventurize/database/db_helper.dart';
@@ -39,6 +40,18 @@ class _ChallengesPageState extends State<ChallengesPage> {
     return Scaffold(
       body: Stack(
         children: [
+          // Map Background
+          GoogleMap(
+            initialCameraPosition: CameraPosition(
+              target: LatLng(36.1627, -86.7816), // Example coordinates
+              zoom: 12.0,
+            ),
+          ),
+          // Semi-transparent overlay to dim the map
+          Container(
+            color: Colors.white.withOpacity(0.6), // Adjust opacity as needed
+          ),
+          // Main Content
           Column(
             children: [
               TitleWidget(

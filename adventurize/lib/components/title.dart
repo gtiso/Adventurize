@@ -13,7 +13,7 @@ class TitleWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 40.0),
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 30.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -22,7 +22,7 @@ class TitleWidget extends StatelessWidget {
           Text(
             text,
             style: TextStyle(
-              fontSize: 24,
+              fontSize: 30,
               fontWeight: FontWeight.bold,
             ),
           ),
