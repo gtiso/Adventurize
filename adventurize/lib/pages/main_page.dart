@@ -4,6 +4,7 @@ import 'package:adventurize/pages/camera_page.dart';
 import 'package:adventurize/pages/challenges_page.dart';
 import 'package:adventurize/pages/leaderboard_page.dart';
 import 'package:adventurize/pages/memory_history_page.dart';
+import 'package:adventurize/pages/my_profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -16,9 +17,9 @@ class _MainPageState extends State<MainPage> {
   late GoogleMapController _mapController;
 
   void _navigateToProfile() {
-    showModalBottomSheet(
-      context: context,
-      builder: (context) => Center(child: Text("Profile Menu")),
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => MyProfilePage()),
     );
   }
 
