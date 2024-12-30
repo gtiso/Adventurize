@@ -38,6 +38,7 @@ class BigUserCard extends StatelessWidget {
             style: TextStyle(
               fontSize: 22,
               fontWeight: FontWeight.bold,
+              fontFamily: 'SansitaOne',
               color: Colors.white,
             ),
           ),

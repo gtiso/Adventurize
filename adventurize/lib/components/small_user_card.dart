@@ -32,7 +32,7 @@ class SmallUserCard extends StatelessWidget {
               backgroundImage: AssetImage(user.avatarPath ?? ""),
             ),
             title: Text(user.username ?? "",
-                style: TextStyle(fontWeight: FontWeight.bold)),
+                style: TextStyle(fontFamily: 'SansitaOne')),
             trailing: ProgressLevelCircle(
               points: user.points,
             ),

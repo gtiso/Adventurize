@@ -1,57 +1,59 @@
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:adventurize/models/user_model.dart';
 import 'package:adventurize/components/profile_card.dart';
 
-class MyProfilePage extends StatelessWidget {
-  const MyProfilePage({super.key});
+class MyProfilePage extends StatefulWidget {
+  const MyProfilePage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    // Replace with actual user retrieval logic
-    final User user = User(
+  _MyProfilePageState createState() => _MyProfilePageState();
+}
+
+class _MyProfilePageState extends State<MyProfilePage> {
+  late User _user;
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize the user object
+    _user = User(
       fullname: "George",
       email: "george@example.com",
+      avatarPath: "lib/assets/avatars/avatar2.png",
       password: "password123",
       points: 100,
     );
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         children: [
-          // Background Map (Google Maps Mockup)
-          const Positioned.fill(
-            child: Image(
-              image: AssetImage('assets/map_background.png'),
-              fit: BoxFit.cover,
+          // Map Background
+          GoogleMap(
+            initialCameraPosition: const CameraPosition(
+              target: LatLng(36.1627, -86.7816), // Example coordinates
+              zoom: 12.0,
             ),
+            zoomControlsEnabled: false,
+            myLocationButtonEnabled: false,
+            onMapCreated: (controller) {
+              // Optionally store controller for future use
+            },
           ),
-          // Profile Card
-          Align(
-            alignment: Alignment.center,
-            child: ProfileCard(user: user),
+          // Semi-transparent overlay to dim the map
+          Container(
+            color: Colors.white.withOpacity(0.6), // Adjust opacity as needed
           ),
-          // Top Bar with Icons
-          Positioned(
-            top: 40,
-            left: 16,
-            right: 16,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                IconButton(
-                  icon: const Icon(Icons.settings),
-                  onPressed: () {
-                    // Navigate to settings page
-                  },
-                ),
-                IconButton(
-                  icon: const Icon(Icons.edit),
-                  onPressed: () {
-                    // Navigate to edit profile page
-                  },
-                ),
-              ],
-            ),
+          // Main Content
+          Column(
+            children: [
+              const SizedBox(height: 16),
+              ProfileCard(user: _user),
+              const Spacer(),
+            ],
           ),
         ],
       ),
