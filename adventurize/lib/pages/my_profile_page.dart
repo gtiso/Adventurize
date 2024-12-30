@@ -3,7 +3,7 @@ import 'package:adventurize/models/user_model.dart';
 import 'package:adventurize/components/profile_card.dart';
 
 class MyProfilePage extends StatelessWidget {
-  const MyProfilePage({Key? key}) : super(key: key);
+  const MyProfilePage({super.key});
 
   @override
   Widget build(BuildContext context) {

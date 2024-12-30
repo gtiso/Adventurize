@@ -19,20 +19,29 @@ class _LoginPageState extends State<LoginPage> {
     String emailFromInput = _emailController.text;
     String passwordFromInput = _passwordController.text;
 
-    // Users? usrDetails = await db.getUser(emailFromInput);
-    var res = await db.auth(
-        Users(email: emailFromInput, password: passwordFromInput));
+    if (emailFromInput.isNotEmpty && passwordFromInput.isNotEmpty) {
+      // Users? usrDetails = await db.getUser(emailFromInput);
+      var res = await db
+          .auth(Users(email: emailFromInput, password: passwordFromInput));
 
-    if (res) {
-      if (!mounted) return;
-      _navigateToMainPage();
+      if (res) {
+        if (!mounted) return;
+        _navigateToMainPage();
+      } else {
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+              duration: const Duration(seconds: 1),
+              content: Text("Invalid credentials")),
+        );
+      }
     } else {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-            duration: const Duration(seconds: 1),
-            content: Text("Invalid credentials")),
-      );
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+              duration: const Duration(seconds: 1),
+              content: Text("Please fill all fields")),
+        );
     }
   }
 
@@ -53,6 +62,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -63,7 +73,8 @@ class _LoginPageState extends State<LoginPage> {
                 'lib/assets/logo.png',
                 height: 170,
               ),
-              Text("LOGIN", style: TextStyle(fontSize: 25)),
+              Text("LOGIN",
+                  style: TextStyle(fontSize: 25, fontFamily: 'SansitaOne')),
               SizedBox(height: 50),
               TextField(
                 controller: _emailController,

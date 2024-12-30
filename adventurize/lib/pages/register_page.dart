@@ -81,6 +81,7 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -91,7 +92,10 @@ class _RegisterPageState extends State<RegisterPage> {
                 'lib/assets/logo.png',
                 height: 170,
               ),
-              Text("REGISTER", style: TextStyle(fontSize: 25)),
+              Text(
+                "REGISTER",
+                style: TextStyle(fontSize: 25, fontFamily: 'SansitaOne'),
+              ),
               SizedBox(height: 25),
               TextField(
                 controller: _fullnameController,
