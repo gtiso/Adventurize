@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'pages/login_page.dart';
 import 'package:adventurize/pages/main_page.dart';
 import 'package:adventurize/pages/my_profile_page.dart';
+import 'package:adventurize/pages/memory_history_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,7 +35,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: LoginPage(),
+      home: MemoryHistoryPage(),
     );
   }
 }
