@@ -23,6 +23,7 @@ dependencies:
   google_maps_flutter_web: ^0.5.10
   sqlite3_flutter_libs: ^0.5.28
   path_provider: ^2.1.5
+  qr_flutter: ^4.0.0
 
 dev_dependencies:
   flutter_test:
