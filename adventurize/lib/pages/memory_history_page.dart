@@ -47,9 +47,11 @@ class _MemoryHistoryPageState extends State<MemoryHistoryPage> {
         children: [
           // Google Map
           GoogleMap(
+            zoomControlsEnabled: false,
+            mapType: MapType.normal,
             initialCameraPosition: CameraPosition(
               target: LatLng(memories.first.latitude, memories.first.longitude),
-              zoom: 12.0,
+              zoom: 12,
             ),
             markers: memories
                 .map((memory) => Marker(
