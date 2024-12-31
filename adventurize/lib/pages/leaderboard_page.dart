@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:adventurize/components/user_small_card.dart';
-import 'package:adventurize/components/user_big_card.dart';
+import 'package:adventurize/components/cards/user_small_card.dart';
+import 'package:adventurize/components/cards/user_big_card.dart';
 import 'package:adventurize/components/title.dart';
 import 'package:adventurize/models/user_model.dart';
 

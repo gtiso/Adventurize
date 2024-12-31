@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:adventurize/pages/login_page.dart';
 
 class SettingsPage extends StatefulWidget {
   @override
@@ -12,33 +13,46 @@ class _SettingsPageState extends State<SettingsPage> {
   bool cameraEnabled = true;
   bool navigationEnabled = true;
 
+  void _navigateBack(BuildContext context) {
+    Navigator.pop(context);
+  }
+
+  void _navigateToLoginPage(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => LoginPage()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        leading: Padding(
-          padding:
-              const EdgeInsets.only(left: 8.0), // Adjust padding to add spacing
-          child: FittedBox(
+        leading: GestureDetector(
+          onTap: () {
+            _navigateBack(context);
+          },
+          child: Padding(
+            padding: const EdgeInsets.only(left: 8.0),
             child: Row(
               children: [
-                Icon(Icons.arrow_back, size: 10, color: Colors.black),
+                Icon(Icons.arrow_back, color: Colors.black),
                 SizedBox(width: 4),
                 Text(
                   "BACK",
                   style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'SansitaOne',
-                      fontSize: 7),
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'SansitaOne',
+                  ),
                 ),
               ],
             ),
           ),
         ),
-        leadingWidth: 120, // Ensure enough space for the button to fit properly
+        leadingWidth: 120,
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -128,23 +142,28 @@ class _SettingsPageState extends State<SettingsPage> {
 
   Widget buildSignOutButton() {
     return Center(
-      child: ElevatedButton(
+      child: ElevatedButton.icon(
         style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.grey[300],
+          backgroundColor: Colors.black,
           padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
           ),
         ),
         onPressed: () {
-          // Handle sign-out functionality here
+          _navigateToLoginPage(context);
         },
-        child: Text(
+        icon: Icon(
+          Icons.logout,
+          color: Colors.white,
+        ),
+        label: Text(
           "SIGN OUT",
           style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontFamily: 'SansitaOne',
-              color: Colors.black),
+            fontWeight: FontWeight.bold,
+            fontFamily: 'SansitaOne',
+            color: Colors.white,
+          ),
         ),
       ),
     );

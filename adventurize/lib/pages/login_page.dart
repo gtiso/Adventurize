@@ -13,27 +13,31 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  final db = DatabaseHelper();
+  final DatabaseHelper db = DatabaseHelper();
 
   void _login() async {
-    String emailFromInput = _emailController.text;
-    String passwordFromInput = _passwordController.text;
+    String email = _emailController.text;
+    String password = _passwordController.text;
 
-    if (emailFromInput.isNotEmpty && passwordFromInput.isNotEmpty) {
-      var res = await db
-          .auth(User(email: emailFromInput, password: passwordFromInput));
+    if (_validateInputs(email, password)) {
+      bool isAuthenticated = await _authenticateUser(email, password);
 
-      if (res) {
-        if (!mounted) return;
+      if (isAuthenticated) {
         _navigateToMainPage();
       } else {
-        if (!mounted) return;
         _showSnackBar("Invalid credentials");
       }
     } else {
-      if (!mounted) return;
       _showSnackBar("Please fill all fields");
     }
+  }
+
+  bool _validateInputs(String email, String password) {
+    return email.isNotEmpty && password.isNotEmpty;
+  }
+
+  Future<bool> _authenticateUser(String email, String password) async {
+    return await db.auth(User(email: email, password: password));
   }
 
   void _navigateToRegister() {
@@ -51,11 +55,114 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void _showSnackBar(String message) {
+    if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         duration: const Duration(seconds: 1),
-        content: Text(message),
+        content:
+            Text(message, style: const TextStyle(fontFamily: 'SansitaOne')),
       ),
+    );
+  }
+
+  Widget _buildLogo() {
+    return Image.asset(
+      'lib/assets/logo.png',
+      height: 170,
+    );
+  }
+
+  Widget _buildTitle() {
+    return const Text(
+      "LOGIN",
+      style: TextStyle(
+        fontSize: 25,
+        fontFamily: 'SansitaOne',
+      ),
+    );
+  }
+
+  Widget _buildEmailField() {
+    return TextField(
+      controller: _emailController,
+      decoration: const InputDecoration(
+        labelText: "What’s your e-mail?",
+        prefixIcon: Icon(Icons.email),
+        labelStyle: TextStyle(fontFamily: 'SansitaOne'),
+      ),
+    );
+  }
+
+  Widget _buildPasswordField() {
+    return TextField(
+      controller: _passwordController,
+      obscureText: true,
+      decoration: const InputDecoration(
+        labelText: "Enter your password",
+        prefixIcon: Icon(Icons.lock),
+        labelStyle: TextStyle(fontFamily: 'SansitaOne'),
+      ),
+    );
+  }
+
+  Widget _buildLoginButton() {
+    return ElevatedButton.icon(
+      onPressed: _login,
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.black,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+        padding: const EdgeInsets.symmetric(
+          vertical: 12,
+          horizontal: 16,
+        ),
+      ),
+      icon: const Icon(
+        Icons.login,
+        color: Colors.white,
+      ),
+      label: const Text(
+        "LOGIN",
+        style: TextStyle(
+          color: Colors.white,
+          fontFamily: 'SansitaOne',
+        ),
+      ),
+    );
+  }
+
+  Widget _buildRegisterSection() {
+    return Column(
+      children: [
+        const Text("Don't have an account?",
+            style: TextStyle(fontFamily: 'SansitaOne')),
+        const SizedBox(height: 10),
+        ElevatedButton.icon(
+          onPressed: _navigateToRegister,
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.black,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+            padding: const EdgeInsets.symmetric(
+              vertical: 12,
+              horizontal: 16,
+            ),
+          ),
+          icon: const Icon(
+            Icons.person_add,
+            color: Colors.white,
+          ),
+          label: const Text(
+            "CREATE NOW",
+            style: TextStyle(
+              color: Colors.white,
+              fontFamily: 'SansitaOne',
+            ),
+          ),
+        ),
+      ],
     );
   }
 
@@ -69,46 +176,16 @@ class _LoginPageState extends State<LoginPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset(
-                'lib/assets/logo.png',
-                height: 170,
-              ),
-              const Text(
-                "LOGIN",
-                style: TextStyle(
-                  fontSize: 25,
-                  fontFamily: 'SansitaOne',
-                ),
-              ),
-              const SizedBox(height: 50),
-              TextField(
-                controller: _emailController,
-                decoration: const InputDecoration(
-                  labelText: "What’s your e-mail?",
-                  prefixIcon: Icon(Icons.email),
-                ),
-              ),
-              const SizedBox(height: 5),
-              TextField(
-                controller: _passwordController,
-                obscureText: true,
-                decoration: const InputDecoration(
-                  labelText: "Enter your password",
-                  prefixIcon: Icon(Icons.lock),
-                ),
-              ),
+              _buildLogo(),
+              _buildTitle(),
               const SizedBox(height: 30),
-              ElevatedButton(
-                onPressed: _login,
-                child: const Text("LOGIN"),
-              ),
-              const SizedBox(height: 60),
-              const Text("Don't have an account?"),
-              const SizedBox(height: 10),
-              ElevatedButton(
-                onPressed: _navigateToRegister,
-                child: const Text("CREATE NOW"),
-              ),
+              _buildEmailField(),
+              const SizedBox(height: 5),
+              _buildPasswordField(),
+              const SizedBox(height: 20),
+              _buildLoginButton(),
+              const SizedBox(height: 30),
+              _buildRegisterSection(),
             ],
           ),
         ),

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:adventurize/models/memory_model.dart';
-import 'package:adventurize/components/memory_big_card.dart';
-import 'package:adventurize/components/memory_small_card.dart';
+import 'package:adventurize/components/cards/memory_big_card.dart';
+import 'package:adventurize/components/cards/memory_small_card.dart';
 import 'package:adventurize/components/title.dart';
 
 class MemoryHistoryPage extends StatefulWidget {

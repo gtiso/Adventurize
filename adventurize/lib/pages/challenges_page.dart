@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:adventurize/components/challenge_small_card.dart';
+import 'package:adventurize/components/cards/challenge_small_card.dart';
 import 'package:adventurize/components/title.dart';
 import 'package:adventurize/database/db_helper.dart';
 import 'package:adventurize/models/challenge_model.dart';
-import 'package:adventurize/components/challenge_big_card.dart';
+import 'package:adventurize/components/cards/challenge_big_card.dart';
 
 class ChallengesPage extends StatefulWidget {
   @override

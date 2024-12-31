@@ -31,37 +31,53 @@ class _RegisterPageState extends State<RegisterPage> {
     }
   }
 
-  void _register() async {
-    String emailFromInput = _emailController.text;
-    String passwordFromInput = _passwordController.text;
-    String fullnameFromInput = _fullnameController.text;
-    String birthdateFromInput = _birthdateController.text;
+  Future<void> _register() async {
+    String email = _emailController.text;
+    String password = _passwordController.text;
+    String fullname = _fullnameController.text;
+    String birthdate = _birthdateController.text;
 
+    if (_validateInputs(email, password, fullname, birthdate)) {
+      int userId = await _createUser(email, password, fullname, birthdate);
+      print("New UserID : $userId");
+      _navigateToMainPage();
+    } else {
+      _showSnackBar("Please fill all fields");
+    }
+  }
+
+  bool _validateInputs(
+      String email, String password, String fullname, String birthdate) {
+    return email.isNotEmpty &&
+        password.isNotEmpty &&
+        fullname.isNotEmpty &&
+        birthdate.isNotEmpty;
+  }
+
+  Future<int> _createUser(
+      String email, String password, String fullname, String birthdate) async {
     final db = DatabaseHelper();
     sqfliteFfiInit();
     databaseFactory = databaseFactoryFfi;
 
-    if (emailFromInput.isNotEmpty &&
-        passwordFromInput.isNotEmpty &&
-        fullnameFromInput.isNotEmpty &&
-        birthdateFromInput.isNotEmpty) {
-      if (!mounted) return;
-      int userId = await db.createUsr(User(
-          birthdate: birthdateFromInput,
-          fullname: fullnameFromInput,
-          email: emailFromInput,
-          password: passwordFromInput,
-          username: fullnameFromInput.trimLeft()));
-      print("New UserID : ");
-      print(userId);
-      _navigateToMainPage();
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-            duration: const Duration(seconds: 1),
-            content: Text("Please fill all fields")),
-      );
-    }
+    return await db.createUsr(User(
+      birthdate: birthdate,
+      fullname: fullname,
+      email: email,
+      password: password,
+      username: fullname.trimLeft(),
+    ));
+  }
+
+  void _showSnackBar(String message) {
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        duration: const Duration(seconds: 1),
+        content:
+            Text(message, style: const TextStyle(fontFamily: 'SansitaOne')),
+      ),
+    );
   }
 
   void _navigateToLogin() {
@@ -78,6 +94,127 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
+  Widget _buildLogo() {
+    return Image.asset(
+      'lib/assets/logo.png',
+      height: 150,
+    );
+  }
+
+  Widget _buildTitle() {
+    return const Text(
+      "REGISTER",
+      style: TextStyle(
+        fontSize: 25,
+        fontFamily: 'SansitaOne',
+      ),
+    );
+  }
+
+  Widget _buildFullNameField() {
+    return TextField(
+      controller: _fullnameController,
+      decoration: const InputDecoration(
+        labelText: "Enter your Full Name",
+        prefixIcon: Icon(Icons.person),
+        labelStyle: TextStyle(fontFamily: 'SansitaOne'),
+      ),
+    );
+  }
+
+  Widget _buildEmailField() {
+    return TextField(
+      controller: _emailController,
+      decoration: const InputDecoration(
+        labelText: "What's your email?",
+        prefixIcon: Icon(Icons.email),
+        labelStyle: TextStyle(fontFamily: 'SansitaOne'),
+      ),
+    );
+  }
+
+  Widget _buildBirthdateField() {
+    return TextField(
+      controller: _birthdateController,
+      readOnly: true,
+      decoration: const InputDecoration(
+        labelText: "When were you born?",
+        prefixIcon: Icon(Icons.calendar_month),
+        labelStyle: TextStyle(fontFamily: 'SansitaOne'),
+      ),
+      onTap: _selectBirthdate,
+    );
+  }
+
+  Widget _buildPasswordField() {
+    return TextField(
+      controller: _passwordController,
+      obscureText: true,
+      decoration: const InputDecoration(
+        labelText: "Create a password",
+        prefixIcon: Icon(Icons.lock),
+        labelStyle: TextStyle(fontFamily: 'SansitaOne'),
+      ),
+    );
+  }
+
+  Widget _buildRegisterButton() {
+    return ElevatedButton.icon(
+      onPressed: _register,
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.black,
+        padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+      ),
+      icon: Icon(
+        Icons.app_registration,
+        color: Colors.white,
+      ),
+      label: const Text(
+        "REGISTER",
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+          fontFamily: 'SansitaOne',
+          color: Colors.white,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLoginSection() {
+    return Column(
+      children: [
+        const Text("Already have an account?",
+            style: TextStyle(fontFamily: 'SansitaOne')),
+        const SizedBox(height: 10),
+        ElevatedButton.icon(
+          onPressed: _navigateToLogin,
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.black,
+            padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+          ),
+          icon: Icon(
+            Icons.login,
+            color: Colors.white,
+          ),
+          label: const Text(
+            "LOGIN",
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontFamily: 'SansitaOne',
+              color: Colors.white,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -88,61 +225,20 @@ class _RegisterPageState extends State<RegisterPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset(
-                'lib/assets/logo.png',
-                height: 170,
-              ),
-              Text(
-                "REGISTER",
-                style: TextStyle(fontSize: 25, fontFamily: 'SansitaOne'),
-              ),
-              SizedBox(height: 25),
-              TextField(
-                controller: _fullnameController,
-                decoration: InputDecoration(
-                  labelText: "Enter your Full Name",
-                  prefixIcon: Icon(Icons.person),
-                ),
-              ),
-              SizedBox(height: 5),
-              TextField(
-                controller: _emailController,
-                decoration: InputDecoration(
-                  labelText: "What's your email?",
-                  prefixIcon: Icon(Icons.email),
-                ),
-              ),
-              SizedBox(height: 5),
-              TextField(
-                controller: _birthdateController,
-                readOnly: true,
-                decoration: InputDecoration(
-                  labelText: "When were you born?",
-                  prefixIcon: Icon(Icons.calendar_month),
-                ),
-                onTap: _selectBirthdate,
-              ),
-              SizedBox(height: 5),
-              TextField(
-                controller: _passwordController,
-                obscureText: true,
-                decoration: InputDecoration(
-                  labelText: "Create a password",
-                  prefixIcon: Icon(Icons.lock),
-                ),
-              ),
-              SizedBox(height: 30),
-              ElevatedButton(
-                onPressed: _register,
-                child: Text("REGISTER"),
-              ),
-              SizedBox(height: 40),
-              Text("Already have an account?"),
-              SizedBox(height: 10),
-              ElevatedButton(
-                onPressed: _navigateToLogin,
-                child: Text("LOGIN"),
-              ),
+              _buildLogo(),
+              _buildTitle(),
+              const SizedBox(height: 5),
+              _buildFullNameField(),
+              const SizedBox(height: 5),
+              _buildEmailField(),
+              const SizedBox(height: 5),
+              _buildBirthdateField(),
+              const SizedBox(height: 5),
+              _buildPasswordField(),
+              const SizedBox(height: 5),
+              _buildRegisterButton(),
+              const SizedBox(height: 5),
+              _buildLoginSection(),
             ],
           ),
         ),
