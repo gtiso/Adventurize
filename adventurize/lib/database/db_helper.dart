@@ -121,6 +121,23 @@ class DatabaseHelper {
     });
   }
 
+  Future<List<User>> getUsers() async {
+    final Database db = await getDB();
+    final List<Map<String, dynamic>> maps = await db.query('users');
+    return List.generate(maps.length, (i) {
+      return User(
+        userID: maps[i]['userID'],
+        fullname: maps[i]['fullname'],
+        username: maps[i]['username'],
+        email: maps[i]['email'],
+        password: maps[i]['password'],
+        birthdate: maps[i]['birthdate'],
+        points: maps[i]['points'],
+        avatarPath: maps[i]['avatarPath'],
+      );
+    });
+  }
+
   Future<void> insDemoData() async {
     await insData();
   }

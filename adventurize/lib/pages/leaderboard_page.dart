@@ -1,3 +1,4 @@
+import 'package:adventurize/database/db_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:adventurize/components/cards/user_small_card.dart';
@@ -16,6 +17,7 @@ class LeaderboardPage extends StatefulWidget {
 class _LeaderboardPageState extends State<LeaderboardPage> {
   List<User> users = [];
   User? selectedUser;
+  final db = DatabaseHelper();
 
   @override
   void initState() {
@@ -24,89 +26,9 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
   }
 
   Future<void> _fetchLeaderboardData() async {
+    List<User> data = await db.getUsers();
     setState(() {
-      users = [
-        User(
-          userID: 1,
-          fullname: 'John Doe',
-          username: 'john_doe',
-          email: 'john.doe@example.com',
-          birthdate: '1990-01-01',
-          password: 'password123',
-          points: 1150,
-          avatarPath: 'lib/assets/avatars/avatar1.png',
-        ),
-        User(
-          userID: 2,
-          fullname: 'Robert Johnson',
-          username: 'robert_j',
-          email: 'robert.j@example.com',
-          birthdate: '1988-03-22',
-          password: 'mypassword123',
-          points: 550,
-          avatarPath: 'lib/assets/avatars/avatar2.png',
-        ),
-        User(
-          userID: 3,
-          fullname: 'Michael Lee',
-          username: 'michael_lee',
-          email: 'michael.lee@example.com',
-          birthdate: '1993-06-25',
-          password: 'supersecure',
-          points: 830,
-          avatarPath: 'lib/assets/avatars/avatar3.png',
-        ),
-        User(
-          userID: 4,
-          fullname: 'Jane Smith',
-          username: 'jane_smith',
-          email: 'jane.smith@example.com',
-          birthdate: '1992-05-15',
-          password: 'securepassword',
-          points: 950,
-          avatarPath: 'lib/assets/avatars/avatar4.png',
-        ),
-        User(
-          userID: 5,
-          fullname: 'Alice Brown',
-          username: 'alice_brown',
-          email: 'alice.b@example.com',
-          birthdate: '1995-10-10',
-          password: 'mypassword',
-          points: 775,
-          avatarPath: 'lib/assets/avatars/avatar5.png',
-        ),
-        User(
-          userID: 6,
-          fullname: 'Emily Davis',
-          username: 'emily_davis',
-          email: 'emily.davis@example.com',
-          birthdate: '1998-02-14',
-          password: 'password456',
-          points: 540,
-          avatarPath: 'lib/assets/avatars/avatar6.png',
-        ),
-        User(
-          userID: 7,
-          fullname: 'Maria Gonzalez',
-          username: 'maria_g',
-          email: 'maria.g@example.com',
-          birthdate: '1998-07-23',
-          password: 'password789',
-          points: 840,
-          avatarPath: 'lib/assets/avatars/avatar4.png',
-        ),
-        User(
-          userID: 8,
-          fullname: 'Konstantina Papadopoulos',
-          username: 'konstantina_p',
-          email: 'konstantina.p@example.com',
-          birthdate: '1997-09-14',
-          password: 'strongpassword',
-          points: 940,
-          avatarPath: 'lib/assets/avatars/avatar5.png',
-        ),
-      ];
+      users = data;
       _sortUsersByPoints();
     });
   }
