@@ -35,12 +35,9 @@ class _MyProfilePageState extends State<MyProfilePage> {
   }
 
   Widget _buildProfileContent() {
-    return Column(
-      children: [
-        const SizedBox(height: 16),
-        ProfileCard(user: widget.user),
-        const Spacer(),
-      ],
+    return Align(
+      alignment: Alignment.center,
+      child: ProfileCard(user: widget.user),
     );
   }
 
@@ -49,8 +46,8 @@ class _MyProfilePageState extends State<MyProfilePage> {
     return Scaffold(
       body: Stack(
         children: [
-          _buildMapBackground(),
-          _buildOverlay(),
+          //_buildMapBackground(),
+          //_buildOverlay(),
           _buildProfileContent(),
         ],
       ),

@@ -1,5 +1,6 @@
 import 'package:adventurize/components/level_progress_circle.dart';
 import 'package:adventurize/components/shaped_button.dart';
+import 'package:adventurize/database/db_helper.dart';
 import 'package:adventurize/models/user_model.dart';
 import 'package:adventurize/pages/camera_page.dart';
 import 'package:adventurize/pages/challenges_page.dart';
@@ -19,6 +20,17 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   late GoogleMapController _mapController;
+  final db = DatabaseHelper();
+
+  @override
+  void initState() {
+    super.initState();
+    _addDummyData();
+  }
+
+  Future<void> _addDummyData() async {
+    await db.insDemoData();
+  }
 
   void _navigateToProfile() {
     Navigator.push(

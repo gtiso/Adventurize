@@ -27,12 +27,7 @@ class _ChallengesPageState extends State<ChallengesPage> {
   }
 
   Future<void> _initializeData() async {
-    await _addDummyData();
     await _fetchChallenges();
-  }
-
-  Future<void> _addDummyData() async {
-    await db.insDemoData();
   }
 
   Future<void> _fetchChallenges() async {

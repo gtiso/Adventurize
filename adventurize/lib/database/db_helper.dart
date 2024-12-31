@@ -93,6 +93,19 @@ class DatabaseHelper {
     return userId;
   }
 
+  Future<void> insUser(User user) async {
+    final Database db = await getDB();
+    List<Map<String, dynamic>> existingUser = await db.query(
+      'users',
+      where: 'email = ? AND password = ?',
+      whereArgs: [user.email, user.password],
+    );
+
+    if (existingUser.isEmpty) {
+      await db.insert('users', user.toMap());
+    }
+  }
+
   Future<void> insChall(Challenge chall) async {
     final Database db = await getDB();
     List<Map<String, dynamic>> existingChallenges = await db.query(

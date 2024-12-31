@@ -63,10 +63,10 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
     if (users.isEmpty) return const SizedBox.shrink();
 
     return SmallUserCard(
-      user: users.first,
+      user: widget.user,
       onTap: () {
         setState(() {
-          selectedUser = users.first;
+          selectedUser = widget.user;
         });
       },
     );
