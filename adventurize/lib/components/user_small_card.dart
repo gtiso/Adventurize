@@ -9,6 +9,27 @@ class SmallUserCard extends StatelessWidget {
   const SmallUserCard({required this.user, required this.onTap, Key? key})
       : super(key: key);
 
+  Widget _buildAvatar() {
+    return CircleAvatar(
+      backgroundImage: AssetImage(user.avatarPath ?? ""),
+    );
+  }
+
+  Widget _buildUsername() {
+    return Text(
+      user.username ?? "",
+      style: const TextStyle(
+        fontFamily: 'SansitaOne',
+      ),
+    );
+  }
+
+  Widget _buildProgressCircle() {
+    return ProgressLevelCircle(
+      points: user.points,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -23,19 +44,14 @@ class SmallUserCard extends StatelessWidget {
               BoxShadow(
                 color: Colors.grey.withOpacity(0.5),
                 blurRadius: 4,
-                offset: Offset(0, 2),
+                offset: const Offset(0, 2),
               ),
             ],
           ),
           child: ListTile(
-            leading: CircleAvatar(
-              backgroundImage: AssetImage(user.avatarPath ?? ""),
-            ),
-            title: Text(user.username ?? "",
-                style: TextStyle(fontFamily: 'SansitaOne')),
-            trailing: ProgressLevelCircle(
-              points: user.points,
-            ),
+            leading: _buildAvatar(),
+            title: _buildUsername(),
+            trailing: _buildProgressCircle(),
           ),
         ),
       ),

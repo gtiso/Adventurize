@@ -11,6 +11,27 @@ class SmallMemoryCard extends StatelessWidget {
     required this.onTap,
   }) : super(key: key);
 
+  Widget _buildIcon() {
+    return const Icon(
+      Icons.location_on,
+      size: 24,
+    );
+  }
+
+  Widget _buildTitle() {
+    return Expanded(
+      child: Text(
+        memory.title,
+        style: const TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.bold,
+          fontFamily: 'SansitaOne',
+          color: Colors.black,
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -26,29 +47,16 @@ class SmallMemoryCard extends StatelessWidget {
               BoxShadow(
                 color: Colors.black.withOpacity(0.1),
                 blurRadius: 6,
-                offset: Offset(0, 4),
+                offset: const Offset(0, 4),
               ),
             ],
           ),
           child: Row(
             mainAxisSize: MainAxisSize.max,
             children: [
-              const Icon(
-                Icons.location_on,
-                size: 24,
-              ),
+              _buildIcon(),
               const SizedBox(width: 12),
-              Expanded(
-                child: Text(
-                  memory.title,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'SansitaOne',
-                    color: Colors.black,
-                  ),
-                ),
-              ),
+              _buildTitle(),
             ],
           ),
         ),

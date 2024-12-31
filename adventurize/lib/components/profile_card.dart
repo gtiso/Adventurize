@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:adventurize/models/user_model.dart';
 import 'package:adventurize/components/qr_code_display.dart';
 import 'package:adventurize/pages/edit_profile_page.dart';
+import 'package:adventurize/pages/settings_page.dart';
 
 class ProfileCard extends StatelessWidget {
   final User user;
@@ -21,8 +22,7 @@ class ProfileCard extends StatelessWidget {
   void _navigateToSettings(BuildContext context) {
     Navigator.push(
       context,
-      MaterialPageRoute(
-          builder: (context) => const PlaceholderPage(title: 'Settings')),
+      MaterialPageRoute(builder: (context) => SettingsPage()),
     );
   }
 
@@ -128,22 +128,6 @@ class ProfileCard extends StatelessWidget {
             ],
           ),
         ),
-      ),
-    );
-  }
-}
-
-class PlaceholderPage extends StatelessWidget {
-  final String title;
-
-  const PlaceholderPage({required this.title, Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text(title)),
-      body: Center(
-        child: Text("This is the $title page."),
       ),
     );
   }

@@ -31,6 +31,79 @@ class BigChallengeCard extends StatelessWidget {
     );
   }
 
+  Widget _buildImage() {
+    return ClipRRect(
+      borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+      child: Image.asset(
+        challenge.photoPath ?? "assets/images/placeholder.png",
+        height: 200,
+        width: double.infinity,
+        fit: BoxFit.cover,
+      ),
+    );
+  }
+
+  Widget _buildTitle() {
+    return Text(
+      challenge.title,
+      style: const TextStyle(
+        fontSize: 18,
+        fontWeight: FontWeight.bold,
+        fontFamily: 'SansitaOne',
+        color: Colors.white,
+      ),
+    );
+  }
+
+  Widget _buildDescription() {
+    return Text(
+      challenge.desc,
+      style: const TextStyle(
+        fontSize: 14,
+        color: Colors.white,
+      ),
+    );
+  }
+
+  Widget _buildPointsInfo() {
+    return Text(
+      "Upload your picture to the app and earn ${challenge.points ?? 0} XP.",
+      style: const TextStyle(
+        fontSize: 14,
+        fontWeight: FontWeight.bold,
+        color: Colors.white,
+      ),
+    );
+  }
+
+  Widget _buildActionButton(BuildContext context) {
+    return Center(
+      child: ElevatedButton(
+        onPressed: () {
+          if (challenge.shared == 0) {
+            _navigateToCamera(context);
+          } else {
+            _navigateToMemoryHistory(context);
+          }
+        },
+        style: ElevatedButton.styleFrom(
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+        ),
+        child: Text(
+          challenge.shared == 0 ? "START CHALLENGE" : "VIEW MEMORIES",
+          style: const TextStyle(
+            fontSize: 20,
+            fontFamily: 'SansitaOne',
+            color: Colors.black,
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -43,80 +116,19 @@ class BigChallengeCard extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          // Image
-          ClipRRect(
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
-            child: Image.asset(
-              challenge.photoPath ?? "assets/images/placeholder.png",
-              height: 200,
-              width: double.infinity,
-              fit: BoxFit.cover,
-            ),
-          ),
-          // Content
+          _buildImage(),
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Challenge title
-                Text(
-                  challenge.title,
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'SansitaOne',
-                    color: Colors.white,
-                  ),
-                ),
+                _buildTitle(),
                 const SizedBox(height: 8),
-                // Challenge description
-                Text(
-                  challenge.desc,
-                  style: const TextStyle(
-                    fontSize: 14,
-                    color: Colors.white,
-                  ),
-                ),
+                _buildDescription(),
                 const SizedBox(height: 12),
-                Text(
-                  "Upload your picture to the app and earn ${challenge.points ?? 0} XP.",
-                  style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
+                _buildPointsInfo(),
                 const SizedBox(height: 16),
-                // START CHALLENGE/ VIEW MEMORIES BUTTON
-                Center(
-                  child: ElevatedButton(
-                    onPressed: () {
-                      if (challenge.shared == 0) {
-                        _navigateToCamera(context);
-                      } else {
-                        _navigateToMemoryHistory(context);
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 24, vertical: 12),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                    child: Text(
-                      challenge.shared == 0
-                          ? "START CHALLENGE"
-                          : "VIEW MEMORIES",
-                      style: const TextStyle(
-                        fontSize: 20,
-                        fontFamily: 'SansitaOne',
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                ),
+                _buildActionButton(context),
               ],
             ),
           ),

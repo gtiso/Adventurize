@@ -8,6 +8,50 @@ class BigMemoryCard extends StatelessWidget {
   const BigMemoryCard({required this.memory, required this.onClose, Key? key})
       : super(key: key);
 
+  Widget _buildImage() {
+    return ClipRRect(
+      borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+      child: Image.asset(
+        memory.imagePath ?? "assets/images/placeholder.png",
+        height: 200,
+        width: double.infinity,
+        fit: BoxFit.cover,
+      ),
+    );
+  }
+
+  Widget _buildTitle() {
+    return Text(
+      memory.title,
+      style: const TextStyle(
+        fontSize: 20,
+        fontFamily: 'SansitaOne',
+        color: Colors.white,
+      ),
+    );
+  }
+
+  Widget _buildDescription() {
+    return Text(
+      memory.description,
+      style: const TextStyle(
+        fontSize: 15,
+        fontWeight: FontWeight.bold,
+        color: Colors.white,
+      ),
+    );
+  }
+
+  Widget _buildDateCaptured() {
+    return Text(
+      "Memory captured on ${memory.date}",
+      style: const TextStyle(
+        fontSize: 14,
+        color: Colors.white,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -22,50 +66,17 @@ class BigMemoryCard extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            // Image
-            ClipRRect(
-              borderRadius:
-                  const BorderRadius.vertical(top: Radius.circular(16)),
-              child: Image.asset(
-                memory.imagePath ?? "assets/images/placeholder.png",
-                height: 200,
-                width: double.infinity,
-                fit: BoxFit.cover,
-              ),
-            ),
+            _buildImage(),
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Memory title
-                  Text(
-                    memory.title,
-                    style: const TextStyle(
-                      fontSize: 20,
-                      fontFamily: 'SansitaOne',
-                      color: Colors.white,
-                    ),
-                  ),
+                  _buildTitle(),
                   const SizedBox(height: 8),
-                  // Memory description
-                  Text(
-                    memory.description,
-                    style: const TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
+                  _buildDescription(),
                   const SizedBox(height: 16),
-                  // Date captured
-                  Text(
-                    "Memory captured on ${memory.date}",
-                    style: const TextStyle(
-                      fontSize: 14,
-                      color: Colors.white,
-                    ),
-                  ),
+                  _buildDateCaptured(),
                 ],
               ),
             ),

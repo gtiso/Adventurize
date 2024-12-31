@@ -9,6 +9,42 @@ class BigUserCard extends StatelessWidget {
   const BigUserCard({required this.user, required this.onClose, Key? key})
       : super(key: key);
 
+  Widget _buildAvatar() {
+    return CircleAvatar(
+      radius: 50,
+      backgroundImage: AssetImage(user.avatarPath ?? ""),
+    );
+  }
+
+  Widget _buildFullName() {
+    return Text(
+      user.fullname ?? "",
+      style: const TextStyle(
+        fontSize: 22,
+        fontWeight: FontWeight.bold,
+        fontFamily: 'SansitaOne',
+        color: Colors.black,
+      ),
+    );
+  }
+
+  Widget _buildQRCode() {
+    return QRCodeDisplay(
+      data: user.email,
+      size: 150.0,
+    );
+  }
+
+  Widget _buildScore() {
+    return Text(
+      "Score: ${user.points}",
+      style: const TextStyle(
+        fontSize: 18,
+        color: Colors.black,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -21,7 +57,7 @@ class BigUserCard extends StatelessWidget {
           BoxShadow(
             color: Colors.grey.withOpacity(0.5),
             blurRadius: 6,
-            offset: Offset(0, 3),
+            offset: const Offset(0, 3),
           ),
         ],
       ),
@@ -29,34 +65,13 @@ class BigUserCard extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          CircleAvatar(
-            radius: 50,
-            backgroundImage: AssetImage(user.avatarPath ?? ""),
-          ),
-          SizedBox(height: 12),
-          Text(
-            user.fullname ?? "",
-            style: TextStyle(
-              fontSize: 22,
-              fontWeight: FontWeight.bold,
-              fontFamily: 'SansitaOne',
-              color: Colors.black,
-            ),
-          ),
+          _buildAvatar(),
+          const SizedBox(height: 12),
+          _buildFullName(),
           const SizedBox(height: 16),
-          // QR Code
-          QRCodeDisplay(
-            data: user.email,
-            size: 150.0,
-          ),
+          _buildQRCode(),
           const SizedBox(height: 16),
-          Text(
-            "Score: ${user.points}",
-            style: TextStyle(
-              fontSize: 18,
-              color: Colors.black,
-            ),
-          ),
+          _buildScore(),
         ],
       ),
     );

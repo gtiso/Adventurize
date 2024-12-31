@@ -20,7 +20,6 @@ class _LoginPageState extends State<LoginPage> {
     String passwordFromInput = _passwordController.text;
 
     if (emailFromInput.isNotEmpty && passwordFromInput.isNotEmpty) {
-      // Users? usrDetails = await db.getUser(emailFromInput);
       var res = await db
           .auth(User(email: emailFromInput, password: passwordFromInput));
 
@@ -29,19 +28,11 @@ class _LoginPageState extends State<LoginPage> {
         _navigateToMainPage();
       } else {
         if (!mounted) return;
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-              duration: const Duration(seconds: 1),
-              content: Text("Invalid credentials")),
-        );
+        _showSnackBar("Invalid credentials");
       }
     } else {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-            duration: const Duration(seconds: 1),
-            content: Text("Please fill all fields")),
-      );
+      _showSnackBar("Please fill all fields");
     }
   }
 
@@ -59,6 +50,15 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  void _showSnackBar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        duration: const Duration(seconds: 1),
+        content: Text(message),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,36 +73,41 @@ class _LoginPageState extends State<LoginPage> {
                 'lib/assets/logo.png',
                 height: 170,
               ),
-              Text("LOGIN",
-                  style: TextStyle(fontSize: 25, fontFamily: 'SansitaOne')),
-              SizedBox(height: 50),
+              const Text(
+                "LOGIN",
+                style: TextStyle(
+                  fontSize: 25,
+                  fontFamily: 'SansitaOne',
+                ),
+              ),
+              const SizedBox(height: 50),
               TextField(
                 controller: _emailController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: "What’s your e-mail?",
                   prefixIcon: Icon(Icons.email),
                 ),
               ),
-              SizedBox(height: 5),
+              const SizedBox(height: 5),
               TextField(
                 controller: _passwordController,
                 obscureText: true,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: "Enter your password",
                   prefixIcon: Icon(Icons.lock),
                 ),
               ),
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
               ElevatedButton(
                 onPressed: _login,
-                child: Text("LOGIN"),
+                child: const Text("LOGIN"),
               ),
-              SizedBox(height: 60),
-              Text("Don't have an account?"),
-              SizedBox(height: 10),
+              const SizedBox(height: 60),
+              const Text("Don't have an account?"),
+              const SizedBox(height: 10),
               ElevatedButton(
                 onPressed: _navigateToRegister,
-                child: Text("CREATE NOW"),
+                child: const Text("CREATE NOW"),
               ),
             ],
           ),
