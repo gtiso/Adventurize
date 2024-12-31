@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:adventurize/components/small_challenge_card.dart';
+import 'package:adventurize/components/challenge_small_card.dart';
 import 'package:adventurize/components/title.dart';
 import 'package:adventurize/database/db_helper.dart';
 import 'package:adventurize/models/challenge_model.dart';
-import 'package:adventurize/components/big_challenge_card.dart';
+import 'package:adventurize/components/challenge_big_card.dart';
 
 class ChallengesPage extends StatefulWidget {
   @override
@@ -14,15 +14,18 @@ class ChallengesPage extends StatefulWidget {
 class _ChallengesPageState extends State<ChallengesPage> {
   List<Challenge> challenges = [];
   Challenge? selectedChallenge; // To hold the selected challenge for BigCard
+  final db = DatabaseHelper();
 
   @override
   void initState() {
     super.initState();
-    _addDummyData();
-    _fetchChallenges();
+    _initializeData();
   }
 
-  final db = DatabaseHelper();
+  Future<void> _initializeData() async {
+    await _addDummyData();
+    await _fetchChallenges();
+  }
 
   Future<void> _addDummyData() async {
     await db.insDemoData();
@@ -35,75 +38,91 @@ class _ChallengesPageState extends State<ChallengesPage> {
     });
   }
 
+  Widget _buildMapBackground() {
+    return GoogleMap(
+      initialCameraPosition: const CameraPosition(
+        target: LatLng(36.1627, -86.7816), // Example coordinates
+        zoom: 12.0,
+      ),
+    );
+  }
+
+  Widget _buildOverlay() {
+    return Container(
+      color: Colors.white.withOpacity(0.6), // Adjust opacity as needed
+    );
+  }
+
+  Widget _buildTitle() {
+    return const TitleWidget(
+      icon: Icons.diamond,
+      text: "Challenges",
+    );
+  }
+
+  Widget _buildChallengesList() {
+    if (challenges.isEmpty) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    return ListView.builder(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      itemCount: challenges.length,
+      itemBuilder: (context, index) {
+        final challenge = challenges[index];
+        return SmallChallengeCard(
+          challenge: challenge,
+          onTap: () {
+            setState(() {
+              selectedChallenge = challenge; // Set the selected challenge
+            });
+          },
+        );
+      },
+    );
+  }
+
+  Widget _buildBigCard() {
+    if (selectedChallenge == null) return const SizedBox.shrink();
+
+    return Positioned.fill(
+      child: GestureDetector(
+        onTap: () {
+          setState(() {
+            selectedChallenge = null; // Close the BigCard
+          });
+        },
+        child: Container(
+          color: Colors.black.withOpacity(0.5),
+          child: Center(
+            child: BigChallengeCard(
+              challenge: selectedChallenge!,
+              onClose: () {
+                setState(() {
+                  selectedChallenge = null; // Close the BigCard
+                });
+              },
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         children: [
-          // Map Background
-          GoogleMap(
-            initialCameraPosition: CameraPosition(
-              target: LatLng(36.1627, -86.7816), // Example coordinates
-              zoom: 12.0,
-            ),
-          ),
-          // Semi-transparent overlay to dim the map
-          Container(
-            color: Colors.white.withOpacity(0.6), // Adjust opacity as needed
-          ),
-          // Main Content
+          _buildMapBackground(),
+          _buildOverlay(),
           Column(
             children: [
-              TitleWidget(
-                icon: Icons.diamond,
-                text: "Challenges",
-              ),
-              Expanded(
-                child: challenges.isEmpty
-                    ? Center(child: CircularProgressIndicator())
-                    : ListView.builder(
-                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                        itemCount: challenges.length,
-                        itemBuilder: (context, index) {
-                          final challenge = challenges[index];
-                          return SmallChallengeCard(
-                            challenge: challenge,
-                            onTap: () {
-                              setState(() {
-                                selectedChallenge =
-                                    challenge; // Set the selected challenge
-                              });
-                            },
-                          );
-                        },
-                      ),
-              ),
+              _buildTitle(),
+              Expanded(child: _buildChallengesList()),
             ],
           ),
-          // Display BigCard if a challenge is selected
-          if (selectedChallenge != null)
-            Positioned.fill(
-              child: GestureDetector(
-                onTap: () {
-                  setState(() {
-                    selectedChallenge = null; // Close the BigCard
-                  });
-                },
-                child: Container(
-                  color: Colors.black.withOpacity(0.5),
-                  child: Center(
-                    child: BigChallengeCard(
-                      challenge: selectedChallenge!,
-                      onClose: () {
-                        setState(() {
-                          selectedChallenge = null; // Close the BigCard
-                        });
-                      },
-                    ),
-                  ),
-                ),
-              ),
-            ),
+          _buildBigCard(),
         ],
       ),
     );

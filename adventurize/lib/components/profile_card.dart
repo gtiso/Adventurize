@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:adventurize/models/user_model.dart';
 import 'package:adventurize/components/qr_code_display.dart';
+import 'package:adventurize/pages/edit_profile_page.dart';
 
 class ProfileCard extends StatelessWidget {
   final User user;
@@ -10,24 +11,95 @@ class ProfileCard extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
+  void _navigateToEdit(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const EditProfilePage()),
+    );
+  }
+
+  void _navigateToSettings(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => const PlaceholderPage(title: 'Settings')),
+    );
+  }
+
+  Widget _buildTopRow(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        IconButton(
+          onPressed: () => _navigateToSettings(context),
+          icon: const Icon(Icons.settings),
+          color: Colors.black,
+        ),
+        IconButton(
+          onPressed: () => _navigateToEdit(context),
+          icon: const Icon(Icons.edit),
+          color: Colors.black,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildAvatar() {
+    return CircleAvatar(
+      radius: 50,
+      backgroundImage: AssetImage(user.avatarPath ?? ""),
+    );
+  }
+
+  Widget _buildFullName() {
+    return Text(
+      user.fullname ?? "",
+      style: const TextStyle(
+        fontSize: 20,
+        fontWeight: FontWeight.bold,
+        fontFamily: 'SansitaOne',
+      ),
+    );
+  }
+
+  Widget _buildQRCode() {
+    return QRCodeDisplay(
+      data: user.email,
+      size: 150.0,
+    );
+  }
+
+  Widget _buildScanQRButton() {
+    return ElevatedButton.icon(
+      onPressed: () {
+        // Placeholder for Scan QR functionality
+      },
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.black,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+        padding: const EdgeInsets.symmetric(
+          vertical: 12,
+          horizontal: 16,
+        ),
+      ),
+      icon: const Icon(
+        Icons.camera_alt,
+        color: Colors.white,
+      ),
+      label: const Text(
+        'SCAN QR',
+        style: TextStyle(
+          color: Colors.white,
+          fontFamily: 'SansitaOne',
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    void _navigateToEdit() {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => const PlaceholderPage(title: 'Edit Profile')),
-      );
-    }
-
-    void _navigateToSettings() {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => const PlaceholderPage(title: 'Settings')),
-      );
-    }
-
     return Center(
       child: Card(
         elevation: 8,
@@ -38,78 +110,21 @@ class ProfileCard extends StatelessWidget {
           width: 300,
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: Colors.white, // Set background color to white
+            color: Colors.white,
             borderRadius: BorderRadius.circular(16),
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              // Top Row with Settings and Edit Icons
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  IconButton(
-                    onPressed: _navigateToSettings,
-                    icon: const Icon(Icons.settings),
-                    color: Colors.black,
-                  ),
-                  IconButton(
-                    onPressed: _navigateToEdit,
-                    icon: const Icon(Icons.edit),
-                    color: Colors.black,
-                  ),
-                ],
-              ),
+              _buildTopRow(context),
               const SizedBox(height: 8),
-              // Profile Avatar
-              CircleAvatar(
-                radius: 50,
-                backgroundImage: AssetImage(user.avatarPath ?? ""),
-              ),
+              _buildAvatar(),
               const SizedBox(height: 8),
-              // Full Name
-              Text(
-                user.fullname ?? "",
-                style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'SansitaOne',
-                ),
-              ),
+              _buildFullName(),
               const SizedBox(height: 16),
-              // QR Code
-              QRCodeDisplay(
-                data: user.email ?? 'No email available',
-                size: 150.0,
-              ),
+              _buildQRCode(),
               const SizedBox(height: 16),
-              // Scan QR Button
-              ElevatedButton.icon(
-                onPressed: () {
-                  // Placeholder for Scan QR functionality
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.black,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 12,
-                    horizontal: 16,
-                  ),
-                ),
-                icon: const Icon(
-                  Icons.camera_alt,
-                  color: Colors.white,
-                ),
-                label: const Text(
-                  'SCAN QR',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontFamily: 'SansitaOne',
-                  ),
-                ),
-              ),
+              _buildScanQRButton(),
             ],
           ),
         ),

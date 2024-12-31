@@ -7,9 +7,29 @@ class BigChallengeCard extends StatelessWidget {
   final Challenge challenge;
   final VoidCallback onClose;
 
-  const BigChallengeCard(
-      {required this.challenge, required this.onClose, Key? key})
-      : super(key: key);
+  const BigChallengeCard({
+    required this.challenge,
+    required this.onClose,
+    Key? key,
+  }) : super(key: key);
+
+  void _navigateToCamera(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CameraPage(),
+      ),
+    );
+  }
+
+  void _navigateToMemoryHistory(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => MemoryHistoryPage(),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +59,7 @@ class BigChallengeCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                // Challenge title
                 Text(
                   challenge.title,
                   style: const TextStyle(
@@ -49,6 +70,7 @@ class BigChallengeCard extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 8),
+                // Challenge description
                 Text(
                   challenge.desc,
                   style: const TextStyle(
@@ -66,25 +88,14 @@ class BigChallengeCard extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 16),
+                // START CHALLENGE/ VIEW MEMORIES BUTTON
                 Center(
                   child: ElevatedButton(
                     onPressed: () {
                       if (challenge.shared == 0) {
-                        // Navigate to the CameraPage
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => CameraPage(),
-                          ),
-                        );
+                        _navigateToCamera(context);
                       } else {
-                        // Navigate to the "View Memory" page
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => MemoryHistoryPage(),
-                          ),
-                        );
+                        _navigateToMemoryHistory(context);
                       }
                     },
                     style: ElevatedButton.styleFrom(
@@ -95,11 +106,14 @@ class BigChallengeCard extends StatelessWidget {
                       ),
                     ),
                     child: Text(
-                      challenge.shared == 0 ? "START CHALLENGE" : "VIEW MEMORY",
-                      style: TextStyle(
-                          fontSize: 20,
-                          fontFamily: 'SansitaOne',
-                          color: Colors.black),
+                      challenge.shared == 0
+                          ? "START CHALLENGE"
+                          : "VIEW MEMORIES",
+                      style: const TextStyle(
+                        fontSize: 20,
+                        fontFamily: 'SansitaOne',
+                        color: Colors.black,
+                      ),
                     ),
                   ),
                 ),

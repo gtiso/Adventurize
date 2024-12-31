@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:adventurize/models/memory_model.dart';
-import 'package:adventurize/components/big_memory_card.dart';
-import 'package:adventurize/components/small_memory_card.dart';
+import 'package:adventurize/components/memory_big_card.dart';
+import 'package:adventurize/components/memory_small_card.dart';
 import 'package:adventurize/components/title.dart';
 
 class MemoryHistoryPage extends StatefulWidget {
@@ -40,76 +40,89 @@ class _MemoryHistoryPageState extends State<MemoryHistoryPage> {
 
   Memory? selectedMemory;
 
+  Widget _buildGoogleMap() {
+    return GoogleMap(
+      zoomControlsEnabled: false,
+      mapType: MapType.normal,
+      initialCameraPosition: CameraPosition(
+        target: LatLng(memories.first.latitude, memories.first.longitude),
+        zoom: 12,
+      ),
+      markers: memories
+          .map((memory) => Marker(
+                markerId: MarkerId(memory.title),
+                position: LatLng(memory.latitude, memory.longitude),
+                infoWindow: InfoWindow(title: memory.title),
+              ))
+          .toSet(),
+    );
+  }
+
+  Widget _buildTitle() {
+    return const TitleWidget(
+      icon: Icons.public,
+      text: "Memories",
+    );
+  }
+
+  Widget _buildMemoryList() {
+    return Expanded(
+      child: ListView.builder(
+        itemCount: memories.length,
+        itemBuilder: (context, index) {
+          final memory = memories[index];
+          return SmallMemoryCard(
+            memory: memory,
+            onTap: () {
+              setState(() {
+                selectedMemory = memory;
+              });
+            },
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildBigMemoryCard() {
+    if (selectedMemory == null) return const SizedBox.shrink();
+
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          selectedMemory = null;
+        });
+      },
+      child: Container(
+        color: Colors.black.withOpacity(0.5),
+        child: Center(
+          child: BigMemoryCard(
+            memory: selectedMemory!,
+            onClose: () {
+              setState(() {
+                selectedMemory = null;
+              });
+            },
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         children: [
-          // Google Map
-          GoogleMap(
-            zoomControlsEnabled: false,
-            mapType: MapType.normal,
-            initialCameraPosition: CameraPosition(
-              target: LatLng(memories.first.latitude, memories.first.longitude),
-              zoom: 12,
-            ),
-            markers: memories
-                .map((memory) => Marker(
-                      markerId: MarkerId(memory.title),
-                      position: LatLng(memory.latitude, memory.longitude),
-                      infoWindow: InfoWindow(title: memory.title),
-                    ))
-                .toSet(),
-          ),
+          _buildGoogleMap(),
           Column(
             children: [
-              // Title
-              TitleWidget(
-                icon: Icons.public,
-                text: "Memories",
-              ),
-              SizedBox(height: 240),
-              // User List
-              Expanded(
-                child: ListView.builder(
-                  itemCount: memories.length,
-                  itemBuilder: (context, index) {
-                    final memory = memories[index];
-                    return SmallMemoryCard(
-                      memory: memory,
-                      onTap: () {
-                        setState(() {
-                          selectedMemory = memory;
-                        });
-                      },
-                    );
-                  },
-                ),
-              ),
+              _buildTitle(),
+              const SizedBox(height: 240),
+              _buildMemoryList(),
             ],
           ),
-          // BigMemoryCard Pop-up
-          if (selectedMemory != null)
-            GestureDetector(
-              onTap: () {
-                setState(() {
-                  selectedMemory = null;
-                });
-              },
-              child: Container(
-                color: Colors.black.withOpacity(0.5),
-                child: Center(
-                  child: BigMemoryCard(
-                    memory: selectedMemory!,
-                    onClose: () {
-                      setState(() {
-                        selectedMemory = null;
-                      });
-                    },
-                  ),
-                ),
-              ),
-            ),
+          _buildBigMemoryCard(),
         ],
       ),
     );

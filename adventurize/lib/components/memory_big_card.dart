@@ -33,12 +33,12 @@ class BigMemoryCard extends StatelessWidget {
                 fit: BoxFit.cover,
               ),
             ),
-            // Content
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // Memory title
                   Text(
                     memory.title,
                     style: const TextStyle(
@@ -48,6 +48,7 @@ class BigMemoryCard extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 8),
+                  // Memory description
                   Text(
                     memory.description,
                     style: const TextStyle(
@@ -57,6 +58,7 @@ class BigMemoryCard extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 16),
+                  // Date captured
                   Text(
                     "Memory captured on ${memory.date}",
                     style: const TextStyle(

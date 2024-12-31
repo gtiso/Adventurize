@@ -16,7 +16,10 @@ class _MyProfilePageState extends State<MyProfilePage> {
   @override
   void initState() {
     super.initState();
-    // Initialize the user object
+    _initializeUser();
+  }
+
+  void _initializeUser() {
     _user = User(
       userId: 0,
       fullname: "George",
@@ -27,32 +30,41 @@ class _MyProfilePageState extends State<MyProfilePage> {
     );
   }
 
+  Widget _buildMapBackground() {
+    return GoogleMap(
+      initialCameraPosition: const CameraPosition(
+        target: LatLng(36.1627, -86.7816), // Example coordinates
+        zoom: 12.0,
+      ),
+      zoomControlsEnabled: false,
+      myLocationButtonEnabled: false,
+    );
+  }
+
+  Widget _buildOverlay() {
+    return Container(
+      color: Colors.white.withOpacity(0.6), // Adjust opacity as needed
+    );
+  }
+
+  Widget _buildProfileContent() {
+    return Column(
+      children: [
+        const SizedBox(height: 16),
+        ProfileCard(user: _user),
+        const Spacer(),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         children: [
-          // Map Background
-          GoogleMap(
-            initialCameraPosition: const CameraPosition(
-              target: LatLng(36.1627, -86.7816), // Example coordinates
-              zoom: 12.0,
-            ),
-            zoomControlsEnabled: false,
-            myLocationButtonEnabled: false,
-          ),
-          // Semi-transparent overlay to dim the map
-          Container(
-            color: Colors.white.withOpacity(0.6), // Adjust opacity as needed
-          ),
-          // Main Content
-          Column(
-            children: [
-              const SizedBox(height: 16),
-              ProfileCard(user: _user),
-              const Spacer(),
-            ],
-          ),
+          _buildMapBackground(),
+          _buildOverlay(),
+          _buildProfileContent(),
         ],
       ),
     );

@@ -26,6 +26,7 @@ class SmallChallengeCard extends StatelessWidget {
                 fit: BoxFit.cover,
               ),
             ),
+            // Challenge title
             child: Stack(
               children: [
                 Positioned(
@@ -41,6 +42,7 @@ class SmallChallengeCard extends StatelessWidget {
                     ),
                   ),
                 ),
+                // Challenge status
                 Positioned(
                   top: 10,
                   right: 10,

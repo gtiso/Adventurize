@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:adventurize/models/user_model.dart';
+import 'package:adventurize/components/qr_code_display.dart';
 
 class BigUserCard extends StatelessWidget {
   final User user;
@@ -14,7 +15,7 @@ class BigUserCard extends StatelessWidget {
       margin: const EdgeInsets.all(16.0),
       padding: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
-        color: Colors.black,
+        color: Colors.white,
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
@@ -39,22 +40,21 @@ class BigUserCard extends StatelessWidget {
               fontSize: 22,
               fontWeight: FontWeight.bold,
               fontFamily: 'SansitaOne',
-              color: Colors.white,
+              color: Colors.black,
             ),
           ),
-          SizedBox(height: 8),
+          const SizedBox(height: 16),
           // QR Code
-          // QrImage(
-          //   data: user.email,
-          //   size: 120,
-          //   backgroundColor: Colors.white,
-          // ),
-          // const SizedBox(height: 16),
+          QRCodeDisplay(
+            data: user.email,
+            size: 150.0,
+          ),
+          const SizedBox(height: 16),
           Text(
             "Score: ${user.points}",
             style: TextStyle(
               fontSize: 18,
-              color: Colors.white70,
+              color: Colors.black,
             ),
           ),
         ],
