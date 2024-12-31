@@ -27,7 +27,7 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
     setState(() {
       users = [
         User(
-          userId: 1,
+          userID: 1,
           fullname: 'John Doe',
           username: 'john_doe',
           email: 'john.doe@example.com',
@@ -37,7 +37,7 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
           avatarPath: 'lib/assets/avatars/avatar1.png',
         ),
         User(
-          userId: 2,
+          userID: 2,
           fullname: 'Robert Johnson',
           username: 'robert_j',
           email: 'robert.j@example.com',
@@ -47,7 +47,7 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
           avatarPath: 'lib/assets/avatars/avatar2.png',
         ),
         User(
-          userId: 3,
+          userID: 3,
           fullname: 'Michael Lee',
           username: 'michael_lee',
           email: 'michael.lee@example.com',
@@ -57,7 +57,7 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
           avatarPath: 'lib/assets/avatars/avatar3.png',
         ),
         User(
-          userId: 4,
+          userID: 4,
           fullname: 'Jane Smith',
           username: 'jane_smith',
           email: 'jane.smith@example.com',
@@ -67,7 +67,7 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
           avatarPath: 'lib/assets/avatars/avatar4.png',
         ),
         User(
-          userId: 5,
+          userID: 5,
           fullname: 'Alice Brown',
           username: 'alice_brown',
           email: 'alice.b@example.com',
@@ -77,7 +77,7 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
           avatarPath: 'lib/assets/avatars/avatar5.png',
         ),
         User(
-          userId: 6,
+          userID: 6,
           fullname: 'Emily Davis',
           username: 'emily_davis',
           email: 'emily.davis@example.com',
@@ -87,7 +87,7 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
           avatarPath: 'lib/assets/avatars/avatar6.png',
         ),
         User(
-          userId: 7,
+          userID: 7,
           fullname: 'Maria Gonzalez',
           username: 'maria_g',
           email: 'maria.g@example.com',
@@ -97,7 +97,7 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
           avatarPath: 'lib/assets/avatars/avatar4.png',
         ),
         User(
-          userId: 8,
+          userID: 8,
           fullname: 'Konstantina Papadopoulos',
           username: 'konstantina_p',
           email: 'konstantina.p@example.com',

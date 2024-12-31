@@ -9,13 +9,13 @@ class ProfileCard extends StatelessWidget {
 
   const ProfileCard({
     required this.user,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   void _navigateToEdit(BuildContext context) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const EditProfilePage()),
+      MaterialPageRoute(builder: (context) => EditProfilePage(user: user)),
     );
   }
 

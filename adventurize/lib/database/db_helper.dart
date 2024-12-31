@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:sqlite3_flutter_libs/sqlite3_flutter_libs.dart';
@@ -62,6 +63,22 @@ class DatabaseHelper {
     );
     print(result);
     return result.isNotEmpty;
+  }
+
+  Future<void> saveProfileToDB(User usr) async {
+    final Database db = await getDB();
+    int res = await db.rawUpdate(
+      "UPDATE users SET fullname = ?, username = ?, birthdate = ?, password = ?, email = ? WHERE userID = ?",
+      [
+        usr.fullname,
+        usr.username,
+        usr.birthdate,
+        usr.password,
+        usr.email,
+        usr.userID
+      ],
+    );
+    debugPrint("Row Updation: $res");
   }
 
   Future<User?> getUsr(String email) async {

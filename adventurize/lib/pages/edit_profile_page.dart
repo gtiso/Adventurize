@@ -1,10 +1,14 @@
+import 'package:adventurize/database/db_helper.dart';
+import 'package:adventurize/models/user_model.dart';
+import 'package:adventurize/pages/my_profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:adventurize/components/cards/profile_edit_card.dart';
 
 class EditProfilePage extends StatefulWidget {
-  const EditProfilePage({Key? key}) : super(key: key);
+  final User user;
+  const EditProfilePage({super.key, required this.user});
 
   @override
   State<EditProfilePage> createState() => _EditProfilePageState();
@@ -24,11 +28,11 @@ class _EditProfilePageState extends State<EditProfilePage> {
   }
 
   void _initializeControllers() {
-    _usernameController = TextEditingController(text: "george123");
-    _fullnameController = TextEditingController(text: "George George");
-    _emailController = TextEditingController(text: "george123@mail.com");
-    _birthdateController = TextEditingController(text: "09/12/2003");
-    _passwordController = TextEditingController(text: "********");
+    _usernameController = TextEditingController(text: widget.user.username);
+    _fullnameController = TextEditingController(text: widget.user.fullname);
+    _emailController = TextEditingController(text: widget.user.email);
+    _birthdateController = TextEditingController(text: widget.user.birthdate);
+    _passwordController = TextEditingController(text: widget.user.password);
   }
 
   Widget _buildMapBackground() {
@@ -56,12 +60,35 @@ class _EditProfilePageState extends State<EditProfilePage> {
     }
   }
 
+  void _navigateToProfile(User usr) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => MyProfilePage(
+                user: usr,
+              )),
+    );
+  }
+
   void _saveProfile() {
     debugPrint("Username: ${_usernameController.text}");
     debugPrint("Fullname: ${_fullnameController.text}");
     debugPrint("Email: ${_emailController.text}");
     debugPrint("Birthdate: ${_birthdateController.text}");
     debugPrint("Password: ${_passwordController.text}");
+
+    User updatedUser = User(
+        userID: widget.user.userID,
+        password: _passwordController.text,
+        email: _emailController.text,
+        username: _usernameController.text,
+        fullname: _fullnameController.text,
+        birthdate: _birthdateController.text,
+        avatarPath: widget.user.avatarPath,
+        points: widget.user.points);
+
+    DatabaseHelper().saveProfileToDB(updatedUser);
+    _navigateToProfile(updatedUser);
 
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text("Profile Saved Successfully!")),
@@ -81,6 +108,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Stack(
         children: [
           _buildMapBackground(),

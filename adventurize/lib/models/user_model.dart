@@ -5,7 +5,7 @@ User usersFromMap(String str) => User.fromMap(json.decode(str));
 String usersToMap(User data) => json.encode(data.toMap());
 
 class User {
-  int? userId;
+  int? userID;
   final String? fullname;
   final String? username;
   final String email;
@@ -15,7 +15,7 @@ class User {
   final String? avatarPath;
 
   User({
-    this.userId,
+    this.userID,
     this.fullname,
     this.username,
     required this.password,
@@ -27,7 +27,7 @@ class User {
 
   Map<String, dynamic> toMap() {
     return {
-      'userId': userId,
+      'userID': userID,
       'fullname': fullname,
       'username': username,
       'email': email,
@@ -40,7 +40,7 @@ class User {
 
   factory User.fromMap(Map<String, dynamic> map) {
     return User(
-      userId: map['userId'],
+      userID: map['userID'],
       fullname: map['fullname'],
       username: map['username'],
       email: map['email'],
@@ -52,7 +52,7 @@ class User {
   }
 
   User copyWith({
-    int? userId,
+    int? userID,
     String? fullname,
     String? username,
     String? email,
@@ -62,7 +62,7 @@ class User {
     String? avatarPath,
   }) {
     return User(
-      userId: userId ?? this.userId,
+      userID: userID ?? this.userID,
       fullname: fullname ?? this.fullname,
       username: username ?? this.username,
       email: email ?? this.email,
