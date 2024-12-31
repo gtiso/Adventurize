@@ -6,6 +6,9 @@ import 'package:adventurize/components/title.dart';
 import 'package:adventurize/models/user_model.dart';
 
 class LeaderboardPage extends StatefulWidget {
+  final User user;
+  const LeaderboardPage({super.key, required this.user});
+  
   @override
   State<LeaderboardPage> createState() => _LeaderboardPageState();
 }

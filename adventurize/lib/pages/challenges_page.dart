@@ -1,3 +1,4 @@
+import 'package:adventurize/models/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:adventurize/components/cards/challenge_small_card.dart';
@@ -7,6 +8,9 @@ import 'package:adventurize/models/challenge_model.dart';
 import 'package:adventurize/components/cards/challenge_big_card.dart';
 
 class ChallengesPage extends StatefulWidget {
+  final User user;
+  const ChallengesPage({super.key, required this.user});
+  
   @override
   State<ChallengesPage> createState() => _ChallengesPageState();
 }
@@ -101,7 +105,7 @@ class _ChallengesPageState extends State<ChallengesPage> {
                 setState(() {
                   selectedChallenge = null; // Close the BigCard
                 });
-              },
+              }, user: widget.user,
             ),
           ),
         ),

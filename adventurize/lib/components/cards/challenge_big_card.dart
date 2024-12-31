@@ -1,3 +1,4 @@
+import 'package:adventurize/models/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:adventurize/models/challenge_model.dart';
 import 'package:adventurize/pages/memory_history_page.dart';
@@ -6,12 +7,13 @@ import 'package:adventurize/pages/camera_page.dart';
 class BigChallengeCard extends StatelessWidget {
   final Challenge challenge;
   final VoidCallback onClose;
+  final User user;
 
   const BigChallengeCard({
     required this.challenge,
     required this.onClose,
-    Key? key,
-  }) : super(key: key);
+    super.key, required this.user,
+  });
 
   void _navigateToCamera(BuildContext context) {
     Navigator.push(
@@ -26,7 +28,7 @@ class BigChallengeCard extends StatelessWidget {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => MemoryHistoryPage(),
+        builder: (context) => MemoryHistoryPage(user: user,),
       ),
     );
   }

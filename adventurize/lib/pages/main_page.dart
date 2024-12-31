@@ -1,5 +1,6 @@
 import 'package:adventurize/components/level_progress_circle.dart';
 import 'package:adventurize/components/shaped_button.dart';
+import 'package:adventurize/models/user_model.dart';
 import 'package:adventurize/pages/camera_page.dart';
 import 'package:adventurize/pages/challenges_page.dart';
 import 'package:adventurize/pages/leaderboard_page.dart';
@@ -9,6 +10,9 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class MainPage extends StatefulWidget {
+  final User user;
+  const MainPage({super.key, required this.user});
+
   @override
   State<MainPage> createState() => _MainPageState();
 }
@@ -19,28 +23,28 @@ class _MainPageState extends State<MainPage> {
   void _navigateToProfile() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => MyProfilePage()),
+      MaterialPageRoute(builder: (context) => MyProfilePage(user: widget.user,)),
     );
   }
 
   void _navigateToChallenges() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => ChallengesPage()),
+      MaterialPageRoute(builder: (context) => ChallengesPage(user: widget.user,)),
     );
   }
 
   void _navigateToLeaderboard() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => LeaderboardPage()),
+      MaterialPageRoute(builder: (context) => LeaderboardPage(user: widget.user,)),
     );
   }
 
   void _navigateToMemories() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => MemoryHistoryPage()),
+      MaterialPageRoute(builder: (context) => MemoryHistoryPage(user: widget.user,)),
     );
   }
 
@@ -78,7 +82,7 @@ class _MainPageState extends State<MainPage> {
           Align(
             alignment: Alignment(-0.95, -0.95),
             child: ProgressLevelCircle(
-              points: 775,
+              points: widget.user.points,
             ),
           ),
           Align(
@@ -122,22 +126,6 @@ class _MainPageState extends State<MainPage> {
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class PlaceholderPage extends StatelessWidget {
-  final String title;
-
-  PlaceholderPage(this.title);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text(title)),
-      body: Center(
-        child: Text("This is the $title page."),
       ),
     );
   }

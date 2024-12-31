@@ -4,39 +4,26 @@ import 'package:adventurize/models/user_model.dart';
 import 'package:adventurize/components/cards/profile_card.dart';
 
 class MyProfilePage extends StatefulWidget {
-  const MyProfilePage({Key? key}) : super(key: key);
+  final User user;
+  const MyProfilePage({super.key, required this.user});
 
   @override
-  _MyProfilePageState createState() => _MyProfilePageState();
+  State<MyProfilePage> createState() => _MyProfilePageState();
 }
 
 class _MyProfilePageState extends State<MyProfilePage> {
-  late User _user;
-
   @override
   void initState() {
     super.initState();
-    _initializeUser();
-  }
-
-  void _initializeUser() {
-    _user = User(
-      userId: 0,
-      fullname: "George",
-      email: "george@example.com",
-      avatarPath: "lib/assets/avatars/avatar2.png",
-      password: "password123",
-      points: 100,
-    );
   }
 
   Widget _buildMapBackground() {
     return GoogleMap(
+      zoomControlsEnabled: false,
       initialCameraPosition: const CameraPosition(
         target: LatLng(36.1627, -86.7816), // Example coordinates
         zoom: 12.0,
       ),
-      zoomControlsEnabled: false,
       myLocationButtonEnabled: false,
     );
   }
@@ -51,7 +38,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
     return Column(
       children: [
         const SizedBox(height: 16),
-        ProfileCard(user: _user),
+        ProfileCard(user: widget.user),
         const Spacer(),
       ],
     );

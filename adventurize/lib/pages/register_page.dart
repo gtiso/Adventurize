@@ -16,6 +16,7 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _fullnameController = TextEditingController();
   final TextEditingController _birthdateController = TextEditingController();
+  late User usr;
 
   void _selectBirthdate() async {
     DateTime? pickedDate = await showDatePicker(
@@ -60,13 +61,15 @@ class _RegisterPageState extends State<RegisterPage> {
     sqfliteFfiInit();
     databaseFactory = databaseFactoryFfi;
 
-    return await db.createUsr(User(
+    usr = User(
       birthdate: birthdate,
       fullname: fullname,
       email: email,
       password: password,
       username: fullname.trimLeft(),
-    ));
+    );
+
+    return await db.createUsr(usr);
   }
 
   void _showSnackBar(String message) {
@@ -90,7 +93,7 @@ class _RegisterPageState extends State<RegisterPage> {
   void _navigateToMainPage() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => MainPage()),
+      MaterialPageRoute(builder: (context) => MainPage(user: usr)),
     );
   }
 

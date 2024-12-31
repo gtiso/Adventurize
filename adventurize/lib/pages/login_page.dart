@@ -12,6 +12,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  late User usr;
 
   final DatabaseHelper db = DatabaseHelper();
 
@@ -23,6 +24,7 @@ class _LoginPageState extends State<LoginPage> {
       bool isAuthenticated = await _authenticateUser(email, password);
 
       if (isAuthenticated) {
+        usr = (await db.getUsr(email))!;
         _navigateToMainPage();
       } else {
         _showSnackBar("Invalid credentials");
@@ -50,7 +52,7 @@ class _LoginPageState extends State<LoginPage> {
   void _navigateToMainPage() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => MainPage()),
+      MaterialPageRoute(builder: (context) => MainPage(user: usr,)),
     );
   }
 
