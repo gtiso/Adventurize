@@ -39,8 +39,8 @@ class _RegisterPageState extends State<RegisterPage> {
     String birthdate = _birthdateController.text;
 
     if (_validateInputs(email, password, fullname, birthdate)) {
-      int userId = await _createUser(email, password, fullname, birthdate);
-      print("New UserID : $userId");
+      int userID = await _createUser(email, password, fullname, birthdate);
+      print("New UserID : $userID");
       _navigateToMainPage();
     } else {
       _showSnackBar("Please fill all fields");

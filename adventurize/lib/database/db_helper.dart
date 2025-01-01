@@ -89,8 +89,8 @@ class DatabaseHelper {
 
   Future<int> createUsr(User usr) async {
     final Database db = await getDB();
-    int userId = await db.insert("user", usr.toMap());
-    return userId;
+    int userID = await db.insert("users", usr.toMap());
+    return userID;
   }
 
   Future<void> insUser(User user) async {
