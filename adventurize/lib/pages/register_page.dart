@@ -16,6 +16,7 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _fullnameController = TextEditingController();
   final TextEditingController _birthdateController = TextEditingController();
+  bool _isPasswordVisible = false; // Variable to toggle password visibility
   late User usr;
 
   void _selectBirthdate() async {
@@ -152,11 +153,21 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget _buildPasswordField() {
     return TextField(
       controller: _passwordController,
-      obscureText: true,
-      decoration: const InputDecoration(
+      obscureText: !_isPasswordVisible, // Toggle visibility based on state
+      decoration: InputDecoration(
         labelText: "Create a password",
-        prefixIcon: Icon(Icons.lock),
-        labelStyle: TextStyle(fontFamily: 'SansitaOne'),
+        prefixIcon: const Icon(Icons.lock),
+        suffixIcon: IconButton(
+          icon: Icon(
+            _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+          ),
+          onPressed: () {
+            setState(() {
+              _isPasswordVisible = !_isPasswordVisible;
+            });
+          },
+        ),
+        labelStyle: const TextStyle(fontFamily: 'SansitaOne'),
       ),
     );
   }

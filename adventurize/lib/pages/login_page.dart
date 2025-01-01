@@ -12,6 +12,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  bool _isPasswordVisible = false; // Variable for password visibility toggle
   late User usr;
 
   final DatabaseHelper db = DatabaseHelper();
@@ -52,7 +53,7 @@ class _LoginPageState extends State<LoginPage> {
   void _navigateToMainPage() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => MainPage(user: usr,)),
+      MaterialPageRoute(builder: (context) => MainPage(user: usr)),
     );
   }
 
@@ -98,11 +99,22 @@ class _LoginPageState extends State<LoginPage> {
   Widget _buildPasswordField() {
     return TextField(
       controller: _passwordController,
-      obscureText: true,
-      decoration: const InputDecoration(
+      obscureText:
+          !_isPasswordVisible, // Toggle visibility based on the variable
+      decoration: InputDecoration(
         labelText: "Enter your password",
-        prefixIcon: Icon(Icons.lock),
-        labelStyle: TextStyle(fontFamily: 'SansitaOne'),
+        prefixIcon: const Icon(Icons.lock),
+        suffixIcon: IconButton(
+          icon: Icon(
+            _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+          ),
+          onPressed: () {
+            setState(() {
+              _isPasswordVisible = !_isPasswordVisible;
+            });
+          },
+        ),
+        labelStyle: const TextStyle(fontFamily: 'SansitaOne'),
       ),
     );
   }

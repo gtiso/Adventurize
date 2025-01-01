@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class EditProfileCard extends StatelessWidget {
+class EditProfileCard extends StatefulWidget {
   final TextEditingController usernameController;
   final TextEditingController fullnameController;
   final TextEditingController emailController;
@@ -22,17 +22,24 @@ class EditProfileCard extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
+  @override
+  _EditProfileCardState createState() => _EditProfileCardState();
+}
+
+class _EditProfileCardState extends State<EditProfileCard> {
+  bool _isPasswordVisible = false; // Tracks password visibility state
+
   // Build top row with cancel and save buttons
   Widget _buildTopRow() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         IconButton(
-          onPressed: onCancel,
+          onPressed: widget.onCancel,
           icon: const Icon(Icons.close, color: Colors.red, size: 30),
         ),
         IconButton(
-          onPressed: onSave,
+          onPressed: widget.onSave,
           icon: const Icon(Icons.check, color: Colors.green, size: 30),
         ),
       ],
@@ -54,6 +61,7 @@ class EditProfileCard extends StatelessWidget {
     bool readOnly = false,
     VoidCallback? onTap,
     bool obscureText = false,
+    Widget? suffixIcon,
   }) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
@@ -82,11 +90,12 @@ class EditProfileCard extends StatelessWidget {
               readOnly: readOnly,
               onTap: onTap,
               obscureText: obscureText,
-              textAlign: TextAlign.right,
-              decoration: const InputDecoration(
+              textAlign: TextAlign.center,
+              decoration: InputDecoration(
                 border: InputBorder.none,
                 isDense: true,
                 contentPadding: EdgeInsets.zero,
+                suffixIcon: suffixIcon,
               ),
               style: const TextStyle(
                 fontSize: 14,
@@ -105,31 +114,41 @@ class EditProfileCard extends StatelessWidget {
     return Column(
       children: [
         _buildTextField(
-          controller: usernameController,
+          controller: widget.usernameController,
           label: "USERNAME",
         ),
         const SizedBox(height: 10),
         _buildTextField(
-          controller: fullnameController,
+          controller: widget.fullnameController,
           label: "FULLNAME",
         ),
         const SizedBox(height: 10),
         _buildTextField(
-          controller: emailController,
+          controller: widget.emailController,
           label: "EMAIL",
         ),
         const SizedBox(height: 10),
         _buildTextField(
-          controller: birthdateController,
+          controller: widget.birthdateController,
           label: "BIRTHDATE",
           readOnly: true,
-          onTap: onSelectBirthdate,
+          onTap: widget.onSelectBirthdate,
         ),
         const SizedBox(height: 10),
         _buildTextField(
-          controller: passwordController,
+          controller: widget.passwordController,
           label: "PASSWORD",
-          obscureText: true,
+          obscureText: !_isPasswordVisible, // Manage visibility
+          suffixIcon: IconButton(
+            icon: Icon(
+              _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+            ),
+            onPressed: () {
+              setState(() {
+                _isPasswordVisible = !_isPasswordVisible;
+              });
+            },
+          ),
         ),
       ],
     );
