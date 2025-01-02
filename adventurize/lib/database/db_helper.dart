@@ -52,6 +52,9 @@ class DatabaseHelper {
     return openDatabase(path!, version: 1, onCreate: (db, version) async {
       await db.execute(users);
       await db.execute(challenges);
+      await db.execute(photos);
+      await db.execute(userChalls);
+      await db.execute(userPhotos);
     });
   }
 

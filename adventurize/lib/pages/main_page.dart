@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:adventurize/components/level_progress_circle.dart';
 import 'package:adventurize/components/shaped_button.dart';
 import 'package:adventurize/database/db_helper.dart';
@@ -9,6 +11,7 @@ import 'package:adventurize/pages/memory_history_page.dart';
 import 'package:adventurize/pages/my_profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:geolocator/geolocator.dart';
 
 class MainPage extends StatefulWidget {
   final User user;
@@ -19,7 +22,9 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  late GoogleMapController _mapController;
+  final Completer<GoogleMapController> googleMapCompleteController = Completer<GoogleMapController>();
+  late GoogleMapController controllerGoogleMap;
+  late Position currentUserPosition;
   final db = DatabaseHelper();
 
   @override
@@ -30,6 +35,19 @@ class _MainPageState extends State<MainPage> {
 
   Future<void> _addDummyData() async {
     await db.insDemoData();
+  }
+
+  Future<void> _getUserCurrentLocation() async {
+    await Geolocator.requestPermission().then((value){
+    }).onError((error, stackTrace) async {
+      await Geolocator.requestPermission();
+      print("ERROR $error");
+    });
+    Position userPosition = await Geolocator.getCurrentPosition();
+    currentUserPosition = userPosition;
+    LatLng userLatLng = LatLng(currentUserPosition.latitude, currentUserPosition.longitude);
+    CameraPosition cameraPos = CameraPosition(target: userLatLng, zoom: 15);
+    controllerGoogleMap.animateCamera(CameraUpdate.newCameraPosition(cameraPos));
   }
 
   void _navigateToProfile() {
@@ -76,10 +94,14 @@ class _MainPageState extends State<MainPage> {
             zoomControlsEnabled: false,
             mapType: MapType.normal,
             initialCameraPosition: CameraPosition(
-              target: LatLng(36.1627, -86.7816),
+              target: LatLng(37.97934102604011, 23.78306889039801),
               zoom: 12,
             ),
-            onMapCreated: (controller) => _mapController = controller,
+            onMapCreated: (GoogleMapController mapController) {
+              controllerGoogleMap = mapController;
+              googleMapCompleteController.complete(controllerGoogleMap);
+              _getUserCurrentLocation();
+            },
           ),
           Align(
             alignment: Alignment(0.95, -0.95),
