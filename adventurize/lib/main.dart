@@ -1,14 +1,19 @@
+import 'package:adventurize/database/db_helper.dart';
 import 'package:flutter/material.dart';
 import 'pages/login_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
+  _addDummyData();
   final runnableApp = _buildRunnableApp(
     app: MyApp(),
   );
 
   runApp(runnableApp);
+}
+
+Future<void> _addDummyData() async {
+  await DatabaseHelper().insDemoData();
 }
 
 Widget _buildRunnableApp({required Widget app}) {

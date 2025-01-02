@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:adventurize/components/level_progress_circle.dart';
 import 'package:adventurize/components/shaped_button.dart';
 import 'package:adventurize/database/db_helper.dart';
+import 'package:adventurize/models/memory_model.dart';
 import 'package:adventurize/models/user_model.dart';
 import 'package:adventurize/pages/camera_page.dart';
 import 'package:adventurize/pages/challenges_page.dart';
@@ -22,59 +23,124 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  final Completer<GoogleMapController> googleMapCompleteController = Completer<GoogleMapController>();
+  final Completer<GoogleMapController> googleMapCompleteController =
+      Completer<GoogleMapController>();
   late GoogleMapController controllerGoogleMap;
   late Position currentUserPosition;
+
   final db = DatabaseHelper();
+
+  final List<Marker> _markers = [];
+  BitmapDescriptor markerIcon = BitmapDescriptor.defaultMarker;
 
   @override
   void initState() {
+    customMarker();
     super.initState();
-    _addDummyData();
+    _loadMarkers();
   }
 
-  Future<void> _addDummyData() async {
-    await db.insDemoData();
+  void customMarker() {
+    BitmapDescriptor.asset(
+            const ImageConfiguration(size: Size(24, 24)), 'lib/assets/avatars/avatar1.png')
+        .then((icon) {
+      setState(() {
+        markerIcon = icon;
+      });
+    });
   }
 
   Future<void> _getUserCurrentLocation() async {
-    await Geolocator.requestPermission().then((value){
-    }).onError((error, stackTrace) async {
+    await Geolocator.requestPermission()
+        .then((value) {})
+        .onError((error, stackTrace) async {
       await Geolocator.requestPermission();
       print("ERROR $error");
     });
     Position userPosition = await Geolocator.getCurrentPosition();
     currentUserPosition = userPosition;
-    LatLng userLatLng = LatLng(currentUserPosition.latitude, currentUserPosition.longitude);
+    LatLng userLatLng =
+        LatLng(currentUserPosition.latitude, currentUserPosition.longitude);
     CameraPosition cameraPos = CameraPosition(target: userLatLng, zoom: 15);
-    controllerGoogleMap.animateCamera(CameraUpdate.newCameraPosition(cameraPos));
+    controllerGoogleMap
+        .animateCamera(CameraUpdate.newCameraPosition(cameraPos));
+  }
+
+  Future<void> _loadMarkers() async {
+    List<Memory> memories = await db.getMemories();
+    setState(() {
+      _markers.clear();
+      debugPrint("loadMarkes");
+      _markers.addAll(_createMarkers(memories));
+      debugPrint("${_markers.length}");
+    });
+  }
+
+  Set<Marker> _createMarkers(List<Memory> memories) {
+    return memories.map((memory) {
+      double latitude = memory.latitude;
+      double longitude = memory.longitude;
+
+      debugPrint("LATITUDE $latitude");
+      debugPrint("LONGTITUDE $longitude");
+
+      return Marker(
+        markerId: MarkerId(memory.memoryID.toString()),
+        position: LatLng(latitude, longitude),
+        icon: markerIcon,
+        infoWindow: InfoWindow(
+          title: memory.title,
+          snippet: memory.userName,
+          // onTap: () {
+          //   Navigator.push(
+          //     context,
+          //     MaterialPageRoute(
+          //       builder: (context) => EventPage(event: event),
+          //     ),
+          //   );
+          // },
+        ),
+      );
+    }).toSet();
   }
 
   void _navigateToProfile() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => MyProfilePage(user: widget.user,)),
+      MaterialPageRoute(
+          builder: (context) => MyProfilePage(
+                user: widget.user,
+              )),
     );
   }
 
   void _navigateToChallenges() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => ChallengesPage(user: widget.user,)),
+      MaterialPageRoute(
+          builder: (context) => ChallengesPage(
+                user: widget.user,
+              )),
     );
   }
 
   void _navigateToLeaderboard() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => LeaderboardPage(user: widget.user,)),
+      MaterialPageRoute(
+          builder: (context) => LeaderboardPage(
+                user: widget.user,
+              )),
     );
   }
 
   void _navigateToMemories() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => MemoryHistoryPage(user: widget.user,)),
+      MaterialPageRoute(
+          builder: (context) => MemoryHistoryPage(
+                user: widget.user,
+              )),
     );
   }
 
@@ -93,10 +159,12 @@ class _MainPageState extends State<MainPage> {
           GoogleMap(
             zoomControlsEnabled: false,
             mapType: MapType.normal,
+            myLocationEnabled: true,
             initialCameraPosition: CameraPosition(
-              target: LatLng(37.97934102604011, 23.78306889039801),
+              target: LatLng(37.97934102604011, 23.78306889039801), // EMP
               zoom: 12,
             ),
+            markers: Set<Marker>.of(_markers),
             onMapCreated: (GoogleMapController mapController) {
               controllerGoogleMap = mapController;
               googleMapCompleteController.complete(controllerGoogleMap);

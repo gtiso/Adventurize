@@ -18,6 +18,9 @@ class _MemoryHistoryPageState extends State<MemoryHistoryPage> {
   final List<Memory> memories = [
     Memory(
       title: "Tour Eiffel, Paris",
+      userID: 3,
+      userAvatarPath: 'lib/assets/avatars/avatar3.png',
+      userName: 'michael_lee',
       description: "Visited the iconic Eiffel Tower and enjoyed the view.",
       imagePath: "lib/assets/challenges/food.jpg",
       date: "July 12, 2023",
@@ -26,6 +29,9 @@ class _MemoryHistoryPageState extends State<MemoryHistoryPage> {
     ),
     Memory(
       title: "Louvre Museum, Paris",
+      userID: 3,
+      userAvatarPath: 'lib/assets/avatars/avatar3.png',
+      userName: 'michael_lee',
       description: "Explored the world-famous art museum.",
       imagePath: "lib/assets/challenges/view.jpg",
       date: "July 13, 2023",
@@ -34,6 +40,9 @@ class _MemoryHistoryPageState extends State<MemoryHistoryPage> {
     ),
     Memory(
       title: "Arc De Triomphe, Paris",
+      userID: 3,
+      userAvatarPath: 'lib/assets/avatars/avatar3.png',
+      userName: 'michael_lee',
       description: "Experienced the historic Arc de Triomphe.",
       imagePath: "lib/assets/challenges/step.jpg",
       date: "July 14, 2023",

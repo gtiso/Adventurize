@@ -21,21 +21,29 @@ String challenges = '''
         shared INTEGER
       )''';
 
-String photos = '''
-      CREATE TABLE IF NOT EXISTS photos (
-        photoID INTEGER,
-        name TEXT,
-        location TEXT
+String memories= '''
+      CREATE TABLE IF NOT EXISTS memories (
+        memoryID INTEGER PRIMARY KEY AUTOINCREMENT,
+        userID INTEGER,
+        userAvatarPath TEXT,
+        userName TEXT,
+        title TEXT,
+        description TEXT,
+        imagePath TEXT,
+        date TEXT,
+        isFavourite INTEGER,
+        latitude REAL,
+        longitude REAL
       )''';
 
-String userChalls = '''
-      CREATE TABLE IF NOT EXISTS userchalls (
+String userChallenges = '''
+      CREATE TABLE IF NOT EXISTS userchallenges (
         userID INTEGER,
         challengeID INTEGER,
         shared INTEGER
       )''';
 
-String userPhotos = '''
+String userMemories = '''
       CREATE TABLE IF NOT EXISTS userphotos (
         userID INTEGER,
         photoID INTEGER

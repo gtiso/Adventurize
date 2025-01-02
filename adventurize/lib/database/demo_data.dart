@@ -6,7 +6,7 @@ import 'package:adventurize/models/memory_model.dart';
 Future<void> insData() async {
   await insDummyChallenges();
   await insDummyUsers();
-  // await insDummyMemories();
+  await insDummyMemories();
 }
 
 Future<void> insDummyChallenges() async {
@@ -133,36 +133,100 @@ Future<void> insDummyChallenges() async {
     }
   }
 
-// Future<void> insDummyMemories() async {
-//   final List<Memory> memories = [
-//     Memory(
-//       title: "Tour Eiffel, Paris",
-//       description: "Visited the iconic Eiffel Tower and enjoyed the view.",
-//       imagePath: "lib/assets/challenges/food.jpg",
-//       date: "July 12, 2023",
-//       latitude: 36.1627,
-//       longitude: -86.7816,
-//     ),
-//     Memory(
-//       title: "Louvre Museum, Paris",
-//       description: "Explored the world-famous art museum.",
-//       imagePath: "lib/assets/challenges/view.jpg",
-//       date: "July 13, 2023",
-//       latitude: 36.1627,
-//       longitude: -86.7500,
-//     ),
-//     Memory(
-//       title: "Arc De Triomphe, Paris",
-//       description: "Experienced the historic Arc de Triomphe.",
-//       imagePath: "lib/assets/challenges/step.jpg",
-//       date: "July 14, 2023",
-//       latitude: 36.1400,
-//       longitude: -86.7816,
-//     ),
-//   ];
+Future<void> insDummyMemories() async {
+  final List<Memory> memories = [
+    Memory(
+      title: "Tour Eiffel, Paris",
+      userID: 1,
+      userAvatarPath: 'lib/assets/avatars/avatar1.png',
+      userName: 'john_doe',
+      description: "Visited the iconic Eiffel Tower and enjoyed the view.",
+      imagePath: "lib/assets/challenges/food.jpg",
+      date: "July 12, 2023",
+      latitude: 48.858455794286066,
+      longitude: 2.294481966376659,
+    ),
+    Memory(
+      title: "Louvre Museum, Paris",
+      userID: 2,
+      userAvatarPath: 'lib/assets/avatars/avatar2.png',
+      userName: 'robert_j',
+      description: "Explored the world-famous art museum.",
+      imagePath: "lib/assets/challenges/view.jpg",
+      date: "July 13, 2023",
+      latitude: 48.860730990555076, 
+      longitude: 2.3376010624458345,
+    ),
+    Memory(
+      title: "Arc De Triomphe, Paris",
+      userID: 3,
+      userAvatarPath: 'lib/assets/avatars/avatar3.png',
+      userName: 'michael_lee',
+      description: "Experienced the historic Arc de Triomphe.",
+      imagePath: "lib/assets/challenges/step.jpg",
+      date: "July 14, 2023",
+      latitude: 48.87392745909576, 
+      longitude: 2.2949083081595547,
+    ),
+    Memory(
+      title: "Big Ben, London",
+      userID: 1,
+      userAvatarPath: 'lib/assets/avatars/avatar1.png',
+      userName: 'john_doe',
+      description: "Admired the clock tower and its historic architecture.",
+      imagePath: "lib/assets/challenges/bigben.jpg",
+      date: "August 1, 2023",
+      latitude: 51.500729,
+      longitude: -0.124625,
+    ),
+    Memory(
+      title: "Colosseum, Rome",
+      userID: 2,
+      userAvatarPath: 'lib/assets/avatars/avatar2.png',
+      userName: 'robert_j',
+      description: "Visited the ancient Colosseum and learned its history.",
+      imagePath: "lib/assets/challenges/colosseum.jpg",
+      date: "August 10, 2023",
+      latitude: 41.890210,
+      longitude: 12.492231,
+    ),
+    Memory(
+      title: "Taj Mahal, India",
+      userID: 3,
+      userAvatarPath: 'lib/assets/avatars/avatar3.png',
+      userName: 'michael_lee',
+      description: "Witnessed the beauty of the Taj Mahal during sunrise.",
+      imagePath: "lib/assets/challenges/tajmahal.jpg",
+      date: "September 15, 2023",
+      latitude: 27.175144,
+      longitude: 78.042142,
+    ),
+    Memory(
+      title: "Sydney Opera House, Sydney",
+      userID: 3,
+      userAvatarPath: 'lib/assets/avatars/avatar3.png',
+      userName: 'michael_lee',
+      description: "Enjoyed a performance at the iconic Opera House.",
+      imagePath: "lib/assets/challenges/sydneyopera.jpg",
+      date: "October 20, 2023",
+      latitude: -33.8567844,
+      longitude: 151.2152967,
+    ),
+    Memory(
+      title: "Statue of Liberty, New York",
+      userID: 2,
+      userAvatarPath: 'lib/assets/avatars/avatar2.png',
+      userName: 'robert_j',
+      description: "Took a ferry to Liberty Island and admired the statue.",
+      imagePath: "lib/assets/challenges/statueofliberty.jpg",
+      date: "November 5, 2023",
+      latitude: 40.689247,
+      longitude: -74.044502,
+    ),
+  ];
 
-//   final db = DatabaseHelper();
-//   for (final memory in memories) {
-//     await db.insMemory(memory);
-//   }
-// }
+  final db = DatabaseHelper();
+  for (final memory in memories) {
+    await db.insMemory(memory);
+  }
+}

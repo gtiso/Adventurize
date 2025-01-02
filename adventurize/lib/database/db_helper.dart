@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:adventurize/models/memory_model.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
@@ -52,9 +53,9 @@ class DatabaseHelper {
     return openDatabase(path!, version: 1, onCreate: (db, version) async {
       await db.execute(users);
       await db.execute(challenges);
-      await db.execute(photos);
-      await db.execute(userChalls);
-      await db.execute(userPhotos);
+      await db.execute(memories);
+      await db.execute(userChallenges);
+      await db.execute(userMemories);
     });
   }
 
@@ -88,6 +89,18 @@ class DatabaseHelper {
     final Database db = await getDB();
     var res = await db.query("users", where: "email = ?", whereArgs: [email]);
     return res.isNotEmpty ? User.fromMap(res.first) : null;
+  }
+
+  Future<String> getUserAvatar(int userID) async {
+    final Database db = await getDB();
+    var res = await db.rawQuery('SELECT avatarPath FROM users WHERE userID = ?', [userID]);
+    return res.first.values.toString();
+  }
+
+  Future<String> getUsername(int userID) async {
+    final Database db = await getDB();
+    var res = await db.rawQuery('SELECT username FROM users WHERE userID = ?', [userID]);
+    return res.first.values.toString();
   }
 
   Future<int> createUsr(User usr) async {
@@ -134,6 +147,27 @@ class DatabaseHelper {
         points: maps[i]['points'],
         shared: maps[i]['shared'],
       );
+    });
+  }
+
+  Future<void> insMemory(Memory memory) async {
+    final Database db = await getDB();
+    List<Map<String, dynamic>> existingMemories = await db.query(
+      'memories',
+      where: 'title = ? AND description = ?',
+      whereArgs: [memory.title, memory.description],
+    );
+
+    if (existingMemories.isEmpty) {
+      await db.insert('memories', memory.toMap());
+    }
+  }
+
+  Future<List<Memory>> getMemories() async {
+    final Database db = await getDB();
+    final List<Map<String, dynamic>> maps = await db.query('memories');
+    return List.generate(maps.length, (i) {
+      return Memory.fromMap(maps[i]);
     });
   }
 
