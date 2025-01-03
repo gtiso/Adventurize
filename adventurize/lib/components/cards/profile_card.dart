@@ -3,6 +3,7 @@ import 'package:adventurize/models/user_model.dart';
 import 'package:adventurize/components/qr_code_display.dart';
 import 'package:adventurize/pages/edit_profile_page.dart';
 import 'package:adventurize/pages/settings_page.dart';
+import 'package:adventurize/pages/QR_scanner_page.dart';
 
 class ProfileCard extends StatelessWidget {
   final User user;
@@ -23,6 +24,13 @@ class ProfileCard extends StatelessWidget {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => SettingsPage()),
+    );
+  }
+
+  void _navigateToQRScanner(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => QRCodeScannerPage()),
     );
   }
 
@@ -69,11 +77,9 @@ class ProfileCard extends StatelessWidget {
     );
   }
 
-  Widget _buildScanQRButton() {
+  Widget _buildScanQRButton(BuildContext context) {
     return ElevatedButton.icon(
-      onPressed: () {
-        // Placeholder for Scan QR functionality
-      },
+      onPressed: () => _navigateToQRScanner(context),
       style: ElevatedButton.styleFrom(
         backgroundColor: Colors.black,
         shape: RoundedRectangleBorder(
@@ -124,7 +130,7 @@ class ProfileCard extends StatelessWidget {
               const SizedBox(height: 16),
               _buildQRCode(),
               const SizedBox(height: 16),
-              _buildScanQRButton(),
+              _buildScanQRButton(context),
             ],
           ),
         ),
