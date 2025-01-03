@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'register_page.dart';
 import 'package:adventurize/database/db_helper.dart';
 import 'package:adventurize/models/user_model.dart';
 import 'package:adventurize/navigation_utils.dart';
@@ -41,13 +40,6 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<bool> _authenticateUser(String email, String password) async {
     return await db.auth(User(email: email, password: password));
-  }
-
-  void _navigateToRegister() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => RegisterPage()),
-    );
   }
 
   void _showSnackBar(String message) {
@@ -146,7 +138,9 @@ class _LoginPageState extends State<LoginPage> {
             style: TextStyle(fontFamily: 'SansitaOne')),
         const SizedBox(height: 10),
         ElevatedButton.icon(
-          onPressed: _navigateToRegister,
+          onPressed: () {
+            NavigationUtils.navigateToRegister(context);
+          },
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.black,
             shape: RoundedRectangleBorder(

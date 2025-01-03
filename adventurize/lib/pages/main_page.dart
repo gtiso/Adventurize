@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:adventurize/components/level_progress_circle.dart';
-import 'package:adventurize/components/shaped_button.dart';
+import 'package:adventurize/components/capture_button.dart';
 import 'package:adventurize/database/db_helper.dart';
 import 'package:adventurize/models/memory_model.dart';
 import 'package:adventurize/models/user_model.dart';
@@ -118,7 +118,8 @@ class _MainPageState extends State<MainPage> {
           ),
           Align(
             alignment: Alignment(0.0, 0.6),
-            child: ShapedButton(
+            child: CaptureButton(
+              color: Colors.black,
               onPressed: () {
                 NavigationUtils.navigateToCamera(context, widget.user);
               },

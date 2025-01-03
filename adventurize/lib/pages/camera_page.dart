@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:adventurize/navigation_utils.dart';
+import 'package:adventurize/components/capture_button.dart';
 
 class CameraPage extends StatefulWidget {
   final User user;
@@ -56,10 +57,8 @@ class _CameraPageState extends State<CameraPage> {
   Future<void> _captureImage() async {
     if (_controller != null && _controller!.value.isInitialized) {
       try {
-        // Take the picture
         final image = await _controller!.takePicture();
 
-        // Turn off the flash after capturing
         if (_isFlashOn) {
           await _controller!.setFlashMode(FlashMode.off);
           setState(() {
@@ -80,6 +79,70 @@ class _CameraPageState extends State<CameraPage> {
     super.dispose();
   }
 
+  Widget _buildCameraPreview() {
+    return Container(
+      height: MediaQuery.of(context).size.height * 0.7,
+      margin: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 10.0),
+      decoration: BoxDecoration(
+        color: Colors.black,
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(10.0),
+        child: FittedBox(
+          fit: BoxFit.cover,
+          child: SizedBox(
+            width: _controller!.value.previewSize!.width,
+            height: _controller!.value.previewSize!.height,
+            child: CameraPreview(_controller!),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildFlashToggle() {
+    return Positioned(
+      top: 20,
+      left: 20,
+      child: IconButton(
+        icon: Icon(
+          _isFlashOn ? Icons.flash_on : Icons.flash_off,
+          color: Colors.white,
+        ),
+        onPressed: _toggleFlash,
+      ),
+    );
+  }
+
+  Widget _buildCloseButton(BuildContext context) => Positioned(
+        top: 20,
+        right: 20,
+        child: GestureDetector(
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: Icon(
+            Icons.close,
+            color: Colors.white,
+            size: 30,
+          ),
+        ),
+      );
+
+  Widget _buildCaptureButton() {
+    return Align(
+      alignment: Alignment.bottomCenter,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+        child: CaptureButton(
+          onPressed: _captureImage,
+          color: Colors.white,
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -87,61 +150,13 @@ class _CameraPageState extends State<CameraPage> {
       body: _isCameraInitialized
           ? Stack(
               children: [
-                // Camera Preview
-                Container(
-                  width: double.infinity,
-                  height: double.infinity,
-                  child: AspectRatio(
-                    aspectRatio: _controller!.value.aspectRatio,
-                    child: CameraPreview(_controller!),
-                  ),
-                ),
-
-                // Top Buttons
-                Positioned(
-                  top: 40,
-                  left: 20,
-                  child: IconButton(
-                    icon: Icon(
-                      _isFlashOn ? Icons.flash_on : Icons.flash_off,
-                      color: Colors.white,
-                    ),
-                    onPressed: _toggleFlash,
-                  ),
-                ),
-                Positioned(
-                  top: 40,
-                  right: 20,
-                  child: IconButton(
-                    icon: Icon(Icons.close, color: Colors.white),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                  ),
-                ),
-
-                // Capture Button
-                Positioned(
-                  bottom: 40,
-                  left: 0,
-                  right: 0,
-                  child: Center(
-                    child: GestureDetector(
-                      onTap: _captureImage,
-                      child: Container(
-                        width: 70,
-                        height: 70,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
+                _buildCameraPreview(),
+                _buildFlashToggle(),
+                _buildCloseButton(context),
+                _buildCaptureButton(),
               ],
             )
-          : Center(
+          : const Center(
               child: CircularProgressIndicator(),
             ),
     );

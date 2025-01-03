@@ -1,10 +1,9 @@
 import 'package:adventurize/database/db_helper.dart';
 import 'package:adventurize/models/user_model.dart';
-import 'package:adventurize/pages/main_page.dart';
+import 'package:adventurize/navigation_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
-import 'login_page.dart';
 
 class RegisterPage extends StatefulWidget {
   @override
@@ -42,7 +41,7 @@ class _RegisterPageState extends State<RegisterPage> {
     if (_validateInputs(email, password, fullname, birthdate)) {
       int userID = await _createUser(email, password, fullname, birthdate);
       print("New UserID : $userID");
-      _navigateToMainPage();
+      NavigationUtils.navigateToMainPage(context, usr);
     } else {
       _showSnackBar("Please fill all fields");
     }
@@ -81,20 +80,6 @@ class _RegisterPageState extends State<RegisterPage> {
         content:
             Text(message, style: const TextStyle(fontFamily: 'SansitaOne')),
       ),
-    );
-  }
-
-  void _navigateToLogin() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => LoginPage()),
-    );
-  }
-
-  void _navigateToMainPage() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => MainPage(user: usr)),
     );
   }
 
@@ -204,7 +189,9 @@ class _RegisterPageState extends State<RegisterPage> {
             style: TextStyle(fontFamily: 'SansitaOne')),
         const SizedBox(height: 10),
         ElevatedButton.icon(
-          onPressed: _navigateToLogin,
+          onPressed: () {
+            NavigationUtils.navigateToLoginPage(context);
+          },
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.black,
             padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
