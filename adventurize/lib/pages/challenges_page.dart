@@ -2,6 +2,7 @@ import 'package:adventurize/models/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:adventurize/components/cards/challenge_small_card.dart';
+import 'package:adventurize/components/map_background.dart';
 import 'package:adventurize/components/title.dart';
 import 'package:adventurize/database/db_helper.dart';
 import 'package:adventurize/models/challenge_model.dart';
@@ -10,7 +11,7 @@ import 'package:adventurize/components/cards/challenge_big_card.dart';
 class ChallengesPage extends StatefulWidget {
   final User user;
   const ChallengesPage({super.key, required this.user});
-  
+
   @override
   State<ChallengesPage> createState() => _ChallengesPageState();
 }
@@ -35,21 +36,6 @@ class _ChallengesPageState extends State<ChallengesPage> {
     setState(() {
       challenges = data;
     });
-  }
-
-  Widget _buildMapBackground() {
-    return GoogleMap(
-      initialCameraPosition: const CameraPosition(
-        target: LatLng(36.1627, -86.7816), // Example coordinates
-        zoom: 12.0,
-      ),
-    );
-  }
-
-  Widget _buildOverlay() {
-    return Container(
-      color: Colors.white.withOpacity(0.6), // Adjust opacity as needed
-    );
   }
 
   Widget _buildTitle() {
@@ -100,7 +86,8 @@ class _ChallengesPageState extends State<ChallengesPage> {
                 setState(() {
                   selectedChallenge = null; // Close the BigCard
                 });
-              }, user: widget.user,
+              },
+              user: widget.user,
             ),
           ),
         ),
@@ -113,8 +100,7 @@ class _ChallengesPageState extends State<ChallengesPage> {
     return Scaffold(
       body: Stack(
         children: [
-          _buildMapBackground(),
-          _buildOverlay(),
+          const MapBackground(),
           Column(
             children: [
               _buildTitle(),

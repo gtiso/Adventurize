@@ -5,11 +5,12 @@ import 'package:adventurize/components/cards/user_small_card.dart';
 import 'package:adventurize/components/cards/user_big_card.dart';
 import 'package:adventurize/components/title.dart';
 import 'package:adventurize/models/user_model.dart';
+import 'package:adventurize/components/map_background.dart';
 
 class LeaderboardPage extends StatefulWidget {
   final User user;
   const LeaderboardPage({super.key, required this.user});
-  
+
   @override
   State<LeaderboardPage> createState() => _LeaderboardPageState();
 }
@@ -35,21 +36,6 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
 
   void _sortUsersByPoints() {
     users.sort((a, b) => b.points.compareTo(a.points));
-  }
-
-  Widget _buildMapBackground() {
-    return GoogleMap(
-      initialCameraPosition: const CameraPosition(
-        target: LatLng(36.1627, -86.7816),
-        zoom: 12.0,
-      ),
-    );
-  }
-
-  Widget _buildOverlay() {
-    return Container(
-      color: Colors.white.withOpacity(0.6),
-    );
   }
 
   Widget _buildTitle() {
@@ -121,8 +107,7 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
     return Scaffold(
       body: Stack(
         children: [
-          _buildMapBackground(),
-          _buildOverlay(),
+          const MapBackground(),
           Column(
             children: [
               _buildTitle(),
