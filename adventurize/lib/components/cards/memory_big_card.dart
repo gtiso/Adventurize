@@ -12,7 +12,7 @@ class BigMemoryCard extends StatelessWidget {
     return ClipRRect(
       borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
       child: Image.asset(
-        memory.imagePath ?? "assets/images/placeholder.png",
+        memory.imagePath,
         height: 200,
         width: double.infinity,
         fit: BoxFit.cover,

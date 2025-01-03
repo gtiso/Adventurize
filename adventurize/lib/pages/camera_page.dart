@@ -1,5 +1,7 @@
+import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:adventurize/pages/post_memory_page.dart';
 
 class CameraPage extends StatefulWidget {
   @override
@@ -42,8 +44,12 @@ class _CameraPageState extends State<CameraPage> {
     if (_controller != null && _controller!.value.isInitialized) {
       try {
         final image = await _controller!.takePicture();
-        print("Image saved at: ${image.path}");
-        // Handle the captured image as needed (e.g., show a preview or upload).
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => PostMemoryPage(image: File(image.path)),
+          ),
+        );
       } catch (e) {
         print("Error capturing image: $e");
       }

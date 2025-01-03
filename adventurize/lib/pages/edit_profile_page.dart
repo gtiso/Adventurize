@@ -4,7 +4,6 @@ import 'package:adventurize/pages/my_profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:adventurize/components/map_background.dart';
 import 'package:intl/intl.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:adventurize/components/cards/profile_edit_card.dart';
 
 class EditProfilePage extends StatefulWidget {

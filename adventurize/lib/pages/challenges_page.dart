@@ -1,6 +1,5 @@
 import 'package:adventurize/models/user_model.dart';
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:adventurize/components/cards/challenge_small_card.dart';
 import 'package:adventurize/components/map_background.dart';
 import 'package:adventurize/components/title.dart';
