@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:geolocator/geolocator.dart';
+import 'package:adventurize/services/location_service.dart'; // Import the file
 
 class MapBackground extends StatefulWidget {
   const MapBackground({Key? key}) : super(key: key);
@@ -10,30 +10,10 @@ class MapBackground extends StatefulWidget {
 }
 
 class _MapBackgroundState extends State<MapBackground> {
-  Future<LatLng> _getUserCurrentLocation() async {
-    try {
-      // Request permissions
-      LocationPermission permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        throw Exception("Location permissions are denied.");
-      } else if (permission == LocationPermission.deniedForever) {
-        throw Exception("Location permissions are permanently denied.");
-      }
-
-      // Get the current position
-      Position position = await Geolocator.getCurrentPosition();
-      return LatLng(position.latitude, position.longitude);
-    } catch (e) {
-      print("Failed to get location: $e");
-      // Handle the error case by throwing or providing a default location
-      throw Exception("Unable to fetch user location.");
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<LatLng>(
-      future: _getUserCurrentLocation(),
+      future: LocationService.getUserCurrentLocation(), // Use the function
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(

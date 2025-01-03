@@ -85,10 +85,7 @@ class _MainPageState extends State<MainPage> {
   void _navigateToProfile() {
     Navigator.push(
       context,
-      MaterialPageRoute(
-          builder: (context) => MyProfilePage(
-                user: widget.user,
-              )),
+      MaterialPageRoute(builder: (context) => MyProfilePage(user: widget.user)),
     );
   }
 
@@ -125,7 +122,7 @@ class _MainPageState extends State<MainPage> {
   void _navigateToCamera() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => CameraPage()),
+      MaterialPageRoute(builder: (context) => CameraPage(user: widget.user)),
     );
   }
 

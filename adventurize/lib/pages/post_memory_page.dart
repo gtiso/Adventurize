@@ -1,10 +1,18 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:adventurize/services/location_service.dart';
+import 'package:adventurize/models/memory_model.dart';
+import 'package:adventurize/models/user_model.dart';
+import 'package:adventurize/database/db_helper.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:adventurize/pages/main_page.dart';
+import 'package:intl/intl.dart';
 
 class PostMemoryPage extends StatefulWidget {
   final File image;
+  final User user;
 
-  PostMemoryPage({required this.image});
+  PostMemoryPage({required this.image, required this.user});
 
   @override
   _PostMemoryPageState createState() => _PostMemoryPageState();
@@ -13,6 +21,63 @@ class PostMemoryPage extends StatefulWidget {
 class _PostMemoryPageState extends State<PostMemoryPage> {
   final TextEditingController _locationController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
+  final db = DatabaseHelper();
+
+  void _navigateMainPage() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => MainPage(user: widget.user)),
+    );
+  }
+
+  void _onPostPhotoButtonPressed() async {
+    try {
+      // Fetch the user's current location
+      LatLng currentLocation = await LocationService.getUserCurrentLocation();
+
+      final location = _locationController.text;
+      final description = _descriptionController.text;
+      final String formattedDate =
+          DateFormat('MMMM d, y').format(DateTime.now());
+
+      // Create a new memory instance
+      final memory = Memory(
+        userID: widget.user.userID ?? 0,
+        userAvatarPath: widget.user.avatarPath ?? '',
+        userName: widget.user.username ?? '',
+        title: location.isEmpty ? 'Untitled Memory' : location,
+        description: description,
+        imagePath: widget.image.path,
+        date: formattedDate,
+        latitude: currentLocation.latitude,
+        longitude: currentLocation.longitude,
+      );
+
+      // Save the memory to the database
+      await db.insMemory(memory);
+
+      if (mounted) {
+        // Check if the widget is still mounted
+        // Provide feedback to the user
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Memory posted successfully!')),
+        );
+
+        // Navigate back to the main page
+        _navigateMainPage();
+      }
+    } catch (e) {
+      print("Error: $e");
+
+      if (mounted) {
+        // Check if the widget is still mounted
+        // Provide feedback to the user in case of an error
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to post memory. Please try again.')),
+        );
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -129,6 +194,24 @@ class _PostMemoryPageState extends State<PostMemoryPage> {
         ),
       );
 
+  Widget _buildPostPhotoButton() => ElevatedButton(
+        onPressed: _onPostPhotoButtonPressed,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+        ),
+        child: Text(
+          'POST PHOTO',
+          style: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+            fontFamily: 'SansitaOne',
+          ),
+        ),
+      );
+
   void _showTextFieldDialog(String title, TextEditingController controller) {
     showDialog(
       context: context,
@@ -153,31 +236,5 @@ class _PostMemoryPageState extends State<PostMemoryPage> {
         ],
       ),
     );
-  }
-
-  Widget _buildPostPhotoButton() => ElevatedButton(
-        onPressed: _onPostPhotoButtonPressed,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.white,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-        ),
-        child: Text(
-          'POST PHOTO',
-          style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
-            fontFamily: 'SansitaOne',
-          ),
-        ),
-      );
-
-  void _onPostPhotoButtonPressed() {
-    final location = _locationController.text;
-    final description = _descriptionController.text;
-    print('Location: $location');
-    print('Description: $description');
-    // Further actions with location and description
   }
 }

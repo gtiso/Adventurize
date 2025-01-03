@@ -12,14 +12,15 @@ class BigChallengeCard extends StatelessWidget {
   const BigChallengeCard({
     required this.challenge,
     required this.onClose,
-    super.key, required this.user,
+    super.key,
+    required this.user,
   });
 
   void _navigateToCamera(BuildContext context) {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => CameraPage(),
+        builder: (context) => CameraPage(user: user),
       ),
     );
   }
@@ -28,7 +29,9 @@ class BigChallengeCard extends StatelessWidget {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => MemoryHistoryPage(user: user,),
+        builder: (context) => MemoryHistoryPage(
+          user: user,
+        ),
       ),
     );
   }

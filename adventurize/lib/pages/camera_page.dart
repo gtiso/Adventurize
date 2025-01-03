@@ -1,9 +1,14 @@
+import 'package:adventurize/models/user_model.dart';
+import 'package:adventurize/pages/post_memory_page.dart';
 import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:adventurize/pages/post_memory_page.dart';
 
 class CameraPage extends StatefulWidget {
+  final User user; // Add the User parameter
+
+  const CameraPage({required this.user, Key? key}) : super(key: key);
+
   @override
   _CameraPageState createState() => _CameraPageState();
 }
@@ -47,7 +52,10 @@ class _CameraPageState extends State<CameraPage> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => PostMemoryPage(image: File(image.path)),
+            builder: (context) => PostMemoryPage(
+              image: File(image.path),
+              user: widget.user, // Pass the User to PostMemoryPage
+            ),
           ),
         );
       } catch (e) {
