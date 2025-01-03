@@ -108,13 +108,14 @@ class _EditProfilePageState extends State<EditProfilePage> {
               emailController: _emailController,
               birthdateController: _birthdateController,
               passwordController: _passwordController,
+              avatarPath: widget.user.avatarPath, // Pass the avatar path
               onSave: _saveProfile,
               onCancel: () {
                 Navigator.pop(context); // Navigate back to the previous page
               },
               onSelectBirthdate: _selectBirthdate,
             ),
-          ),
+          )
         ],
       ),
     );

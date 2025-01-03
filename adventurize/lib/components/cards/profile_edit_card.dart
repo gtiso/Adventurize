@@ -6,6 +6,7 @@ class EditProfileCard extends StatefulWidget {
   final TextEditingController emailController;
   final TextEditingController birthdateController;
   final TextEditingController passwordController;
+  final String? avatarPath;
   final VoidCallback onSave;
   final VoidCallback onCancel;
   final VoidCallback onSelectBirthdate;
@@ -19,6 +20,7 @@ class EditProfileCard extends StatefulWidget {
     required this.onSave,
     required this.onCancel,
     required this.onSelectBirthdate,
+    this.avatarPath,
     Key? key,
   }) : super(key: key);
 
@@ -27,8 +29,6 @@ class EditProfileCard extends StatefulWidget {
 }
 
 class _EditProfileCardState extends State<EditProfileCard> {
-  bool _isPasswordVisible = false; // Tracks password visibility state
-
   // Build top row with cancel and save buttons
   Widget _buildTopRow() {
     return Row(
@@ -48,10 +48,10 @@ class _EditProfileCardState extends State<EditProfileCard> {
 
   // Build profile picture section
   Widget _buildProfilePicture() {
-    return const CircleAvatar(
-      radius: 50,
-      backgroundImage: AssetImage('lib/assets/avatars/avatar2.png'),
-    );
+    return CircleAvatar(
+        radius: 50,
+        backgroundImage:
+            widget.avatarPath != null ? AssetImage(widget.avatarPath!) : null);
   }
 
   // Build a single text field with the provided configurations
@@ -90,12 +90,11 @@ class _EditProfileCardState extends State<EditProfileCard> {
               readOnly: readOnly,
               onTap: onTap,
               obscureText: obscureText,
-              textAlign: TextAlign.center,
-              decoration: InputDecoration(
+              textAlign: TextAlign.right,
+              decoration: const InputDecoration(
                 border: InputBorder.none,
                 isDense: true,
                 contentPadding: EdgeInsets.zero,
-                suffixIcon: suffixIcon,
               ),
               style: const TextStyle(
                 fontSize: 14,
@@ -138,17 +137,7 @@ class _EditProfileCardState extends State<EditProfileCard> {
         _buildTextField(
           controller: widget.passwordController,
           label: "PASSWORD",
-          obscureText: !_isPasswordVisible, // Manage visibility
-          suffixIcon: IconButton(
-            icon: Icon(
-              _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
-            ),
-            onPressed: () {
-              setState(() {
-                _isPasswordVisible = !_isPasswordVisible;
-              });
-            },
-          ),
+          obscureText: true, // Always obscure the text
         ),
       ],
     );
