@@ -171,6 +171,18 @@ class DatabaseHelper {
     });
   }
 
+  Future<List<Memory>> getMemoriesFromID(int? userID) async {
+    final Database db = await getDB();
+    final List<Map<String, dynamic>> maps = await db.query(
+      'memories',
+      where: 'userID = ?',
+      whereArgs: [userID],
+    );
+    return List.generate(maps.length, (i) {
+      return Memory.fromMap(maps[i]);
+    });
+  }
+
   Future<List<User>> getUsers() async {
     final Database db = await getDB();
     final List<Map<String, dynamic>> maps = await db.query('users');

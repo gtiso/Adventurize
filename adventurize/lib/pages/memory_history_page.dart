@@ -1,3 +1,4 @@
+import 'package:adventurize/database/db_helper.dart';
 import 'package:adventurize/models/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -9,66 +10,59 @@ import 'package:adventurize/components/title.dart';
 class MemoryHistoryPage extends StatefulWidget {
   final User user;
   const MemoryHistoryPage({super.key, required this.user});
-  
+
   @override
   State<MemoryHistoryPage> createState() => _MemoryHistoryPageState();
 }
 
 class _MemoryHistoryPageState extends State<MemoryHistoryPage> {
-  final List<Memory> memories = [
-    Memory(
-      title: "Tour Eiffel, Paris",
-      userID: 3,
-      userAvatarPath: 'lib/assets/avatars/avatar3.png',
-      userName: 'michael_lee',
-      description: "Visited the iconic Eiffel Tower and enjoyed the view.",
-      imagePath: "lib/assets/challenges/food.jpg",
-      date: "July 12, 2023",
-      latitude: 36.1627,
-      longitude: -86.7816,
-    ),
-    Memory(
-      title: "Louvre Museum, Paris",
-      userID: 3,
-      userAvatarPath: 'lib/assets/avatars/avatar3.png',
-      userName: 'michael_lee',
-      description: "Explored the world-famous art museum.",
-      imagePath: "lib/assets/challenges/view.jpg",
-      date: "July 13, 2023",
-      latitude: 36.1627,
-      longitude: -86.7500,
-    ),
-    Memory(
-      title: "Arc De Triomphe, Paris",
-      userID: 3,
-      userAvatarPath: 'lib/assets/avatars/avatar3.png',
-      userName: 'michael_lee',
-      description: "Experienced the historic Arc de Triomphe.",
-      imagePath: "lib/assets/challenges/step.jpg",
-      date: "July 14, 2023",
-      latitude: 36.1400,
-      longitude: -86.7816,
-    ),
-  ];
-
+  List<Memory> memories = [];
   Memory? selectedMemory;
 
+  final db = DatabaseHelper();
+
+  @override
+  void initState() {
+    _fetchMemories();
+    super.initState();
+  }
+
+  Future<void> _fetchMemories() async {
+    List<Memory> data = await db.getMemoriesFromID(widget.user.userID);
+    setState(() {
+      memories = data;
+    });
+  }
+
   Widget _buildGoogleMap() {
-    return GoogleMap(
-      zoomControlsEnabled: false,
-      mapType: MapType.normal,
-      initialCameraPosition: CameraPosition(
-        target: LatLng(memories.first.latitude, memories.first.longitude),
-        zoom: 12,
-      ),
-      markers: memories
-          .map((memory) => Marker(
-                markerId: MarkerId(memory.title),
-                position: LatLng(memory.latitude, memory.longitude),
-                infoWindow: InfoWindow(title: memory.title),
-              ))
-          .toSet(),
-    );
+    if (memories.isNotEmpty) {
+      return GoogleMap(
+        zoomControlsEnabled: false,
+        mapType: MapType.normal,
+        initialCameraPosition: CameraPosition(
+          target: LatLng(memories.first.latitude, memories.first.longitude),
+          zoom: 12,
+        ),
+        markers: memories
+            .map((memory) => Marker(
+                  markerId: MarkerId(memory.title),
+                  position: LatLng(memory.latitude, memory.longitude),
+                  infoWindow: InfoWindow(title: memory.title),
+                ))
+            .toSet(),
+      );
+    } else { // periptosi xoris memories
+      return GoogleMap(
+        zoomControlsEnabled: false,
+        mapType: MapType.normal,
+        mapToolbarEnabled: false,
+        myLocationButtonEnabled: false,
+        initialCameraPosition: CameraPosition(
+          target: LatLng(37.97934102604011, 23.78306889039801), // EMP
+          zoom: 12,
+        ),
+      );
+    }
   }
 
   Widget _buildTitle() {
@@ -107,7 +101,7 @@ class _MemoryHistoryPageState extends State<MemoryHistoryPage> {
         });
       },
       child: Container(
-        color: Colors.black.withOpacity(0.5),
+        color: Colors.black.withValues(alpha: 0.5),
         child: Center(
           child: BigMemoryCard(
             memory: selectedMemory!,
@@ -131,7 +125,7 @@ class _MemoryHistoryPageState extends State<MemoryHistoryPage> {
           Column(
             children: [
               _buildTitle(),
-              const SizedBox(height: 240),
+              const SizedBox(height: 320),
               _buildMemoryList(),
             ],
           ),
