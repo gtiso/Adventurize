@@ -35,19 +35,8 @@ class _MainPageState extends State<MainPage> {
 
   @override
   void initState() {
-    customMarker();
     super.initState();
     _loadMarkers();
-  }
-
-  void customMarker() {
-    BitmapDescriptor.asset(
-            const ImageConfiguration(size: Size(24, 24)), 'lib/assets/avatars/avatar1.png')
-        .then((icon) {
-      setState(() {
-        markerIcon = icon;
-      });
-    });
   }
 
   Future<void> _getUserCurrentLocation() async {
@@ -68,40 +57,29 @@ class _MainPageState extends State<MainPage> {
 
   Future<void> _loadMarkers() async {
     List<Memory> memories = await db.getMemories();
-    setState(() {
-      _markers.clear();
-      debugPrint("loadMarkes");
-      _markers.addAll(_createMarkers(memories));
-      debugPrint("${_markers.length}");
-    });
-  }
 
-  Set<Marker> _createMarkers(List<Memory> memories) {
-    return memories.map((memory) {
-      double latitude = memory.latitude;
-      double longitude = memory.longitude;
+    for (final memory in memories) {
+      BitmapDescriptor icon = await BitmapDescriptor.asset(
+        const ImageConfiguration(size: Size(40, 40)),
+        memory.userAvatarPath,
+      );
 
-      debugPrint("LATITUDE $latitude");
-      debugPrint("LONGTITUDE $longitude");
-
-      return Marker(
-        markerId: MarkerId(memory.memoryID.toString()),
-        position: LatLng(latitude, longitude),
-        icon: markerIcon,
-        infoWindow: InfoWindow(
-          title: memory.title,
-          snippet: memory.userName,
-          // onTap: () {
-          //   Navigator.push(
-          //     context,
-          //     MaterialPageRoute(
-          //       builder: (context) => EventPage(event: event),
-          //     ),
-          //   );
-          // },
+      _markers.add(
+        Marker(
+          markerId: MarkerId(memory.memoryID.toString()),
+          position: LatLng(memory.latitude, memory.longitude),
+          icon: icon,
+          infoWindow: InfoWindow(
+            title: memory.title,
+            snippet: memory.userName,
+          ),
         ),
       );
-    }).toSet();
+    }
+
+    setState(() {
+      debugPrint("${_markers.length} markers loaded.");
+    });
   }
 
   void _navigateToProfile() {
@@ -160,6 +138,8 @@ class _MainPageState extends State<MainPage> {
             zoomControlsEnabled: false,
             mapType: MapType.normal,
             myLocationEnabled: true,
+            mapToolbarEnabled: false,
+            myLocationButtonEnabled: false,
             initialCameraPosition: CameraPosition(
               target: LatLng(37.97934102604011, 23.78306889039801), // EMP
               zoom: 12,
