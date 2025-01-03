@@ -1,8 +1,8 @@
 import 'package:adventurize/models/user_model.dart';
-import 'package:adventurize/pages/post_memory_page.dart';
 import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:adventurize/navigation_utils.dart';
 
 class CameraPage extends StatefulWidget {
   final User user;
@@ -66,17 +66,8 @@ class _CameraPageState extends State<CameraPage> {
             _isFlashOn = false;
           });
         }
-
-        // Navigate to the next page
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => PostMemoryPage(
-              image: File(image.path),
-              user: widget.user,
-            ),
-          ),
-        );
+        NavigationUtils.navigateToPostMemory(
+            context, File(image.path), widget.user);
       } catch (e) {
         print("Error capturing image: $e");
       }

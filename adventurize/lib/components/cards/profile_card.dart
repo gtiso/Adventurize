@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:adventurize/models/user_model.dart';
 import 'package:adventurize/components/qr_code_display.dart';
-import 'package:adventurize/pages/edit_profile_page.dart';
-import 'package:adventurize/pages/settings_page.dart';
-import 'package:adventurize/pages/QR_scanner_page.dart';
+import 'package:adventurize/navigation_utils.dart';
 
 class ProfileCard extends StatelessWidget {
   final User user;
@@ -13,38 +11,17 @@ class ProfileCard extends StatelessWidget {
     super.key,
   });
 
-  void _navigateToEdit(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => EditProfilePage(user: user)),
-    );
-  }
-
-  void _navigateToSettings(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => SettingsPage()),
-    );
-  }
-
-  void _navigateToQRScanner(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => QRCodeScannerPage()),
-    );
-  }
-
   Widget _buildTopRow(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         IconButton(
-          onPressed: () => _navigateToSettings(context),
+          onPressed: () => NavigationUtils.navigateToSettings(context),
           icon: const Icon(Icons.settings),
           color: Colors.black,
         ),
         IconButton(
-          onPressed: () => _navigateToEdit(context),
+          onPressed: () => NavigationUtils.navigateToEdit(context, user),
           icon: const Icon(Icons.edit),
           color: Colors.black,
         ),
@@ -79,7 +56,7 @@ class ProfileCard extends StatelessWidget {
 
   Widget _buildScanQRButton(BuildContext context) {
     return ElevatedButton.icon(
-      onPressed: () => _navigateToQRScanner(context),
+      onPressed: () => NavigationUtils.navigateToQRScanner(context),
       style: ElevatedButton.styleFrom(
         backgroundColor: Colors.black,
         shape: RoundedRectangleBorder(

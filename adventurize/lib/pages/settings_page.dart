@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:adventurize/pages/login_page.dart';
+import 'package:adventurize/navigation_utils.dart';
 
 class SettingsPage extends StatefulWidget {
   @override
@@ -13,17 +13,6 @@ class _SettingsPageState extends State<SettingsPage> {
   bool cameraEnabled = true;
   bool navigationEnabled = true;
 
-  void _navigateBack(BuildContext context) {
-    Navigator.pop(context);
-  }
-
-  void _navigateToLoginPage(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => LoginPage()),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,7 +21,7 @@ class _SettingsPageState extends State<SettingsPage> {
         elevation: 0,
         leading: GestureDetector(
           onTap: () {
-            _navigateBack(context);
+            Navigator.pop(context);
           },
           child: Padding(
             padding: const EdgeInsets.only(left: 8.0),
@@ -151,7 +140,7 @@ class _SettingsPageState extends State<SettingsPage> {
           ),
         ),
         onPressed: () {
-          _navigateToLoginPage(context);
+          NavigationUtils.navigateToLoginPage(context);
         },
         icon: Icon(
           Icons.logout,

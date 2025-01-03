@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'register_page.dart';
 import 'package:adventurize/database/db_helper.dart';
 import 'package:adventurize/models/user_model.dart';
-import 'package:adventurize/pages/main_page.dart';
+import 'package:adventurize/navigation_utils.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -12,7 +12,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  bool _isPasswordVisible = false; // Variable for password visibility toggle
+  bool _isPasswordVisible = false;
   late User usr;
 
   final DatabaseHelper db = DatabaseHelper();
@@ -26,7 +26,7 @@ class _LoginPageState extends State<LoginPage> {
 
       if (isAuthenticated) {
         usr = (await db.getUsr(email))!;
-        _navigateToMainPage();
+        NavigationUtils.navigateToMainPage(context, usr);
       } else {
         _showSnackBar("Invalid credentials");
       }
@@ -47,13 +47,6 @@ class _LoginPageState extends State<LoginPage> {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => RegisterPage()),
-    );
-  }
-
-  void _navigateToMainPage() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => MainPage(user: usr)),
     );
   }
 

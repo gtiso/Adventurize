@@ -5,8 +5,8 @@ import 'package:adventurize/models/memory_model.dart';
 import 'package:adventurize/models/user_model.dart';
 import 'package:adventurize/database/db_helper.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:adventurize/pages/main_page.dart';
 import 'package:intl/intl.dart';
+import 'package:adventurize/navigation_utils.dart';
 
 class PostMemoryPage extends StatefulWidget {
   final File image;
@@ -22,13 +22,6 @@ class _PostMemoryPageState extends State<PostMemoryPage> {
   final TextEditingController _locationController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final db = DatabaseHelper();
-
-  void _navigateMainPage() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => MainPage(user: widget.user)),
-    );
-  }
 
   void _onPostPhotoButtonPressed() async {
     try {
@@ -64,7 +57,7 @@ class _PostMemoryPageState extends State<PostMemoryPage> {
         );
 
         // Navigate back to the main page
-        _navigateMainPage();
+        NavigationUtils.navigateToMainPage(context, widget.user);
       }
     } catch (e) {
       print("Error: $e");

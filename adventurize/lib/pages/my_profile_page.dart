@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:adventurize/models/user_model.dart';
 import 'package:adventurize/components/cards/profile_card.dart';
 import 'package:adventurize/components/map_background.dart';

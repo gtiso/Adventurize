@@ -1,8 +1,7 @@
 import 'package:adventurize/models/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:adventurize/models/challenge_model.dart';
-import 'package:adventurize/pages/memory_history_page.dart';
-import 'package:adventurize/pages/camera_page.dart';
+import 'package:adventurize/navigation_utils.dart';
 
 class BigChallengeCard extends StatelessWidget {
   final Challenge challenge;
@@ -15,26 +14,6 @@ class BigChallengeCard extends StatelessWidget {
     super.key,
     required this.user,
   });
-
-  void _navigateToCamera(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => CameraPage(user: user),
-      ),
-    );
-  }
-
-  void _navigateToMemoryHistory(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => MemoryHistoryPage(
-          user: user,
-        ),
-      ),
-    );
-  }
 
   Widget _buildImage() {
     return ClipRRect(
@@ -86,9 +65,9 @@ class BigChallengeCard extends StatelessWidget {
       child: ElevatedButton(
         onPressed: () {
           if (challenge.shared == 0) {
-            _navigateToCamera(context);
+            NavigationUtils.navigateToCamera(context, user);
           } else {
-            _navigateToMemoryHistory(context);
+            NavigationUtils.navigateToMemories(context, user);
           }
         },
         style: ElevatedButton.styleFrom(

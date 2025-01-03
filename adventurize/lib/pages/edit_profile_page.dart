@@ -1,10 +1,10 @@
 import 'package:adventurize/database/db_helper.dart';
 import 'package:adventurize/models/user_model.dart';
-import 'package:adventurize/pages/my_profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:adventurize/components/map_background.dart';
 import 'package:intl/intl.dart';
 import 'package:adventurize/components/cards/profile_edit_card.dart';
+import 'package:adventurize/navigation_utils.dart';
 
 class EditProfilePage extends StatefulWidget {
   final User user;
@@ -49,16 +49,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
     }
   }
 
-  void _navigateToProfile(User usr) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) => MyProfilePage(
-                user: usr,
-              )),
-    );
-  }
-
   void _saveProfile() {
     debugPrint("Username: ${_usernameController.text}");
     debugPrint("Fullname: ${_fullnameController.text}");
@@ -77,7 +67,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
         points: widget.user.points);
 
     DatabaseHelper().saveProfileToDB(updatedUser);
-    _navigateToProfile(updatedUser);
+    NavigationUtils.navigateToProfile(context, updatedUser);
 
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text("Profile Saved Successfully!")),
@@ -108,10 +98,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
               emailController: _emailController,
               birthdateController: _birthdateController,
               passwordController: _passwordController,
-              avatarPath: widget.user.avatarPath, // Pass the avatar path
+              avatarPath: widget.user.avatarPath,
               onSave: _saveProfile,
               onCancel: () {
-                Navigator.pop(context); // Navigate back to the previous page
+                Navigator.pop(context);
               },
               onSelectBirthdate: _selectBirthdate,
             ),

@@ -5,14 +5,10 @@ import 'package:adventurize/components/shaped_button.dart';
 import 'package:adventurize/database/db_helper.dart';
 import 'package:adventurize/models/memory_model.dart';
 import 'package:adventurize/models/user_model.dart';
-import 'package:adventurize/pages/camera_page.dart';
-import 'package:adventurize/pages/challenges_page.dart';
-import 'package:adventurize/pages/leaderboard_page.dart';
-import 'package:adventurize/pages/memory_history_page.dart';
-import 'package:adventurize/pages/my_profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:adventurize/navigation_utils.dart';
 
 class MainPage extends StatefulWidget {
   final User user;
@@ -82,50 +78,6 @@ class _MainPageState extends State<MainPage> {
     });
   }
 
-  void _navigateToProfile() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => MyProfilePage(user: widget.user)),
-    );
-  }
-
-  void _navigateToChallenges() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) => ChallengesPage(
-                user: widget.user,
-              )),
-    );
-  }
-
-  void _navigateToLeaderboard() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) => LeaderboardPage(
-                user: widget.user,
-              )),
-    );
-  }
-
-  void _navigateToMemories() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) => MemoryHistoryPage(
-                user: widget.user,
-              )),
-    );
-  }
-
-  void _navigateToCamera() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => CameraPage(user: widget.user)),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -153,7 +105,7 @@ class _MainPageState extends State<MainPage> {
             child: IconButton.filled(
               iconSize: 25,
               onPressed: () {
-                _navigateToProfile();
+                NavigationUtils.navigateToProfile(context, widget.user);
               },
               icon: Icon(Icons.person),
             ),
@@ -168,7 +120,7 @@ class _MainPageState extends State<MainPage> {
             alignment: Alignment(0.0, 0.6),
             child: ShapedButton(
               onPressed: () {
-                _navigateToCamera();
+                NavigationUtils.navigateToCamera(context, widget.user);
               },
             ),
           ),
@@ -181,7 +133,7 @@ class _MainPageState extends State<MainPage> {
                   iconSize: 35,
                   color: Colors.black,
                   onPressed: () {
-                    _navigateToChallenges();
+                    NavigationUtils.navigateToChallenges(context, widget.user);
                   },
                   icon: Icon(Icons.diamond),
                 ),
@@ -189,7 +141,7 @@ class _MainPageState extends State<MainPage> {
                   iconSize: 35,
                   color: Colors.black,
                   onPressed: () {
-                    _navigateToLeaderboard();
+                    NavigationUtils.navigateToLeaderboard(context, widget.user);
                   },
                   icon: Icon(Icons.people),
                 ),
@@ -197,7 +149,7 @@ class _MainPageState extends State<MainPage> {
                   iconSize: 35,
                   color: Colors.black,
                   onPressed: () {
-                    _navigateToMemories();
+                    NavigationUtils.navigateToMemories(context, widget.user);
                   },
                   icon: Icon(Icons.public),
                 ),
