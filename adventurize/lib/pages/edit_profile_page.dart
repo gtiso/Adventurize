@@ -2,6 +2,7 @@ import 'package:adventurize/database/db_helper.dart';
 import 'package:adventurize/models/user_model.dart';
 import 'package:adventurize/pages/my_profile_page.dart';
 import 'package:flutter/material.dart';
+import 'package:adventurize/components/map_background.dart';
 import 'package:intl/intl.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:adventurize/components/cards/profile_edit_card.dart';
@@ -33,17 +34,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
     _emailController = TextEditingController(text: widget.user.email);
     _birthdateController = TextEditingController(text: widget.user.birthdate);
     _passwordController = TextEditingController(text: widget.user.password);
-  }
-
-  Widget _buildMapBackground() {
-    return GoogleMap(
-      initialCameraPosition: const CameraPosition(
-        target: LatLng(36.1627, -86.7816), // Example coordinates
-        zoom: 12.0,
-      ),
-      zoomControlsEnabled: false,
-      myLocationButtonEnabled: false,
-    );
   }
 
   void _selectBirthdate() async {
@@ -111,10 +101,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
       resizeToAvoidBottomInset: false,
       body: Stack(
         children: [
-          _buildMapBackground(),
-          Container(
-            color: Colors.white.withOpacity(0.6),
-          ),
+          const MapBackground(),
           Center(
             child: EditProfileCard(
               usernameController: _usernameController,

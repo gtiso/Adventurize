@@ -6,7 +6,7 @@ String users = '''
       email TEXT UNIQUE,
       password TEXT,
       birthdate TEXT,
-      points INTEGER DEFAULT 0
+      points INTEGER DEFAULT 0,
       avatarPath TEXT
       )''';
 
@@ -19,4 +19,32 @@ String challenges = '''
         status TEXT,
         points INTEGER,
         shared INTEGER
+      )''';
+
+String memories= '''
+      CREATE TABLE IF NOT EXISTS memories (
+        memoryID INTEGER PRIMARY KEY AUTOINCREMENT,
+        userID INTEGER,
+        userAvatarPath TEXT,
+        userName TEXT,
+        title TEXT,
+        description TEXT,
+        imagePath TEXT,
+        date TEXT,
+        isFavourite INTEGER,
+        latitude REAL,
+        longitude REAL
+      )''';
+
+String userChallenges = '''
+      CREATE TABLE IF NOT EXISTS userchallenges (
+        userID INTEGER,
+        challengeID INTEGER,
+        shared INTEGER
+      )''';
+
+String userMemories = '''
+      CREATE TABLE IF NOT EXISTS userphotos (
+        userID INTEGER,
+        photoID INTEGER
       )''';
