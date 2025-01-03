@@ -5,7 +5,7 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 
 class CameraPage extends StatefulWidget {
-  final User user; // Add the User parameter
+  final User user;
 
   const CameraPage({required this.user, Key? key}) : super(key: key);
 
@@ -17,6 +17,7 @@ class _CameraPageState extends State<CameraPage> {
   CameraController? _controller;
   List<CameraDescription>? _cameras;
   bool _isCameraInitialized = false;
+  bool _isFlashOn = false;
 
   @override
   void initState() {
@@ -39,22 +40,40 @@ class _CameraPageState extends State<CameraPage> {
     }
   }
 
-  @override
-  void dispose() {
-    _controller?.dispose();
-    super.dispose();
+  Future<void> _toggleFlash() async {
+    if (_controller != null && _controller!.value.isInitialized) {
+      try {
+        _isFlashOn = !_isFlashOn;
+        await _controller!
+            .setFlashMode(_isFlashOn ? FlashMode.torch : FlashMode.off);
+        setState(() {});
+      } catch (e) {
+        print("Error toggling flash: $e");
+      }
+    }
   }
 
   Future<void> _captureImage() async {
     if (_controller != null && _controller!.value.isInitialized) {
       try {
+        // Take the picture
         final image = await _controller!.takePicture();
+
+        // Turn off the flash after capturing
+        if (_isFlashOn) {
+          await _controller!.setFlashMode(FlashMode.off);
+          setState(() {
+            _isFlashOn = false;
+          });
+        }
+
+        // Navigate to the next page
         Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) => PostMemoryPage(
               image: File(image.path),
-              user: widget.user, // Pass the User to PostMemoryPage
+              user: widget.user,
             ),
           ),
         );
@@ -65,27 +84,68 @@ class _CameraPageState extends State<CameraPage> {
   }
 
   @override
+  void dispose() {
+    _controller?.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Camera'),
-      ),
+      backgroundColor: Colors.black,
       body: _isCameraInitialized
           ? Stack(
               children: [
-                CameraPreview(_controller!),
+                // Camera Preview
+                Container(
+                  width: double.infinity,
+                  height: double.infinity,
+                  child: AspectRatio(
+                    aspectRatio: _controller!.value.aspectRatio,
+                    child: CameraPreview(_controller!),
+                  ),
+                ),
+
+                // Top Buttons
                 Positioned(
-                  bottom: 20,
+                  top: 40,
+                  left: 20,
+                  child: IconButton(
+                    icon: Icon(
+                      _isFlashOn ? Icons.flash_on : Icons.flash_off,
+                      color: Colors.white,
+                    ),
+                    onPressed: _toggleFlash,
+                  ),
+                ),
+                Positioned(
+                  top: 40,
+                  right: 20,
+                  child: IconButton(
+                    icon: Icon(Icons.close, color: Colors.white),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                ),
+
+                // Capture Button
+                Positioned(
+                  bottom: 40,
                   left: 0,
                   right: 0,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      FloatingActionButton(
-                        onPressed: _captureImage,
-                        child: Icon(Icons.camera),
+                  child: Center(
+                    child: GestureDetector(
+                      onTap: _captureImage,
+                      child: Container(
+                        width: 70,
+                        height: 70,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.white,
+                        ),
                       ),
-                    ],
+                    ),
                   ),
                 ),
               ],
