@@ -3,6 +3,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:adventurize/models/user_model.dart';
 import 'package:adventurize/components/cards/profile_card.dart';
 import 'package:adventurize/components/map_background.dart';
+import 'package:adventurize/pages/main_page.dart';
 
 class MyProfilePage extends StatefulWidget {
   final User user;
@@ -28,11 +29,22 @@ class _MyProfilePageState extends State<MyProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          const MapBackground(),
-          _buildProfileContent(),
-        ],
+      body: GestureDetector(
+        behavior: HitTestBehavior
+            .translucent, // Ensures taps outside ProfileCard are detected
+        onTap: () {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) => MainPage(user: widget.user)),
+          );
+        },
+        child: Stack(
+          children: [
+            const MapBackground(),
+            _buildProfileContent(),
+          ],
+        ),
       ),
     );
   }
