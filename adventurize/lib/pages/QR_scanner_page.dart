@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:adventurize/components/cards/add_friend_card.dart';
+import 'package:adventurize/database/db_helper.dart';
+import 'package:adventurize/models/user_model.dart';
 
 class QRCodeScannerPage extends StatefulWidget {
   @override
@@ -10,8 +12,7 @@ class QRCodeScannerPage extends StatefulWidget {
 class _QRCodeScannerPageState extends State<QRCodeScannerPage>
     with WidgetsBindingObserver {
   late MobileScannerController controller;
-  String? avatarUrl; // To store the avatar URL of the scanned user
-  String? username; // To store the username of the scanned user
+  User? scannedUser; // To store the scanned User object
 
   @override
   void initState() {
@@ -36,13 +37,26 @@ class _QRCodeScannerPageState extends State<QRCodeScannerPage>
     super.dispose();
   }
 
-  void handleScannedData(String rawValue) {
-    final Map<String, dynamic> data = {"avatarUrl": "", "username": "user123"};
+  void handleScannedData(String rawValue) async {
+    try {
+      // Assuming the rawValue is the email of the user
+      final DatabaseHelper dbHelper = DatabaseHelper();
+      final User? user = await dbHelper.getUsr(rawValue);
 
-    setState(() {
-      avatarUrl = data['avatarUrl'];
-      username = data['username'];
-    });
+      if (user != null) {
+        setState(() {
+          scannedUser = user; // Store the scanned User object
+        });
+      } else {
+        // Handle case where user is not found
+        setState(() {
+          scannedUser = null;
+        });
+        print('User not found.');
+      }
+    } catch (e) {
+      print('Error fetching user: $e');
+    }
   }
 
   Widget buildCameraFeed() {
@@ -93,12 +107,11 @@ class _QRCodeScannerPageState extends State<QRCodeScannerPage>
   }
 
   Widget buildAddFriendCard() {
-    if (username != null && avatarUrl != null) {
+    if (scannedUser != null) {
       return AddFriendCard(
-        avatarUrl: avatarUrl!,
-        username: username!,
+        user: scannedUser!,
         onAddFriend: () {
-          print("$username added");
+          print("${scannedUser!.username} added");
         },
       );
     }

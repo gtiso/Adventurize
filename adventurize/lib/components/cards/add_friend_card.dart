@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:adventurize/models/user_model.dart'; // Ensure you have the correct import for User
 
 class AddFriendCard extends StatelessWidget {
-  final String avatarUrl;
-  final String username;
+  final User user;
   final VoidCallback onAddFriend;
 
   const AddFriendCard({
-    required this.avatarUrl,
-    required this.username,
+    required this.user,
     required this.onAddFriend,
     Key? key,
   }) : super(key: key);
@@ -15,14 +14,13 @@ class AddFriendCard extends StatelessWidget {
   Widget _buildAvatar() {
     return CircleAvatar(
       radius: 35,
-      backgroundImage: AssetImage("lib/assets/avatars/avatar6.png"),
-      backgroundColor: Colors.grey[200],
+      backgroundImage: AssetImage(user.avatarPath ?? ""),
     );
   }
 
   Widget _buildUsername() {
     return Text(
-      username,
+      user.username ?? "",
       style: TextStyle(
         fontSize: 20,
         fontWeight: FontWeight.bold,

@@ -93,13 +93,15 @@ class DatabaseHelper {
 
   Future<String> getUserAvatar(int userID) async {
     final Database db = await getDB();
-    var res = await db.rawQuery('SELECT avatarPath FROM users WHERE userID = ?', [userID]);
+    var res = await db
+        .rawQuery('SELECT avatarPath FROM users WHERE userID = ?', [userID]);
     return res.first.values.toString();
   }
 
   Future<String> getUsername(int userID) async {
     final Database db = await getDB();
-    var res = await db.rawQuery('SELECT username FROM users WHERE userID = ?', [userID]);
+    var res = await db
+        .rawQuery('SELECT username FROM users WHERE userID = ?', [userID]);
     return res.first.values.toString();
   }
 
@@ -198,6 +200,12 @@ class DatabaseHelper {
         avatarPath: maps[i]['avatarPath'],
       );
     });
+  }
+
+  Future<User?> getUsrFromEmail(String email) async {
+    final Database db = await getDB();
+    var res = await db.query("users", where: "email = ?", whereArgs: [email]);
+    return res.isNotEmpty ? User.fromMap(res.first) : null;
   }
 
   Future<void> insDemoData() async {
