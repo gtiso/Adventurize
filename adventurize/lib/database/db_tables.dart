@@ -16,12 +16,11 @@ String challenges = '''
         title TEXT,
         desc TEXT,
         photoPath TEXT,
-        status TEXT,
         points INTEGER,
         shared INTEGER
       )''';
 
-String memories= '''
+String memories = '''
       CREATE TABLE IF NOT EXISTS memories (
         memoryID INTEGER PRIMARY KEY AUTOINCREMENT,
         userID INTEGER,

@@ -54,6 +54,16 @@ class ProfileCard extends StatelessWidget {
     );
   }
 
+  Widget _buildScore() {
+    return Text(
+      "Score: ${user.points}",
+      style: const TextStyle(
+        fontSize: 18,
+        color: Colors.black,
+      ),
+    );
+  }
+
   Widget _buildScanQRButton(BuildContext context) {
     return ElevatedButton.icon(
       onPressed: () => NavigationUtils.navigateToQRScanner(context),
@@ -106,7 +116,8 @@ class ProfileCard extends StatelessWidget {
               _buildFullName(),
               const SizedBox(height: 16),
               _buildQRCode(),
-              const SizedBox(height: 16),
+              _buildScore(),
+              const SizedBox(height: 8),
               _buildScanQRButton(context),
             ],
           ),
