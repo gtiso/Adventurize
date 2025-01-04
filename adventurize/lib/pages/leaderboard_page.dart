@@ -46,8 +46,6 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
   }
 
   Widget _buildFixedUserCard() {
-    if (users.isEmpty) return const SizedBox.shrink();
-
     return SmallUserCard(
       user: widget.user,
       onTap: () {
