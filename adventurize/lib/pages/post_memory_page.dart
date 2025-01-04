@@ -79,20 +79,20 @@ class _PostMemoryPageState extends State<PostMemoryPage> {
     if (widget.challenge == null) {
       // Navigate back to the main page
       NavigationUtils.navigateToMainPage(context, widget.user);
+    } else {
+      // Update challenge shared
+      DatabaseHelper()
+          .updateChallengeShared(widget.challenge!.challengeID ?? 0, 1);
+
+      // Update the user's points
+      User updatedUser = widget.user;
+      final newPoints = widget.user.points + (widget.challenge!.points ?? 0);
+      await db.updateUserPoints(widget.user.email, newPoints);
+      updatedUser = updatedUser.copyWith(points: newPoints);
+
+      // Navigate back to the main page
+      NavigationUtils.navigateToMainPage(context, updatedUser);
     }
-
-    // Update challenge shared
-    DatabaseHelper()
-        .updateChallengeShared(widget.challenge!.challengeID ?? 0, 1);
-
-    // Update the user's points
-    User updatedUser = widget.user;
-    final newPoints = widget.user.points + (widget.challenge!.points ?? 0);
-    await db.updateUserPoints(widget.user.email, newPoints);
-    updatedUser = updatedUser.copyWith(points: newPoints);
-
-    // Navigate back to the main page
-    NavigationUtils.navigateToMainPage(context, updatedUser);
   }
 
   @override

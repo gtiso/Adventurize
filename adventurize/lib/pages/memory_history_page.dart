@@ -125,24 +125,18 @@ class _MemoryHistoryPageState extends State<MemoryHistoryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: GestureDetector(
-        onHorizontalDragEnd: (DragEndDetails details) {
-          NavigationUtils.handleHorizontalDragMemoryHistory(
-              context, details, widget.user);
-        },
-        child: Stack(
-          children: [
-            _buildGoogleMap(),
-            Column(
-              children: [
-                _buildTitle(),
-                const SizedBox(height: 320),
-                _buildMemoryList(),
-              ],
-            ),
-            _buildBigMemoryCard(),
-          ],
-        ),
+      body: Stack(
+        children: [
+          _buildGoogleMap(),
+          Column(
+            children: [
+              _buildTitle(),
+              const SizedBox(height: 320),
+              _buildMemoryList(),
+            ],
+          ),
+          _buildBigMemoryCard(),
+        ],
       ),
     );
   }
