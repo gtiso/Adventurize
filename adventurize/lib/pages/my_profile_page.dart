@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:adventurize/models/user_model.dart';
 import 'package:adventurize/components/cards/profile_card.dart';
 import 'package:adventurize/components/map_background.dart';
-import 'package:adventurize/pages/main_page.dart';
+import 'package:adventurize/utils/navigation_utils.dart';
 
 class MyProfilePage extends StatefulWidget {
   final User user;
@@ -29,14 +29,10 @@ class _MyProfilePageState extends State<MyProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: GestureDetector(
-        behavior: HitTestBehavior
-            .translucent, // Ensures taps outside ProfileCard are detected
-        onTap: () {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-                builder: (context) => MainPage(user: widget.user)),
-          );
+        behavior: HitTestBehavior.translucent,
+        onVerticalDragEnd: (DragEndDetails details) {
+          NavigationUtils.handleVerticalDragProfile(
+              context, details, widget.user);
         },
         child: Stack(
           children: [

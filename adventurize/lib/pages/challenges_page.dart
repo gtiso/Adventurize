@@ -6,6 +6,7 @@ import 'package:adventurize/components/title.dart';
 import 'package:adventurize/database/db_helper.dart';
 import 'package:adventurize/models/challenge_model.dart';
 import 'package:adventurize/components/cards/challenge_big_card.dart';
+import 'package:adventurize/utils/navigation_utils.dart';
 
 class ChallengesPage extends StatefulWidget {
   final User user;
@@ -97,17 +98,23 @@ class _ChallengesPageState extends State<ChallengesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          const MapBackground(),
-          Column(
-            children: [
-              _buildTitle(),
-              Expanded(child: _buildChallengesList()),
-            ],
-          ),
-          _buildBigCard(),
-        ],
+      body: GestureDetector(
+        onHorizontalDragEnd: (DragEndDetails details) {
+          NavigationUtils.handleHorizontalDragChallenges(
+              context, details, widget.user);
+        },
+        child: Stack(
+          children: [
+            const MapBackground(),
+            Column(
+              children: [
+                _buildTitle(),
+                Expanded(child: _buildChallengesList()),
+              ],
+            ),
+            _buildBigCard(),
+          ],
+        ),
       ),
     );
   }

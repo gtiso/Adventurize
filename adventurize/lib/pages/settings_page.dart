@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:adventurize/navigation_utils.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:adventurize/utils/navigation_utils.dart';
 
 class SettingsPage extends StatefulWidget {
   @override
@@ -10,8 +11,64 @@ class _SettingsPageState extends State<SettingsPage> {
   bool notificationsEnabled = true;
   bool soundsEnabled = true;
   bool hapticsEnabled = true;
-  bool cameraEnabled = true;
+  bool cameraEnabled = false; // Default to false
   bool navigationEnabled = true;
+
+  @override
+  void initState() {
+    super.initState();
+    checkCameraPermission();
+  }
+
+  Future<void> checkCameraPermission() async {
+    var status = await Permission.camera.status;
+    setState(() {
+      cameraEnabled = status.isGranted;
+    });
+  }
+
+  Future<void> toggleCameraPermission(bool value) async {
+    if (value) {
+      // Request camera permission
+      var status = await Permission.camera.request();
+      setState(() {
+        cameraEnabled = status.isGranted;
+      });
+    } else {
+      // Open app settings for the user to manually disable camera permission
+      setState(() {
+        cameraEnabled = false;
+      });
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('Camera Permission'),
+            content: Text(
+                'Camera permission can only be disabled from the app settings. Would you like to open the settings now?'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context); // Close the dialog
+                  setState(() {
+                    cameraEnabled = true;
+                  });
+                },
+                child: Text('Cancel'),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context); // Close the dialog
+                  openAppSettings(); // Open system app settings
+                },
+                child: Text('Open Settings'),
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +109,7 @@ class _SettingsPageState extends State<SettingsPage> {
               buildSettingsList(),
               SizedBox(height: 5),
               buildStaticInfo(),
-              SizedBox(height: 5), // Add spacing before the Sign Out button
+              SizedBox(height: 5),
               buildSignOutButton(),
             ],
           ),
@@ -99,11 +156,7 @@ class _SettingsPageState extends State<SettingsPage> {
           icon: Icons.camera_alt,
           title: "CAMERA",
           value: cameraEnabled,
-          onChanged: (value) {
-            setState(() {
-              cameraEnabled = value;
-            });
-          },
+          onChanged: toggleCameraPermission,
         ),
         buildSettingTile(
           icon: Icons.navigation,
@@ -173,8 +226,8 @@ class _SettingsPageState extends State<SettingsPage> {
           Expanded(
             child: Container(
               decoration: BoxDecoration(
-                color: Colors.grey[300], // Gray background color for text
-                borderRadius: BorderRadius.circular(8.0), // Rounded corners
+                color: Colors.grey[300],
+                borderRadius: BorderRadius.circular(8.0),
               ),
               padding:
                   const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),

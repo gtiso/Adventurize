@@ -5,6 +5,7 @@ import 'package:adventurize/components/cards/user_big_card.dart';
 import 'package:adventurize/components/title.dart';
 import 'package:adventurize/models/user_model.dart';
 import 'package:adventurize/components/map_background.dart';
+import 'package:adventurize/utils/navigation_utils.dart';
 
 class LeaderboardPage extends StatefulWidget {
   final User user;
@@ -104,18 +105,24 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          const MapBackground(),
-          Column(
-            children: [
-              _buildTitle(),
-              _buildFixedUserCard(),
-              Expanded(child: _buildUserList()),
-            ],
-          ),
-          _buildBigUserCard(),
-        ],
+      body: GestureDetector(
+        onHorizontalDragEnd: (DragEndDetails details) {
+          NavigationUtils.handleVerticalDragLeaderboard(
+              context, details, widget.user);
+        },
+        child: Stack(
+          children: [
+            const MapBackground(),
+            Column(
+              children: [
+                _buildTitle(),
+                _buildFixedUserCard(),
+                Expanded(child: _buildUserList()),
+              ],
+            ),
+            _buildBigUserCard(),
+          ],
+        ),
       ),
     );
   }

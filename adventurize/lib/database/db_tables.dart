@@ -16,7 +16,6 @@ String challenges = '''
         title TEXT,
         desc TEXT,
         photoPath TEXT,
-        status TEXT,
         points INTEGER,
         shared INTEGER
       )''';

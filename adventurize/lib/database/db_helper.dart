@@ -83,22 +83,24 @@ class DatabaseHelper {
     debugPrint("Row Updation: $res");
   }
 
-  Future<void> saveChallengeToDB(Challenge challenge) async {
+  Future<void> updateUserPoints(String email, int points) async {
+    final Database db = await getDB();
+    int res = await db.rawUpdate(
+      "UPDATE users SET points = ? WHERE email = ?",
+      [points, email],
+    );
+    debugPrint("Points updated for email $email: $res");
+  }
+
+  Future<void> updateChallengeShared(int challengeID, int shared) async {
     final Database db = await getDB();
 
     int res = await db.rawUpdate(
-      "UPDATE challenges SET title = ?, desc = ?, photoPath = ?, points = ?, shared = ? WHERE challengeID = ?",
-      [
-        challenge.title,
-        challenge.desc,
-        challenge.photoPath,
-        challenge.points,
-        challenge.shared,
-        challenge.challengeID,
-      ],
+      "UPDATE challenges SET shared = ? WHERE challengeID = ?",
+      [shared, challengeID],
     );
 
-    debugPrint("Row Updation: $res");
+    debugPrint("Challenge shared updated for challengeID $challengeID: $res");
   }
 
   Future<User?> getUsr(String email) async {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:adventurize/models/user_model.dart';
 import 'package:adventurize/components/qr_code_display.dart';
-import 'package:adventurize/navigation_utils.dart';
+import 'package:adventurize/utils/navigation_utils.dart';
 
 class ProfileCard extends StatelessWidget {
   final User user;
@@ -51,6 +51,16 @@ class ProfileCard extends StatelessWidget {
     return QRCodeDisplay(
       data: user.email,
       size: 150.0,
+    );
+  }
+
+  Widget _buildScore() {
+    return Text(
+      "Score: ${user.points}",
+      style: const TextStyle(
+        fontSize: 18,
+        color: Colors.black,
+      ),
     );
   }
 
@@ -106,7 +116,8 @@ class ProfileCard extends StatelessWidget {
               _buildFullName(),
               const SizedBox(height: 16),
               _buildQRCode(),
-              const SizedBox(height: 16),
+              _buildScore(),
+              const SizedBox(height: 8),
               _buildScanQRButton(context),
             ],
           ),
