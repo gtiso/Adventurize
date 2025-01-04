@@ -16,9 +16,9 @@ class Challenge {
     this.challengeID,
     required this.title,
     required this.desc,
-    this.photoPath,
-    this.shared = 0,
-    this.points,
+    required this.photoPath,
+    required this.shared,
+    required this.points,
   });
 
   Map<String, dynamic> toMap() {
