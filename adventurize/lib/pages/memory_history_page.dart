@@ -122,6 +122,25 @@ class _MemoryHistoryPageState extends State<MemoryHistoryPage> {
     );
   }
 
+  Widget _buildBackButton(BuildContext context) {
+    return Align(
+      alignment:
+          Alignment.centerLeft, // Aligns to the vertical center, left edge
+      child: Padding(
+        padding:
+            const EdgeInsets.only(left: 10), // Adds space from the left edge
+        child: IconButton(
+          onPressed: () => Navigator.pop(context),
+          icon: Icon(
+            Icons.arrow_back,
+            color: Colors.black,
+            size: 30,
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -136,6 +155,7 @@ class _MemoryHistoryPageState extends State<MemoryHistoryPage> {
             ],
           ),
           _buildBigMemoryCard(),
+          _buildBackButton(context),
         ],
       ),
     );

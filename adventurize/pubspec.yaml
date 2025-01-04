@@ -49,6 +49,7 @@ flutter:
     - lib/assets/avatars/avatar4.png
     - lib/assets/avatars/avatar5.png
     - lib/assets/avatars/avatar6.png
+    - lib/assets/avatars/avatarDef.png
   fonts:
     - family: SansitaOne
       fonts:
