@@ -53,8 +53,7 @@ class DatabaseHelper {
       await db.execute(users);
       await db.execute(challenges);
       await db.execute(memories);
-      await db.execute(userChallenges);
-      await db.execute(userMemories);
+      await db.execute(friends);
     });
   }
 
@@ -202,9 +201,65 @@ class DatabaseHelper {
     });
   }
 
+  Future<List<Memory>> getMemoriesFromFriendID(int? userID) async {
+    final Database db = await getDB();
+    final List<Map<String, dynamic>> maps = await db.rawQuery(
+      '''
+    SELECT m.*
+    FROM memories m
+    INNER JOIN friends f ON m.userID = f.friendID
+    WHERE f.userID = ?
+    ''',
+      [userID],
+    );
+    return List.generate(maps.length, (i) {
+      return Memory.fromMap(maps[i]);
+    });
+  }
+
+  Future<void> insFriend(int? userID, int? friendID) async {
+    final Database db = await getDB();
+    await db.insert(
+      'friends',
+      {
+        'userID': userID,
+        'friendID': friendID,
+      },
+    );
+    await db.insert(
+      'friends',
+      {
+        'userID': friendID,
+        'friendID': userID,
+      },
+    );
+  }
+
   Future<List<User>> getUsers() async {
     final Database db = await getDB();
     final List<Map<String, dynamic>> maps = await db.query('users');
+    return List.generate(maps.length, (i) {
+      return User(
+        userID: maps[i]['userID'],
+        fullname: maps[i]['fullname'],
+        username: maps[i]['username'],
+        email: maps[i]['email'],
+        password: maps[i]['password'],
+        birthdate: maps[i]['birthdate'],
+        points: maps[i]['points'],
+        avatarPath: maps[i]['avatarPath'],
+      );
+    });
+  }
+
+  Future<List<User>> getFriendUsers(int? userID) async {
+    final Database db = await getDB();
+    final List<Map<String, dynamic>> maps = await db.rawQuery('''
+      SELECT DISTINCT u.*
+      FROM users u
+      INNER JOIN friends f ON u.userID = f.friendID
+      WHERE f.userID = ?''', [userID],
+    );
     return List.generate(maps.length, (i) {
       return User(
         userID: maps[i]['userID'],

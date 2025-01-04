@@ -3,11 +3,11 @@ String users = '''
       userID INTEGER PRIMARY KEY AUTOINCREMENT,
       fullname TEXT,
       username TEXT,
-      email TEXT UNIQUE,
-      password TEXT,
+      email TEXT UNIQUE NOT NULL,
+      password TEXT NOT NULL,
       birthdate TEXT,
       points INTEGER DEFAULT 0,
-      avatarPath TEXT
+      avatarPath TEXT DEFAULT 'lib/assets/avatars/avatar1.png'
       )''';
 
 String challenges = '''
@@ -21,7 +21,7 @@ String challenges = '''
         shared INTEGER
       )''';
 
-String memories= '''
+String memories = '''
       CREATE TABLE IF NOT EXISTS memories (
         memoryID INTEGER PRIMARY KEY AUTOINCREMENT,
         userID INTEGER,
@@ -33,18 +33,22 @@ String memories= '''
         date TEXT,
         isFavourite INTEGER,
         latitude REAL,
-        longitude REAL
+        longitude REAL,
+        FOREIGN KEY (userID) REFERENCES users(userID)
       )''';
 
-String userChallenges = '''
-      CREATE TABLE IF NOT EXISTS userchallenges (
-        userID INTEGER,
-        challengeID INTEGER,
-        shared INTEGER
-      )''';
+String friends = '''
+    CREATE TABLE IF NOT EXISTS friends (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      userID INTEGER NOT NULL,
+      friendID INTEGER NOT NULL,
+      FOREIGN KEY (userID) REFERENCES users(userID),
+      FOREIGN KEY (friendID) REFERENCES users(userID)
+    )''';
 
-String userMemories = '''
-      CREATE TABLE IF NOT EXISTS userphotos (
-        userID INTEGER,
-        photoID INTEGER
-      )''';
+// String userChallenges = '''
+//       CREATE TABLE IF NOT EXISTS userchallenges (
+//         userID INTEGER,
+//         challengeID INTEGER,
+//         shared INTEGER
+//       )''';

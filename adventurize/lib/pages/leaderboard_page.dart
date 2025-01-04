@@ -26,7 +26,7 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
   }
 
   Future<void> _fetchLeaderboardData() async {
-    List<User> data = await db.getUsers();
+    List<User> data = await db.getFriendUsers(widget.user.userID);
     setState(() {
       users = data;
       _sortUsersByPoints();

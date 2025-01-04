@@ -52,7 +52,9 @@ class _MainPageState extends State<MainPage> {
   }
 
   Future<void> _loadMarkers() async {
-    List<Memory> memories = await db.getMemories();
+    List<Memory> userMemories = await db.getMemoriesFromID(widget.user.userID);
+    List<Memory> friendMemories = await db.getMemoriesFromFriendID(widget.user.userID);
+    List<Memory> memories = userMemories + friendMemories;
 
     for (final memory in memories) {
       BitmapDescriptor icon = await BitmapDescriptor.asset(
@@ -85,6 +87,7 @@ class _MainPageState extends State<MainPage> {
         children: [
           GoogleMap(
             zoomControlsEnabled: false,
+            compassEnabled: false,
             mapType: MapType.normal,
             myLocationEnabled: true,
             mapToolbarEnabled: false,

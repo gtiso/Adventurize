@@ -7,6 +7,7 @@ Future<void> insData() async {
   await insDummyChallenges();
   await insDummyUsers();
   await insDummyMemories();
+  await insDummyFriends();
 }
 
 Future<void> insDummyChallenges() async {
@@ -233,4 +234,10 @@ Future<void> insDummyMemories() async {
   for (final memory in memories) {
     await db.insMemory(memory);
   }
+}
+
+Future<void> insDummyFriends() async {
+  final db = DatabaseHelper();
+  await db.insFriend(1, 2);
+  await db.insFriend(1, 3);
 }

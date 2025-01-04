@@ -114,10 +114,10 @@ class NavigationUtils {
     );
   }
 
-  static void navigateToQRScanner(BuildContext context) {
+  static void navigateToQRScanner(BuildContext context, User usr) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => QRCodeScannerPage()),
+      MaterialPageRoute(builder: (context) => QRCodeScannerPage(user: usr)),
     );
   }
 }

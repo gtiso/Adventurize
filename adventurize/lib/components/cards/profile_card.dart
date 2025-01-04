@@ -56,7 +56,7 @@ class ProfileCard extends StatelessWidget {
 
   Widget _buildScanQRButton(BuildContext context) {
     return ElevatedButton.icon(
-      onPressed: () => NavigationUtils.navigateToQRScanner(context),
+      onPressed: () => NavigationUtils.navigateToQRScanner(context, user),
       style: ElevatedButton.styleFrom(
         backgroundColor: Colors.black,
         shape: RoundedRectangleBorder(

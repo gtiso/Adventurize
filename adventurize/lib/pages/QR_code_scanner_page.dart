@@ -3,10 +3,15 @@ import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:adventurize/components/cards/add_friend_card.dart';
 import 'package:adventurize/database/db_helper.dart';
 import 'package:adventurize/models/user_model.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 class QRCodeScannerPage extends StatefulWidget {
+  final User user;
+
+  const QRCodeScannerPage({super.key, required this.user});
+  
   @override
-  _QRCodeScannerPageState createState() => _QRCodeScannerPageState();
+  State<QRCodeScannerPage> createState() => _QRCodeScannerPageState();
 }
 
 class _QRCodeScannerPageState extends State<QRCodeScannerPage>
@@ -111,6 +116,7 @@ class _QRCodeScannerPageState extends State<QRCodeScannerPage>
       return AddFriendCard(
         user: scannedUser!,
         onAddFriend: () {
+          DatabaseHelper().insFriend(widget.user.userID, scannedUser!.userID);
           print("${scannedUser!.username} added");
         },
       );
