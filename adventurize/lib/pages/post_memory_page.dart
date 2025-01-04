@@ -42,6 +42,8 @@ class _PostMemoryPageState extends State<PostMemoryPage> {
       final String formattedDate =
           DateFormat('MMMM d, y').format(DateTime.now());
 
+      debugPrint("${widget.user.userID}");
+
       // Create a new memory instance
       final memory = Memory(
         userID: widget.user.userID ?? 0,

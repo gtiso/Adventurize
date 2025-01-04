@@ -40,7 +40,9 @@ class _RegisterPageState extends State<RegisterPage> {
 
     if (_validateInputs(email, password, fullname, birthdate)) {
       int userID = await _createUser(email, password, fullname, birthdate);
-      print("New UserID : $userID");
+
+      usr.userID = userID;
+      debugPrint("New UserID : ${usr.userID}");
       NavigationUtils.navigateToMainPage(context, usr);
     } else {
       _showSnackBar("Please fill all fields");
