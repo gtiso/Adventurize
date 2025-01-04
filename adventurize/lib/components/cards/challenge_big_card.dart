@@ -65,7 +65,7 @@ class BigChallengeCard extends StatelessWidget {
       child: ElevatedButton(
         onPressed: () {
           if (challenge.shared == 0) {
-            NavigationUtils.navigateToCamera(context, user);
+            NavigationUtils.navigateToCamera(context, user, challenge);
           } else {
             NavigationUtils.navigateToMemories(context, user);
           }

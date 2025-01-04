@@ -121,7 +121,7 @@ class _MainPageState extends State<MainPage> {
             child: CaptureButton(
               color: Colors.black,
               onPressed: () {
-                NavigationUtils.navigateToCamera(context, widget.user);
+                NavigationUtils.navigateToCamera(context, widget.user, null);
               },
             ),
           ),

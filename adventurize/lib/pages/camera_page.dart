@@ -1,4 +1,5 @@
 import 'package:adventurize/models/user_model.dart';
+import 'package:adventurize/models/challenge_model.dart';
 import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
@@ -7,8 +8,10 @@ import 'package:adventurize/components/capture_button.dart';
 
 class CameraPage extends StatefulWidget {
   final User user;
+  final Challenge? challenge; // Added a nullable Challenge field
 
-  const CameraPage({required this.user, Key? key}) : super(key: key);
+  const CameraPage({required this.user, this.challenge, Key? key})
+      : super(key: key);
 
   @override
   _CameraPageState createState() => _CameraPageState();
@@ -65,8 +68,14 @@ class _CameraPageState extends State<CameraPage> {
             _isFlashOn = false;
           });
         }
+
+        // Pass the challenge (if any) to the PostMemoryPage
         NavigationUtils.navigateToPostMemory(
-            context, File(image.path), widget.user);
+          context,
+          File(image.path),
+          widget.user,
+          widget.challenge, // Passing the nullable challenge
+        );
       } catch (e) {
         print("Error capturing image: $e");
       }

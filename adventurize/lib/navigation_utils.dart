@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:adventurize/models/user_model.dart';
+import 'package:adventurize/models/challenge_model.dart';
 import 'package:adventurize/pages/camera_page.dart';
 import 'package:adventurize/pages/challenges_page.dart';
 import 'package:adventurize/pages/leaderboard_page.dart';
@@ -43,21 +44,25 @@ class NavigationUtils {
     );
   }
 
-  static void navigateToCamera(BuildContext context, User user) {
+  static void navigateToCamera(
+      BuildContext context, User user, Challenge? challenge) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => CameraPage(user: user)),
+      MaterialPageRoute(
+        builder: (context) => CameraPage(user: user, challenge: challenge),
+      ),
     );
   }
 
   static void navigateToPostMemory(
-      BuildContext context, File image, User user) {
+      BuildContext context, File image, User user, Challenge? challenge) {
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => PostMemoryPage(
           image: image,
           user: user,
+          challenge: challenge,
         ),
       ),
     );

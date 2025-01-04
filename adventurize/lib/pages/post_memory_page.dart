@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:adventurize/services/location_service.dart';
 import 'package:adventurize/models/memory_model.dart';
 import 'package:adventurize/models/user_model.dart';
+import 'package:adventurize/models/challenge_model.dart';
 import 'package:adventurize/database/db_helper.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
@@ -11,8 +12,14 @@ import 'package:adventurize/navigation_utils.dart';
 class PostMemoryPage extends StatefulWidget {
   final File image;
   final User user;
+  final Challenge? challenge;
 
-  PostMemoryPage({required this.image, required this.user});
+  const PostMemoryPage({
+    required this.image,
+    required this.user,
+    this.challenge,
+    Key? key,
+  }) : super(key: key);
 
   @override
   _PostMemoryPageState createState() => _PostMemoryPageState();
@@ -25,6 +32,12 @@ class _PostMemoryPageState extends State<PostMemoryPage> {
 
   void _onPostPhotoButtonPressed() async {
     try {
+      if (widget.challenge != null) {
+        debugPrint("Challenge details: ${widget.challenge!.toMap()}");
+      } else {
+        debugPrint("No challenge provided.");
+      }
+
       // Fetch the user's current location
       LatLng currentLocation = await LocationService.getUserCurrentLocation();
 
@@ -48,6 +61,24 @@ class _PostMemoryPageState extends State<PostMemoryPage> {
 
       // Save the memory to the database
       await db.insMemory(memory);
+
+      if (widget.challenge != null) {
+        // Create a new challenge instance with updated shared status
+        Challenge updatedChallenge = Challenge(
+          challengeID: widget.challenge!.challengeID,
+          title: widget.challenge!.title,
+          desc: widget.challenge!.desc,
+          photoPath: widget.challenge!.photoPath,
+          points: widget.challenge!.points,
+          shared: 1, // Set shared to 1
+        );
+
+        // Save the updated challenge to the database
+        DatabaseHelper().saveChallengeToDB(updatedChallenge);
+
+        debugPrint(
+            "Challenge marked as completed: ${updatedChallenge.challengeID}, shared status: ${updatedChallenge.shared}");
+      }
 
       if (mounted) {
         // Check if the widget is still mounted
