@@ -47,7 +47,7 @@ class _PostMemoryPageState extends State<PostMemoryPage> {
       // Create a new memory instance
       final memory = Memory(
         userID: widget.user.userID ?? 0,
-        userAvatarPath: widget.user.avatarPath ?? '',
+        userAvatarPath: widget.user.avatarPath ?? 'lib/assets/avatars/avatarDef.png',
         userName: widget.user.username ?? '',
         title: location.isEmpty ? 'Untitled Memory' : location,
         description: description,

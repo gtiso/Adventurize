@@ -7,7 +7,7 @@ String users = '''
       password TEXT NOT NULL,
       birthdate TEXT,
       points INTEGER DEFAULT 0,
-      avatarPath TEXT DEFAULT 'lib/assets/avatars/avatar1.png'
+      avatarPath TEXT
       )''';
 
 String challenges = '''

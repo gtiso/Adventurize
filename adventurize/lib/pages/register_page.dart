@@ -69,6 +69,7 @@ class _RegisterPageState extends State<RegisterPage> {
       email: email,
       password: password,
       username: fullname.trimLeft(),
+      avatarPath: 'lib/assets/avatars/avatarDef.png',
     );
 
     return await db.createUsr(usr);
