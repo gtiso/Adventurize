@@ -89,6 +89,17 @@ class _CameraPageState extends State<CameraPage> {
   }
 
   Widget _buildCameraPreview() {
+    if (!_isCameraInitialized ||
+        _controller == null ||
+        !_controller!.value.isInitialized) {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
+
+    // Get the aspect ratio of the camera preview
+    final aspectRatio = _controller!.value.aspectRatio;
+
     return Container(
       height: MediaQuery.of(context).size.height * 0.7,
       margin: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 10.0),
@@ -98,13 +109,9 @@ class _CameraPageState extends State<CameraPage> {
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(10.0),
-        child: FittedBox(
-          fit: BoxFit.cover,
-          child: SizedBox(
-            width: _controller!.value.previewSize!.width,
-            height: _controller!.value.previewSize!.height,
-            child: CameraPreview(_controller!),
-          ),
+        child: AspectRatio(
+          aspectRatio: aspectRatio,
+          child: CameraPreview(_controller!),
         ),
       ),
     );
