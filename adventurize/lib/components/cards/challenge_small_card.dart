@@ -34,7 +34,7 @@ class SmallChallengeCard extends StatelessWidget {
       child: Text(
         challenge.shared == 0 ? "Not Started!" : "Completed!",
         style: TextStyle(
-          color: challenge.shared == 1 ? Colors.green : Colors.red,
+          color: challenge.shared == 0 ? Colors.red : Colors.green,
           fontSize: 16,
           fontFamily: 'SansitaOne',
           shadows: [Shadow(color: Colors.black, blurRadius: 5)],

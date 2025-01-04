@@ -4,7 +4,6 @@ import 'package:adventurize/models/memory_model.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
-import 'package:sqlite3_flutter_libs/sqlite3_flutter_libs.dart';
 import 'package:path_provider/path_provider.dart';
 import 'db_tables.dart';
 import 'package:adventurize/models/user_model.dart';
@@ -160,7 +159,7 @@ class DatabaseHelper {
     final List<Map<String, dynamic>> maps = await db.query('challenges');
     return List.generate(maps.length, (i) {
       return Challenge(
-        challengeID: maps[i]['challengeId'],
+        challengeID: maps[i]['challengeID'],
         title: maps[i]['title'],
         desc: maps[i]['desc'],
         photoPath: maps[i]['photoPath'],

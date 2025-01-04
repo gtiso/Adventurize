@@ -61,7 +61,6 @@ class _EditProfileCardState extends State<EditProfileCard> {
     bool readOnly = false,
     VoidCallback? onTap,
     bool obscureText = false,
-    Widget? suffixIcon,
   }) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
