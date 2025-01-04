@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:adventurize/models/user_model.dart'; // Ensure you have the correct import for User
+import 'package:adventurize/models/user_model.dart';
 
 class AddFriendCard extends StatelessWidget {
   final User user;
@@ -30,9 +30,12 @@ class AddFriendCard extends StatelessWidget {
     );
   }
 
-  Widget _buildAddFriendButton() {
+  Widget _buildAddFriendButton(BuildContext context) {
     return ElevatedButton(
-      onPressed: onAddFriend,
+      onPressed: () {
+        onAddFriend();
+        Navigator.pop(context); // Close the popup
+      },
       style: ElevatedButton.styleFrom(
         backgroundColor: Colors.blue,
         shape: RoundedRectangleBorder(
@@ -79,7 +82,7 @@ class AddFriendCard extends StatelessWidget {
                   children: [
                     _buildUsername(),
                     SizedBox(height: 10),
-                    _buildAddFriendButton(),
+                    _buildAddFriendButton(context),
                   ],
                 ),
               ),

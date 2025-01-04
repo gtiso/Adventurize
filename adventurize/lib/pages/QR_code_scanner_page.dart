@@ -9,7 +9,7 @@ class QRCodeScannerPage extends StatefulWidget {
   final User user;
 
   const QRCodeScannerPage({super.key, required this.user});
-  
+
   @override
   State<QRCodeScannerPage> createState() => _QRCodeScannerPageState();
 }
