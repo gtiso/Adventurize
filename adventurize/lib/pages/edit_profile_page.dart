@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:adventurize/components/map_background.dart';
 import 'package:intl/intl.dart';
 import 'package:adventurize/components/cards/profile_edit_card.dart';
-import 'package:adventurize/navigation_utils.dart';
+import 'package:adventurize/utils/navigation_utils.dart';
 
 class EditProfilePage extends StatefulWidget {
   final User user;

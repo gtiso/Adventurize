@@ -3,7 +3,7 @@ import 'package:adventurize/models/challenge_model.dart';
 import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:adventurize/navigation_utils.dart';
+import 'package:adventurize/utils/navigation_utils.dart';
 import 'package:adventurize/components/capture_button.dart';
 
 class CameraPage extends StatefulWidget {

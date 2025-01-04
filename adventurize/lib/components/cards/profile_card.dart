@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:adventurize/models/user_model.dart';
 import 'package:adventurize/components/qr_code_display.dart';
-import 'package:adventurize/navigation_utils.dart';
+import 'package:adventurize/utils/navigation_utils.dart';
 
 class ProfileCard extends StatelessWidget {
   final User user;

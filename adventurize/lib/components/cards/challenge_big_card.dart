@@ -1,7 +1,7 @@
 import 'package:adventurize/models/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:adventurize/models/challenge_model.dart';
-import 'package:adventurize/navigation_utils.dart';
+import 'package:adventurize/utils/navigation_utils.dart';
 
 class BigChallengeCard extends StatelessWidget {
   final Challenge challenge;
@@ -67,7 +67,7 @@ class BigChallengeCard extends StatelessWidget {
           if (challenge.shared == 0) {
             NavigationUtils.navigateToCamera(context, user, challenge);
           } else {
-            NavigationUtils.navigateToMemories(context, user);
+            NavigationUtils.navigateToMemoryHistory(context, user);
           }
         },
         style: ElevatedButton.styleFrom(

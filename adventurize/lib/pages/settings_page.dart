@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:adventurize/navigation_utils.dart';
+import 'package:adventurize/utils/navigation_utils.dart';
 
 class SettingsPage extends StatefulWidget {
   @override

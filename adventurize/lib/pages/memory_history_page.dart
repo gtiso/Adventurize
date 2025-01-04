@@ -6,6 +6,7 @@ import 'package:adventurize/models/memory_model.dart';
 import 'package:adventurize/components/cards/memory_big_card.dart';
 import 'package:adventurize/components/cards/memory_small_card.dart';
 import 'package:adventurize/components/title.dart';
+import 'package:adventurize/utils/navigation_utils.dart';
 
 class MemoryHistoryPage extends StatefulWidget {
   final User user;
@@ -23,8 +24,12 @@ class _MemoryHistoryPageState extends State<MemoryHistoryPage> {
 
   @override
   void initState() {
-    _fetchMemories();
     super.initState();
+    _initializeData();
+  }
+
+  Future<void> _initializeData() async {
+    await _fetchMemories();
   }
 
   Future<void> _fetchMemories() async {
@@ -51,14 +56,15 @@ class _MemoryHistoryPageState extends State<MemoryHistoryPage> {
                 ))
             .toSet(),
       );
-    } else { // periptosi xoris memories
+    } else {
       return GoogleMap(
         zoomControlsEnabled: false,
         mapType: MapType.normal,
         mapToolbarEnabled: false,
         myLocationButtonEnabled: false,
         initialCameraPosition: CameraPosition(
-          target: LatLng(37.97934102604011, 23.78306889039801), // EMP
+          target:
+              LatLng(37.97934102604011, 23.78306889039801), // Default location
           zoom: 12,
         ),
       );
@@ -101,7 +107,7 @@ class _MemoryHistoryPageState extends State<MemoryHistoryPage> {
         });
       },
       child: Container(
-        color: Colors.black.withValues(alpha: 0.5),
+        color: Colors.black.withOpacity(0.5),
         child: Center(
           child: BigMemoryCard(
             memory: selectedMemory!,
@@ -119,18 +125,24 @@ class _MemoryHistoryPageState extends State<MemoryHistoryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          _buildGoogleMap(),
-          Column(
-            children: [
-              _buildTitle(),
-              const SizedBox(height: 320),
-              _buildMemoryList(),
-            ],
-          ),
-          _buildBigMemoryCard(),
-        ],
+      body: GestureDetector(
+        onHorizontalDragEnd: (DragEndDetails details) {
+          NavigationUtils.handleHorizontalDragMemoryHistory(
+              context, details, widget.user);
+        },
+        child: Stack(
+          children: [
+            _buildGoogleMap(),
+            Column(
+              children: [
+                _buildTitle(),
+                const SizedBox(height: 320),
+                _buildMemoryList(),
+              ],
+            ),
+            _buildBigMemoryCard(),
+          ],
+        ),
       ),
     );
   }

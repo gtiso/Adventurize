@@ -7,7 +7,7 @@ import 'package:adventurize/models/challenge_model.dart';
 import 'package:adventurize/database/db_helper.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
-import 'package:adventurize/navigation_utils.dart';
+import 'package:adventurize/utils/navigation_utils.dart';
 
 class PostMemoryPage extends StatefulWidget {
   final File image;

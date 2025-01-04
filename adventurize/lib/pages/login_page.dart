@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:adventurize/database/db_helper.dart';
 import 'package:adventurize/models/user_model.dart';
-import 'package:adventurize/navigation_utils.dart';
+import 'package:adventurize/utils/navigation_utils.dart';
 
 class LoginPage extends StatefulWidget {
   @override
