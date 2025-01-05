@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 
 class MemoryImageWidget extends StatelessWidget {
   final String imagePath;
+  final String avatarPath;
   final double width;
   final double height;
-  final String avatarPath;
 
   const MemoryImageWidget({
     required this.imagePath,
@@ -17,49 +17,35 @@ class MemoryImageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    debugPrint("Image file path: $imagePath");
+    debugPrint("Image path: $imagePath");
     debugPrint("Avatar path: $avatarPath");
 
-    if (File(imagePath).existsSync()) {
-      return SizedBox(
+    Widget imageWidget;
+    try {
+      if (File(imagePath).existsSync()) {
+        // File-based image handling
+        imageWidget = Image.file(
+          File(imagePath),
+          width: width,
+          height: height,
+          fit: BoxFit.cover,
+        );
+      } else {
+        // If file doesn't exist, assume it's an asset image
+        imageWidget = Image.asset(
+          imagePath,
+          width: width,
+          height: height,
+          fit: BoxFit.cover,
+        );
+      }
+    } catch (e) {
+      debugPrint("Error loading image: $e");
+      // Fallback for any error
+      imageWidget = Container(
         width: width,
         height: height,
-        child: Stack(
-          alignment: Alignment.topCenter,
-          children: [
-            // Background image
-            ClipRRect(
-              borderRadius: BorderRadius.circular(12),
-              child: Image.file(
-                File(imagePath),
-                width: width,
-                height: height,
-                fit: BoxFit.cover,
-              ),
-            ),
-            // Top Center Avatar
-            Positioned(
-              top: 16,
-              child: CircleAvatar(
-                backgroundImage: AssetImage(avatarPath),
-                radius: 20,
-                backgroundColor: Colors.white,
-              ),
-            ),
-          ],
-        ),
-      );
-    } else {
-      return Container(
-        width: width,
-        height: height,
-        decoration: BoxDecoration(
-          color: Colors.grey.shade300, // Subtle background color
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(
-            color: Colors.grey.shade500, // Border color for visual appeal
-          ),
-        ),
+        color: Colors.grey.shade300,
         child: Center(
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -79,5 +65,29 @@ class MemoryImageWidget extends StatelessWidget {
         ),
       );
     }
+
+    return SizedBox(
+      width: width,
+      height: height,
+      child: Stack(
+        alignment: Alignment.topCenter,
+        children: [
+          // Background image (file or asset)
+          ClipRRect(
+            borderRadius: BorderRadius.circular(12),
+            child: imageWidget,
+          ),
+          // Top Center Avatar
+          Positioned(
+            top: 16,
+            child: CircleAvatar(
+              backgroundImage: AssetImage(avatarPath),
+              radius: 20,
+              backgroundColor: Colors.white,
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
