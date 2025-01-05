@@ -42,12 +42,12 @@ class _MapBackgroundState extends State<MapBackground> {
         return Stack(
           children: [
             GoogleMap(
-              compassEnabled: false,
               zoomControlsEnabled: false,
-              myLocationButtonEnabled: false,
+              compassEnabled: false,
+              mapType: MapType.normal,
               myLocationEnabled: false,
-              scrollGesturesEnabled: false,
-              zoomGesturesEnabled: false,
+              mapToolbarEnabled: false,
+              myLocationButtonEnabled: false,
               initialCameraPosition: CameraPosition(
                 target: targetLocation,
                 zoom: 12.0,

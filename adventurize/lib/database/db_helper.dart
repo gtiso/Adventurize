@@ -171,7 +171,15 @@ class DatabaseHelper {
 
   Future<void> insMemory(Memory memory) async {
     final Database db = await getDB();
-    await db.insert('memories', memory.toMap());
+    List<Map<String, dynamic>> existingMemories = await db.query(
+      'memories',
+      where: 'title = ? AND description = ?',
+      whereArgs: [memory.title, memory.description],
+    );
+
+    if (existingMemories.isEmpty) {
+      await db.insert('memories', memory.toMap());
+    }
   }
 
   Future<List<Memory>> getMemories() async {
