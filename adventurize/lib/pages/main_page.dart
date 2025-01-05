@@ -71,6 +71,10 @@ class _MainPageState extends State<MainPage> {
             title: memory.title,
             snippet: memory.userName,
           ),
+          onTap: () {
+            NavigationUtils.navigateToSelectedMemory(
+                context, widget.user, memory);
+          },
         ),
       );
     }

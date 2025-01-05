@@ -3,10 +3,10 @@ import 'package:adventurize/models/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:adventurize/models/memory_model.dart';
-import 'package:adventurize/components/cards/memory_big_card.dart';
 import 'package:adventurize/components/cards/memory_small_card.dart';
 import 'package:adventurize/components/title.dart';
 import 'package:adventurize/utils/navigation_utils.dart';
+import 'dart:async';
 
 class MemoryHistoryPage extends StatefulWidget {
   final User user;
@@ -18,7 +18,6 @@ class MemoryHistoryPage extends StatefulWidget {
 
 class _MemoryHistoryPageState extends State<MemoryHistoryPage> {
   List<Memory> memories = [];
-  Memory? selectedMemory;
 
   final db = DatabaseHelper();
 
@@ -35,7 +34,7 @@ class _MemoryHistoryPageState extends State<MemoryHistoryPage> {
   Future<void> _fetchMemories() async {
     List<Memory> data = await db.getMemoriesFromID(widget.user.userID);
     setState(() {
-      memories = data.reversed.toList();
+      memories = data;
     });
   }
 
@@ -53,6 +52,10 @@ class _MemoryHistoryPageState extends State<MemoryHistoryPage> {
                   markerId: MarkerId(memory.title),
                   position: LatLng(memory.latitude, memory.longitude),
                   infoWindow: InfoWindow(title: memory.title),
+                  onTap: () {
+                    NavigationUtils.navigateToSelectedMemory(
+                        context, widget.user, memory);
+                  },
                 ))
             .toSet(),
       );
@@ -87,37 +90,11 @@ class _MemoryHistoryPageState extends State<MemoryHistoryPage> {
           return SmallMemoryCard(
             memory: memory,
             onTap: () {
-              setState(() {
-                selectedMemory = memory;
-              });
+              NavigationUtils.navigateToSelectedMemory(
+                  context, widget.user, memory);
             },
           );
         },
-      ),
-    );
-  }
-
-  Widget _buildBigMemoryCard() {
-    if (selectedMemory == null) return const SizedBox.shrink();
-
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          selectedMemory = null;
-        });
-      },
-      child: Container(
-        color: Colors.black.withOpacity(0.5),
-        child: Center(
-          child: BigMemoryCard(
-            memory: selectedMemory!,
-            onClose: () {
-              setState(() {
-                selectedMemory = null;
-              });
-            },
-          ),
-        ),
       ),
     );
   }
@@ -154,7 +131,6 @@ class _MemoryHistoryPageState extends State<MemoryHistoryPage> {
               _buildMemoryList(),
             ],
           ),
-          _buildBigMemoryCard(),
           _buildBackButton(context),
         ],
       ),

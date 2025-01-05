@@ -21,6 +21,7 @@ class BigMemoryCard extends StatelessWidget {
             imagePath: memory.imagePath,
             width: double.infinity,
             height: 300,
+            avatarPath: memory.userAvatarPath,
           ),
         ),
       ),
@@ -59,6 +60,17 @@ class BigMemoryCard extends StatelessWidget {
     );
   }
 
+  Widget _buildUsername() {
+    return Text(
+      memory.userName,
+      style: const TextStyle(
+        fontSize: 15,
+        fontFamily: 'SansitaOne',
+        color: Colors.white,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -79,6 +91,7 @@ class BigMemoryCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  _buildUsername(),
                   _buildTitle(),
                   const SizedBox(height: 8),
                   _buildDescription(),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:adventurize/models/user_model.dart';
+import 'package:adventurize/models/memory_model.dart';
 import 'package:adventurize/models/challenge_model.dart';
 import 'package:adventurize/pages/camera_page.dart';
 import 'package:adventurize/pages/challenges_page.dart';
@@ -13,6 +14,7 @@ import 'package:adventurize/pages/login_page.dart';
 import 'package:adventurize/pages/edit_profile_page.dart';
 import 'package:adventurize/pages/settings_page.dart';
 import 'package:adventurize/pages/QR_code_scanner_page.dart';
+import 'package:adventurize/pages/selected_memory_page.dart';
 import 'package:adventurize/utils/animated_transitions.dart';
 import 'dart:io';
 
@@ -183,6 +185,17 @@ class NavigationUtils {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => QRCodeScannerPage(user: usr)),
+    );
+  }
+
+  // Add this in NavigationUtils.dart
+  static void navigateToSelectedMemory(
+      BuildContext context, User user, Memory memory) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => SelectedMemoryPage(user: user, memory: memory),
+      ),
     );
   }
 }

@@ -5,9 +5,11 @@ class MemoryImageWidget extends StatelessWidget {
   final String imagePath;
   final double width;
   final double height;
+  final String avatarPath;
 
   const MemoryImageWidget({
     required this.imagePath,
+    required this.avatarPath,
     this.width = 200,
     this.height = 300,
     Key? key,
@@ -16,14 +18,35 @@ class MemoryImageWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     debugPrint("Image file path: $imagePath");
+    debugPrint("Avatar path: $avatarPath");
 
     if (File(imagePath).existsSync()) {
       return SizedBox(
         width: width,
         height: height,
-        child: Image.file(
-          File(imagePath),
-          fit: BoxFit.cover, // Ensures the image covers the box
+        child: Stack(
+          alignment: Alignment.topCenter,
+          children: [
+            // Background image
+            ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: Image.file(
+                File(imagePath),
+                width: width,
+                height: height,
+                fit: BoxFit.cover,
+              ),
+            ),
+            // Top Center Avatar
+            Positioned(
+              top: 16,
+              child: CircleAvatar(
+                backgroundImage: AssetImage(avatarPath),
+                radius: 20,
+                backgroundColor: Colors.white,
+              ),
+            ),
+          ],
         ),
       );
     } else {
