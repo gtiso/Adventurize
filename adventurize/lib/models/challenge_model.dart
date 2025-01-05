@@ -9,7 +9,6 @@ class Challenge {
   final String title;
   final String desc;
   final String? photoPath;
-  final int shared;
   final int? points;
 
   Challenge({
@@ -17,7 +16,6 @@ class Challenge {
     required this.title,
     required this.desc,
     required this.photoPath,
-    required this.shared,
     required this.points,
   });
 
@@ -27,7 +25,6 @@ class Challenge {
       'title': title,
       'desc': desc,
       'photoPath': photoPath,
-      'shared': shared,
       'points': points,
     };
   }
@@ -38,7 +35,6 @@ class Challenge {
       title: map['title'],
       desc: map['desc'],
       photoPath: map['photoPath'],
-      shared: map['shared'],
       points: map['points'],
     );
   }
@@ -48,7 +44,6 @@ class Challenge {
     String? title,
     String? desc,
     String? photoPath,
-    int? shared,
     int? points,
   }) {
     return Challenge(
@@ -56,7 +51,6 @@ class Challenge {
       title: title ?? this.title,
       desc: desc ?? this.desc,
       photoPath: photoPath ?? this.photoPath,
-      shared: shared ?? this.shared,
       points: points ?? this.points,
     );
   }

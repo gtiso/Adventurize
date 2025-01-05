@@ -4,12 +4,14 @@ import 'package:adventurize/models/challenge_model.dart';
 class SmallChallengeCard extends StatelessWidget {
   final Challenge challenge;
   final VoidCallback onTap;
+  final int challStatus;
 
   const SmallChallengeCard({
     required this.challenge,
     required this.onTap,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+    required this.challStatus,
+  });
 
   Widget _buildChallengeTitle() {
     return Positioned(
@@ -32,9 +34,9 @@ class SmallChallengeCard extends StatelessWidget {
       top: 10,
       right: 10,
       child: Text(
-        challenge.shared == 0 ? "Not Started!" : "Completed!",
+        challStatus == 0 ? "Not Started!" : "Completed!",
         style: TextStyle(
-          color: challenge.shared == 0 ? Colors.red : Colors.green,
+          color: challStatus == 0 ? Colors.red : Colors.green,
           fontSize: 16,
           fontFamily: 'SansitaOne',
           shadows: [Shadow(color: Colors.black, blurRadius: 5)],

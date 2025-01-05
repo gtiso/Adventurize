@@ -19,11 +19,11 @@ class PostMemoryPage extends StatefulWidget {
     required this.image,
     required this.user,
     this.challenge,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
-  _PostMemoryPageState createState() => _PostMemoryPageState();
+  State<PostMemoryPage> createState() => _PostMemoryPageState();
 }
 
 class _PostMemoryPageState extends State<PostMemoryPage> {
@@ -88,8 +88,8 @@ class _PostMemoryPageState extends State<PostMemoryPage> {
     User updatedUser = widget.user;
     if (widget.challenge != null) {
       // Update challenge shared
-      DatabaseHelper()
-          .updateChallengeShared(widget.challenge!.challengeID ?? 0, 1);
+      DatabaseHelper().updateChallengeShared(
+          widget.user.userID, widget.challenge?.challengeID);
 
       // Update the user's points
       final newPoints = widget.user.points + (widget.challenge!.points ?? 0);

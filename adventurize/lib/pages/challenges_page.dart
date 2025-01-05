@@ -20,11 +20,12 @@ class _ChallengesPageState extends State<ChallengesPage> {
   List<Challenge> challenges = [];
   Challenge? selectedChallenge; // To hold the selected challenge for BigCard
   final db = DatabaseHelper();
+  Map<int, int> challengeStatuses = {};
 
   @override
   void initState() {
-    super.initState();
     _initializeData();
+    super.initState();
   }
 
   Future<void> _initializeData() async {
@@ -33,8 +34,20 @@ class _ChallengesPageState extends State<ChallengesPage> {
 
   Future<void> _fetchChallenges() async {
     List<Challenge> data = await db.getChalls();
+    await db.insUserChallenges(widget.user.userID, data.length);
     setState(() {
       challenges = data;
+    });
+    for (var challenge in data) {
+      debugPrint("Challenges Page: challengeID = ${challenge.challengeID}");
+      await statusSetter(challenge.challengeID ?? 0);
+    }
+  }
+
+  Future<void> statusSetter(int challID) async {
+    int res = await db.getChallStatus(widget.user.userID, challID);
+    setState(() {
+      challengeStatuses[challID] = res; // Update the status for the specific challenge
     });
   }
 
@@ -55,13 +68,16 @@ class _ChallengesPageState extends State<ChallengesPage> {
       itemCount: challenges.length,
       itemBuilder: (context, index) {
         final challenge = challenges[index];
+        final challStatus = challengeStatuses[challenge.challengeID] ?? 0;
         return SmallChallengeCard(
           challenge: challenge,
-          onTap: () {
+          onTap: () async {
+            await statusSetter(challenge.challengeID ?? 0);
             setState(() {
               selectedChallenge = challenge; // Set the selected challenge
             });
           },
+          challStatus: challStatus,
         );
       },
     );
@@ -69,6 +85,7 @@ class _ChallengesPageState extends State<ChallengesPage> {
 
   Widget _buildBigCard() {
     if (selectedChallenge == null) return const SizedBox.shrink();
+    final challStatus = challengeStatuses[selectedChallenge!.challengeID] ?? 0;
 
     return Positioned.fill(
       child: GestureDetector(
@@ -88,6 +105,7 @@ class _ChallengesPageState extends State<ChallengesPage> {
                 });
               },
               user: widget.user,
+              challStatus: challStatus,
             ),
           ),
         ),

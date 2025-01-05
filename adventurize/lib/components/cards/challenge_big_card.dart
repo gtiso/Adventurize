@@ -7,12 +7,14 @@ class BigChallengeCard extends StatelessWidget {
   final Challenge challenge;
   final VoidCallback onClose;
   final User user;
+  final int challStatus;
 
   const BigChallengeCard({
     required this.challenge,
     required this.onClose,
     super.key,
     required this.user,
+    required this.challStatus,
   });
 
   Widget _buildImage() {
@@ -64,7 +66,7 @@ class BigChallengeCard extends StatelessWidget {
     return Center(
       child: ElevatedButton(
         onPressed: () {
-          if (challenge.shared == 0) {
+          if (challStatus == 0) {
             NavigationUtils.navigateToCamera(context, user, challenge);
           } else {
             NavigationUtils.navigateToMemoryHistory(context, user);
@@ -77,7 +79,7 @@ class BigChallengeCard extends StatelessWidget {
           ),
         ),
         child: Text(
-          challenge.shared == 0 ? "START CHALLENGE" : "VIEW MEMORIES",
+          challStatus == 0 ? "START CHALLENGE" : "VIEW MEMORIES",
           style: const TextStyle(
             fontSize: 20,
             fontFamily: 'SansitaOne',

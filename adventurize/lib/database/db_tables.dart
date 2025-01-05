@@ -16,8 +16,7 @@ String challenges = '''
         title TEXT,
         desc TEXT,
         photoPath TEXT,
-        points INTEGER,
-        shared INTEGER
+        points INTEGER
       )''';
 
 String memories = '''
@@ -45,9 +44,11 @@ String friends = '''
       FOREIGN KEY (friendID) REFERENCES users(userID)
     )''';
 
-// String userChallenges = '''
-//       CREATE TABLE IF NOT EXISTS userchallenges (
-//         userID INTEGER,
-//         challengeID INTEGER,
-//         shared INTEGER
-//       )''';
+String userChallenges = '''
+      CREATE TABLE IF NOT EXISTS userchallenges (
+        userID INTEGER,
+        challengeID INTEGER,
+        shared INTEGER DEFAULT 0,
+        FOREIGN KEY (userID) REFERENCES users(userID),
+        FOREIGN KEY (challengeID) REFERENCES challenges(challengeID)
+      )''';

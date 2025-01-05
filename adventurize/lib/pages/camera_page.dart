@@ -10,11 +10,10 @@ class CameraPage extends StatefulWidget {
   final User user;
   final Challenge? challenge; // Added a nullable Challenge field
 
-  const CameraPage({required this.user, this.challenge, Key? key})
-      : super(key: key);
+  const CameraPage({required this.user, this.challenge, super.key});
 
   @override
-  _CameraPageState createState() => _CameraPageState();
+  State<CameraPage> createState() => _CameraPageState();
 }
 
 class _CameraPageState extends State<CameraPage> {

@@ -29,11 +29,16 @@ class _MapBackgroundState extends State<MapBackground> {
         return Stack(
           children: [
             GoogleMap(
+              compassEnabled: false,
+              zoomControlsEnabled: false,
+              myLocationButtonEnabled: false,
+              myLocationEnabled: false,
+              scrollGesturesEnabled: false,
+              zoomGesturesEnabled: false,
               initialCameraPosition: CameraPosition(
                 target: userLocation,
                 zoom: 12.0,
               ),
-              myLocationEnabled: true,
             ),
             Container(
               color: Colors.white.withOpacity(0.6),

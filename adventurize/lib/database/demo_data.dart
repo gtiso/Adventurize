@@ -13,37 +13,37 @@ Future<void> insData() async {
 Future<void> insDummyChallenges() async {
   final List<Challenge> challenges = [
     Challenge(
-        title: 'Feel the vibe!',
-        desc:
-            'Show us the energy of Paris after dark. Whether it’s a vibrant club, '
-            'a cozy bar, or the sparkling city lights. Snap a photo that captures the magic of the night!',
-        points: 730,
-        photoPath: 'lib/assets/challenges/vibe.jpg',
-        shared: 0),
+      title: 'Feel the vibe!',
+      desc:
+          'Show us the energy of Paris after dark. Whether it’s a vibrant club, '
+          'a cozy bar, or the sparkling city lights. Snap a photo that captures the magic of the night!',
+      points: 700,
+      photoPath: 'lib/assets/challenges/vibe.jpg',
+    ),
     Challenge(
-        title: 'Taste the local!',
-        desc:
-            'Capture a photo of a delicious local dish that represents the heart of Parisian cuisine. '
-            'Whether it’s a fresh croissant, or a colorful macaron, let your plate tell a story! Bon appétit!',
-        points: 340,
-        photoPath: 'lib/assets/challenges/food.jpg',
-        shared: 0),
+      title: 'Taste the local!',
+      desc:
+          'Capture a photo of a delicious local dish that represents the heart of Parisian cuisine. '
+          'Whether it’s a fresh croissant, or a colorful macaron, let your plate tell a story! Bon appétit!',
+      points: 300,
+      photoPath: 'lib/assets/challenges/food.jpg',
+    ),
     Challenge(
-        title: 'Ready for a new view?',
-        desc:
-            'Take a photo of the Eiffel Tower! Whether it is a classic shot or something unique, '
-            'capture its beauty from any angle you like. Show off your creativity and stand out with your best snap!',
-        points: 880,
-        photoPath: 'lib/assets/challenges/view.jpg',
-        shared: 0),
+      title: 'Ready for a new view?',
+      desc:
+          'Take a photo of the Eiffel Tower! Whether it is a classic shot or something unique, '
+          'capture its beauty from any angle you like. Show off your creativity and stand out with your best snap!',
+      points: 800,
+      photoPath: 'lib/assets/challenges/view.jpg',
+    ),
     Challenge(
-        title: 'Every step tells a story!',
-        desc:
-            'Take a photo of this stunning spot overlooking the Eiffel Tower, framed by the geometric patterns '
-            'of the Trocadéro plaza. Whether it’s sunrise, sunset, or midday, showcase the beauty of this breathtaking location!',
-        points: 540,
-        photoPath: 'lib/assets/challenges/step.jpg',
-        shared: 0),
+      title: 'Every step tells a story!',
+      desc:
+          'Take a photo of this stunning spot overlooking the Eiffel Tower, framed by the geometric patterns '
+          'of the Trocadéro plaza. Whether it’s sunrise, sunset, or midday, showcase the beauty of this breathtaking location!',
+      points: 900,
+      photoPath: 'lib/assets/challenges/step.jpg',
+    ),
   ];
 
   final db = DatabaseHelper();

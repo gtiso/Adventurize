@@ -54,6 +54,7 @@ class DatabaseHelper {
       await db.execute(challenges);
       await db.execute(memories);
       await db.execute(friends);
+      await db.execute(userChallenges);
     });
   }
 
@@ -92,15 +93,14 @@ class DatabaseHelper {
     debugPrint("Points updated for email $email: $res");
   }
 
-  Future<void> updateChallengeShared(int challengeID, int shared) async {
+  Future<void> updateChallengeShared(int? usrID, int? challID) async {
     final Database db = await getDB();
-
     int res = await db.rawUpdate(
-      "UPDATE challenges SET shared = ? WHERE challengeID = ?",
-      [shared, challengeID],
+      "UPDATE userchallenges SET shared = 1 WHERE userID = ? AND challengeID = ?",
+      [usrID, challID],
     );
 
-    debugPrint("Challenge shared updated for challengeID $challengeID: $res");
+    debugPrint("Challenge shared updated for challengeID $challID: $res");
   }
 
   Future<User?> getUsr(String email) async {
@@ -165,7 +165,6 @@ class DatabaseHelper {
         desc: maps[i]['desc'],
         photoPath: maps[i]['photoPath'],
         points: maps[i]['points'],
-        shared: maps[i]['shared'],
       );
     });
   }
@@ -237,6 +236,35 @@ class DatabaseHelper {
     );
   }
 
+  Future<void> insUserChall(int? usrID, int? challID) async {
+    final Database db = await getDB();
+    await db.insert(
+      'userchallenges',
+      {
+        'userID': usrID,
+        'challengeID': challID,
+      },
+    );
+  }
+
+  Future<void> insUserChallenges(int? usrID, int length) async {
+    for (int i = 1; i <= length; i++) {
+      insUserChall(usrID, i);
+    }
+  }
+
+  Future<int> getChallStatus(int? usrID, int? challID) async {
+    final Database db = await getDB();
+    var res = await db.rawQuery(
+        'SELECT shared FROM userchallenges WHERE userID = ? AND challengeID = ?',
+        [usrID, challID]);
+    if (res.isNotEmpty) {
+      return res.first['shared'] as int;
+    } else {
+      throw Exception('No record found for userID $usrID and challengeID $challID');
+    }
+  }
+
   Future<List<User>> getUsers() async {
     final Database db = await getDB();
     final List<Map<String, dynamic>> maps = await db.query('users');
@@ -256,11 +284,13 @@ class DatabaseHelper {
 
   Future<List<User>> getFriendUsers(int? userID) async {
     final Database db = await getDB();
-    final List<Map<String, dynamic>> maps = await db.rawQuery('''
+    final List<Map<String, dynamic>> maps = await db.rawQuery(
+      '''
       SELECT DISTINCT u.*
       FROM users u
       INNER JOIN friends f ON u.userID = f.friendID
-      WHERE f.userID = ?''', [userID],
+      WHERE f.userID = ?''',
+      [userID],
     );
     return List.generate(maps.length, (i) {
       return User(
