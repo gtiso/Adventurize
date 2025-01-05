@@ -12,12 +12,14 @@ class _SettingsPageState extends State<SettingsPage> {
   bool soundsEnabled = true;
   bool hapticsEnabled = true;
   bool cameraEnabled = false; // Default to false
-  bool navigationEnabled = true;
+  bool navigationEnabled = false; // Default to false
 
   @override
   void initState() {
     super.initState();
     checkCameraPermission();
+    checkLocationPermission();
+    checkNotificationPermission();
   }
 
   Future<void> checkCameraPermission() async {
@@ -29,45 +31,135 @@ class _SettingsPageState extends State<SettingsPage> {
 
   Future<void> toggleCameraPermission(bool value) async {
     if (value) {
-      // Request camera permission
       var status = await Permission.camera.request();
       setState(() {
         cameraEnabled = status.isGranted;
       });
     } else {
-      // Open app settings for the user to manually disable camera permission
       setState(() {
         cameraEnabled = false;
       });
-      showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Text('Camera Permission'),
-            content: Text(
-                'Camera permission can only be disabled from the app settings. Would you like to open the settings now?'),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context); // Close the dialog
-                  setState(() {
-                    cameraEnabled = true;
-                  });
-                },
-                child: Text('Cancel'),
-              ),
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context); // Close the dialog
-                  openAppSettings(); // Open system app settings
-                },
-                child: Text('Open Settings'),
-              ),
-            ],
-          );
-        },
-      );
+      _showSettingsDialog("Camera Permission", () {
+        setState(() {
+          cameraEnabled = true;
+        });
+      });
     }
+  }
+
+  Future<void> checkLocationPermission() async {
+    var status = await Permission.location.status;
+    setState(() {
+      navigationEnabled = status.isGranted;
+    });
+  }
+
+  Future<void> toggleLocationPermission(bool value) async {
+    if (value) {
+      var status = await Permission.location.status;
+
+      if (status.isPermanentlyDenied) {
+        _showSettingsDialog("Location Permission", () {
+          setState(() {
+            navigationEnabled = false; // Revert the toggle state
+          });
+        });
+      } else {
+        var requestStatus = await Permission.location.request();
+        setState(() {
+          navigationEnabled = requestStatus.isGranted;
+        });
+      }
+    } else {
+      setState(() {
+        navigationEnabled = false;
+      });
+      _showSettingsDialog("Location Permission", () {
+        setState(() {
+          navigationEnabled = true;
+        });
+      });
+    }
+  }
+
+  Future<void> checkNotificationPermission() async {
+    var status = await Permission.notification.status;
+    setState(() {
+      notificationsEnabled = status.isGranted;
+    });
+  }
+
+  Future<void> toggleNotificationPermission(bool value) async {
+    if (value) {
+      var status = await Permission.notification.request();
+      setState(() {
+        notificationsEnabled = status.isGranted;
+      });
+    } else {
+      setState(() {
+        notificationsEnabled = false;
+      });
+      _showSettingsDialog("Notification Permission", () {
+        setState(() {
+          notificationsEnabled = true;
+        });
+      });
+    }
+  }
+
+  void toggleSounds(bool value) {
+    setState(() {
+      soundsEnabled = value;
+    });
+    if (!value) {
+      _showSettingsDialog("Sounds", () {
+        setState(() {
+          soundsEnabled = true;
+        });
+      });
+    }
+  }
+
+  void toggleHaptics(bool value) {
+    setState(() {
+      hapticsEnabled = value;
+    });
+    if (!value) {
+      _showSettingsDialog("Haptics", () {
+        setState(() {
+          hapticsEnabled = true;
+        });
+      });
+    }
+  }
+
+  void _showSettingsDialog(String permissionType, VoidCallback onCancel) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('$permissionType'),
+          content: Text(
+              '$permissionType has been permanently disabled. To enable it again, you must open the app settings. Would you like to do that now?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context); // Close the dialog
+                onCancel(); // Revert the toggle state
+              },
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context); // Close the dialog
+                openAppSettings(); // Open system app settings
+              },
+              child: Text('Open Settings'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -126,31 +218,19 @@ class _SettingsPageState extends State<SettingsPage> {
           icon: Icons.notifications,
           title: "NOTIFICATIONS",
           value: notificationsEnabled,
-          onChanged: (value) {
-            setState(() {
-              notificationsEnabled = value;
-            });
-          },
+          onChanged: toggleNotificationPermission,
         ),
         buildSettingTile(
           icon: Icons.volume_up,
           title: "SOUNDS",
           value: soundsEnabled,
-          onChanged: (value) {
-            setState(() {
-              soundsEnabled = value;
-            });
-          },
+          onChanged: toggleSounds,
         ),
         buildSettingTile(
           icon: Icons.vibration,
           title: "HAPTICS",
           value: hapticsEnabled,
-          onChanged: (value) {
-            setState(() {
-              hapticsEnabled = value;
-            });
-          },
+          onChanged: toggleHaptics,
         ),
         buildSettingTile(
           icon: Icons.camera_alt,
@@ -162,11 +242,7 @@ class _SettingsPageState extends State<SettingsPage> {
           icon: Icons.navigation,
           title: "NAVIGATION",
           value: navigationEnabled,
-          onChanged: (value) {
-            setState(() {
-              navigationEnabled = value;
-            });
-          },
+          onChanged: toggleLocationPermission,
         ),
       ],
     );
