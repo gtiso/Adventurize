@@ -35,7 +35,7 @@ class _MemoryHistoryPageState extends State<MemoryHistoryPage> {
   Future<void> _fetchMemories() async {
     List<Memory> data = await db.getMemoriesFromID(widget.user.userID);
     setState(() {
-      memories = data;
+      memories = data.reversed.toList();
     });
   }
 

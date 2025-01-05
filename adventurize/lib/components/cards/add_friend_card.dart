@@ -46,14 +46,26 @@ class AddFriendCard extends StatelessWidget {
           vertical: 10,
         ),
       ),
-      child: Text(
-        "Add Friend",
-        style: TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.w600,
-          fontFamily: 'SansitaOne',
-          color: Colors.white,
-        ),
+      child: Row(
+        mainAxisSize:
+            MainAxisSize.min, // Ensure the button shrinks to fit content
+        children: [
+          Icon(
+            Icons.person_add, // Add Friend Icon
+            color: Colors.white,
+            size: 20,
+          ),
+          SizedBox(width: 8), // Spacing between icon and text
+          Text(
+            "Add Friend",
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              fontFamily: 'SansitaOne',
+              color: Colors.white,
+            ),
+          ),
+        ],
       ),
     );
   }

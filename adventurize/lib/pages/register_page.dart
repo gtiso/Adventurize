@@ -25,10 +25,13 @@ class _RegisterPageState extends State<RegisterPage> {
       firstDate: DateTime(1900),
       lastDate: DateTime.now(),
     );
+
     if (pickedDate != null) {
       setState(() {
         _birthdateController.text = DateFormat('yMd').format(pickedDate);
       });
+    } else {
+      _showSnackBar("No date selected");
     }
   }
 

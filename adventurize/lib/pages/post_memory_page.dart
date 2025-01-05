@@ -8,6 +8,7 @@ import 'package:adventurize/database/db_helper.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:adventurize/utils/navigation_utils.dart';
+import 'package:path_provider/path_provider.dart';
 
 class PostMemoryPage extends StatefulWidget {
   final File image;
@@ -32,7 +33,17 @@ class _PostMemoryPageState extends State<PostMemoryPage> {
 
   void _onPostPhotoButtonPressed() async {
     try {
-      debugPrint("User details: ${widget.user.toMap()}");
+      // Get the app's documents directory
+      final directory = await getApplicationDocumentsDirectory();
+
+      // Generate a unique filename for the image
+      final fileName = 'memory_${DateTime.now().millisecondsSinceEpoch}.jpg';
+      final filePath = '${directory.path}/$fileName';
+
+      // Save the image to the file
+      await widget.image.copy(filePath); // No need for 'savedImage'
+
+      debugPrint('Image saved at: $filePath');
 
       // Fetch the user's current location
       LatLng currentLocation = await LocationService.getUserCurrentLocation();
@@ -42,16 +53,15 @@ class _PostMemoryPageState extends State<PostMemoryPage> {
       final String formattedDate =
           DateFormat('MMMM d, y').format(DateTime.now());
 
-      debugPrint("${widget.user.userID}");
-
       // Create a new memory instance
       final memory = Memory(
         userID: widget.user.userID ?? 0,
-        userAvatarPath: widget.user.avatarPath ?? 'lib/assets/avatars/avatarDef.png',
+        userAvatarPath:
+            widget.user.avatarPath ?? 'lib/assets/avatars/avatarDef.png',
         userName: widget.user.username ?? '',
         title: location.isEmpty ? 'Untitled Memory' : location,
         description: description,
-        imagePath: widget.image.path,
+        imagePath: filePath, // Use the saved image's path
         date: formattedDate,
         latitude: currentLocation.latitude,
         longitude: currentLocation.longitude,
@@ -59,9 +69,8 @@ class _PostMemoryPageState extends State<PostMemoryPage> {
 
       // Save the memory to the database
       await db.insMemory(memory);
+
       if (mounted) {
-        // Check if the widget is still mounted
-        // Provide feedback to the user
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Memory posted successfully!')),
         );
@@ -70,31 +79,25 @@ class _PostMemoryPageState extends State<PostMemoryPage> {
       print("Error: $e");
 
       if (mounted) {
-        // Check if the widget is still mounted
-        // Provide feedback to the user in case of an error
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Failed to post memory. Please try again.')),
         );
       }
     }
 
-    if (widget.challenge == null) {
-      // Navigate back to the main page
-      NavigationUtils.navigateToMainPage(context, widget.user);
-    } else {
+    User updatedUser = widget.user;
+    if (widget.challenge != null) {
       // Update challenge shared
       DatabaseHelper()
           .updateChallengeShared(widget.challenge!.challengeID ?? 0, 1);
 
       // Update the user's points
-      User updatedUser = widget.user;
       final newPoints = widget.user.points + (widget.challenge!.points ?? 0);
       await db.updateUserPoints(widget.user.email, newPoints);
       updatedUser = updatedUser.copyWith(points: newPoints);
-
-      // Navigate back to the main page
-      NavigationUtils.navigateToMainPage(context, updatedUser);
     }
+
+    NavigationUtils.navigateToMainPage(context, updatedUser);
   }
 
   @override
@@ -157,7 +160,11 @@ class _PostMemoryPageState extends State<PostMemoryPage> {
       );
 
   Widget _buildAddLocationField() => GestureDetector(
-        onTap: () => _showTextFieldDialog('Add Location', _locationController),
+        onTap: () => _showTextFieldDialog(
+          'Add Location',
+          _locationController,
+          Icons.location_on,
+        ),
         child: Container(
           padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
           decoration: BoxDecoration(
@@ -188,8 +195,11 @@ class _PostMemoryPageState extends State<PostMemoryPage> {
       );
 
   Widget _buildDescriptionField() => GestureDetector(
-        onTap: () =>
-            _showTextFieldDialog('Description Field', _descriptionController),
+        onTap: () => _showTextFieldDialog(
+          'Description',
+          _descriptionController,
+          Icons.edit,
+        ),
         child: Container(
           padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
           decoration: BoxDecoration(
@@ -230,26 +240,73 @@ class _PostMemoryPageState extends State<PostMemoryPage> {
         ),
       );
 
-  void _showTextFieldDialog(String title, TextEditingController controller) {
+  void _showTextFieldDialog(
+      String title, TextEditingController controller, IconData titleIcon) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text(title),
+        backgroundColor: Colors.black,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15),
+        ),
+        title: Row(
+          children: [
+            Icon(
+              titleIcon, // Use the passed icon parameter
+              color: Colors.white,
+            ),
+            SizedBox(width: 10),
+            Text(
+              title,
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'SansitaOne',
+              ),
+            ),
+          ],
+        ),
         content: TextField(
           controller: controller,
-          decoration: InputDecoration(hintText: title),
+          style: TextStyle(
+            color: Colors.white,
+          ),
+          cursorColor: Colors.white,
+          decoration: InputDecoration(
+            hintText: title,
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.white),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            filled: true,
+            fillColor: Colors.grey[900],
+          ),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: Text('CANCEL'),
+            child: Text(
+              'CANCEL',
+              style: TextStyle(
+                color: Colors.grey,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'SansitaOne',
+              ),
+            ),
           ),
           TextButton(
             onPressed: () {
               setState(() {});
               Navigator.of(context).pop();
             },
-            child: Text('OK'),
+            child: Text(
+              'OK',
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'SansitaOne',
+              ),
+            ),
           ),
         ],
       ),

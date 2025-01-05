@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:adventurize/models/memory_model.dart';
+import 'package:adventurize/components/memory_image.dart';
 
 class BigMemoryCard extends StatelessWidget {
   final Memory memory;
@@ -9,13 +10,19 @@ class BigMemoryCard extends StatelessWidget {
       : super(key: key);
 
   Widget _buildImage() {
-    return ClipRRect(
-      borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
-      child: Image.asset(
-        memory.imagePath,
-        height: 200,
-        width: double.infinity,
-        fit: BoxFit.cover,
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(10),
+        child: Material(
+          elevation: 4, // Adds shadow for depth
+          borderRadius: BorderRadius.circular(10),
+          child: MemoryImageWidget(
+            imagePath: memory.imagePath,
+            width: double.infinity,
+            height: 300,
+          ),
+        ),
       ),
     );
   }
