@@ -9,6 +9,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:adventurize/utils/navigation_utils.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:flutter/services.dart';
 
 class PostMemoryPage extends StatefulWidget {
   final File image;
@@ -30,8 +31,9 @@ class _PostMemoryPageState extends State<PostMemoryPage> {
   final TextEditingController _locationController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final db = DatabaseHelper();
+  int _counter = 0;
 
-  void _onPostPhotoButtonPressed() async {
+  Future<void> _onPostPhotoButtonPressed() async {
     try {
       // Get the app's documents directory
       final directory = await getApplicationDocumentsDirectory();
@@ -41,7 +43,7 @@ class _PostMemoryPageState extends State<PostMemoryPage> {
       final filePath = '${directory.path}/$fileName';
 
       // Save the image to the file
-      await widget.image.copy(filePath); // No need for 'savedImage'
+      await widget.image.copy(filePath);
 
       debugPrint('Image saved at: $filePath');
 
@@ -69,6 +71,12 @@ class _PostMemoryPageState extends State<PostMemoryPage> {
 
       // Save the memory to the database
       await db.insMemory(memory);
+
+      // Provide haptic feedback
+      HapticFeedback.mediumImpact();
+      setState(() {
+        _counter++;
+      });
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -252,7 +260,7 @@ class _PostMemoryPageState extends State<PostMemoryPage> {
         title: Row(
           children: [
             Icon(
-              titleIcon, // Use the passed icon parameter
+              titleIcon,
               color: Colors.white,
             ),
             SizedBox(width: 10),

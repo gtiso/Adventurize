@@ -150,6 +150,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_haptic_feedback:
+    dependency: "direct main"
+    description:
+      name: flutter_haptic_feedback
+      sha256: e6a1ac6b5119c9b0964e4de2eaa6bfb66facedc6e33bfe2a902da3f6f9666499
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.1"
   flutter_lints:
     dependency: "direct dev"
     description:
