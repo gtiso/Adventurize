@@ -136,7 +136,7 @@ class _EditProfileCardState extends State<EditProfileCard> {
         _buildTextField(
           controller: widget.passwordController,
           label: "PASSWORD",
-          obscureText: true, // Always obscure the text
+          obscureText: true,
         ),
       ],
     );

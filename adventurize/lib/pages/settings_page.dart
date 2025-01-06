@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:adventurize/utils/navigation_utils.dart';
+import 'package:adventurize/components/title.dart';
 
 class SettingsPage extends StatefulWidget {
   @override
@@ -15,148 +16,168 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   void initState() {
     super.initState();
+    initializePermissions();
+  }
+
+  // Initialization
+  void initializePermissions() {
     checkCameraPermission();
     checkLocationPermission();
     checkMicrophonePermission();
   }
 
-  // ------------------ MICROPHONE LOGIC ------------------
+  // Permission Checkers
   Future<void> checkMicrophonePermission() async {
-    var status = await Permission.microphone.status;
+    updatePermissionStatus(
+      permission: Permission.microphone,
+      updateState: (status) => microphoneEnabled = status.isGranted,
+    );
+  }
+
+  Future<void> checkCameraPermission() async {
+    updatePermissionStatus(
+      permission: Permission.camera,
+      updateState: (status) => cameraEnabled = status.isGranted,
+    );
+  }
+
+  Future<void> checkLocationPermission() async {
+    updatePermissionStatus(
+      permission: Permission.location,
+      updateState: (status) => navigationEnabled = status.isGranted,
+    );
+  }
+
+  Future<void> updatePermissionStatus({
+    required Permission permission,
+    required Function(PermissionStatus) updateState,
+  }) async {
+    var status = await permission.status;
     setState(() {
-      microphoneEnabled = status.isGranted;
+      updateState(status);
     });
   }
 
-  Future<void> toggleMicrophonePermission(bool value) async {
+  // Toggle Logic
+  Future<void> togglePermission({
+    required bool value,
+    required Permission permission,
+    required String permissionType,
+    required Function(bool) updateState,
+  }) async {
     if (value) {
-      // User is trying to enable microphone
-      var status = await Permission.microphone.status;
+      // Enabling Permission
+      var status = await permission.status;
       if (status.isPermanentlyDenied) {
-        _showSettingsDialog("Microphone Permission", () {
-          setState(() {
-            microphoneEnabled = false;
-          });
+        showPermissionDialog(permissionType, () {
+          // If the user cancels, we do not change the state
+          setState(() {});
         });
       } else {
-        var requestStatus = await Permission.microphone.request();
+        var requestStatus = await permission.request();
         setState(() {
-          microphoneEnabled = requestStatus.isGranted;
+          updateState(requestStatus.isGranted);
         });
       }
     } else {
-      // User is turning microphone off in the UI
-      setState(() {
-        microphoneEnabled = false;
-      });
-      _showSettingsDialog("Microphone Permission", () {
+      // Disabling Permission: Show dialog and decide based on user's choice
+      showPermissionDialog(permissionType, () {
+        // If user cancels, revert the toggle to its original state
         setState(() {
-          microphoneEnabled = true;
+          updateState(true);
         });
       });
     }
   }
 
-  // ------------------ CAMERA LOGIC ----------------------
-  Future<void> checkCameraPermission() async {
-    var status = await Permission.camera.status;
-    setState(() {
-      cameraEnabled = status.isGranted;
-    });
+  // Permission Togglers
+  Future<void> toggleMicrophonePermission(bool value) async {
+    await togglePermission(
+      value: value,
+      permission: Permission.microphone,
+      permissionType: "Microphone Permission",
+      updateState: (status) => microphoneEnabled = status,
+    );
   }
 
   Future<void> toggleCameraPermission(bool value) async {
-    if (value) {
-      var status = await Permission.camera.status;
-      if (status.isPermanentlyDenied) {
-        _showSettingsDialog("Camera Permission", () {
-          setState(() {
-            cameraEnabled = false;
-          });
-        });
-      } else {
-        var requestStatus = await Permission.camera.request();
-        setState(() {
-          cameraEnabled = requestStatus.isGranted;
-        });
-      }
-    } else {
-      setState(() {
-        cameraEnabled = false;
-      });
-      _showSettingsDialog("Camera Permission", () {
-        setState(() {
-          cameraEnabled = true;
-        });
-      });
-    }
-  }
-
-  // ------------------ LOCATION LOGIC --------------------
-  Future<void> checkLocationPermission() async {
-    var status = await Permission.location.status;
-    setState(() {
-      navigationEnabled = status.isGranted;
-    });
+    await togglePermission(
+      value: value,
+      permission: Permission.camera,
+      permissionType: "Camera Permission",
+      updateState: (status) => cameraEnabled = status,
+    );
   }
 
   Future<void> toggleLocationPermission(bool value) async {
-    if (value) {
-      var status = await Permission.location.status;
-      if (status.isPermanentlyDenied) {
-        _showSettingsDialog("Location Permission", () {
-          setState(() {
-            navigationEnabled = false;
-          });
-        });
-      } else {
-        var requestStatus = await Permission.location.request();
-        setState(() {
-          navigationEnabled = requestStatus.isGranted;
-        });
-      }
-    } else {
-      setState(() {
-        navigationEnabled = false;
-      });
-      _showSettingsDialog("Location Permission", () {
-        setState(() {
-          navigationEnabled = true;
-        });
-      });
-    }
+    await togglePermission(
+      value: value,
+      permission: Permission.location,
+      permissionType: "Location Permission",
+      updateState: (status) => navigationEnabled = status,
+    );
   }
 
-  // ------------------ POPUP DIALOG ----------------------
-  void _showSettingsDialog(String permissionType, VoidCallback onCancel) {
+  // Dialog
+  void showPermissionDialog(String permissionType, VoidCallback onCancel) {
     showDialog(
       context: context,
-      barrierDismissible: false, // Prevent tap outside to dismiss
+      barrierDismissible: false,
       builder: (context) {
         return WillPopScope(
-          // Prevent back-button to dismiss
           onWillPop: () async => false,
           child: AlertDialog(
-            title: Text(permissionType),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16.0),
+            ),
+            backgroundColor: Colors.grey[200],
+            title: Text(
+              permissionType,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontFamily: 'SansitaOne',
+                fontSize: 20,
+                color: Colors.black,
+              ),
+            ),
             content: Text(
-              '$permissionType has been permanently disabled.\n\n'
-              'To enable it again, you must open the app settings.\n'
+              '$permissionType cannot be disabled here.\n\n'
+              'To disable it, you must open the app settings.\n'
               'Would you like to do that now?',
+              style: TextStyle(
+                fontSize: 16,
+                fontFamily: 'SansitaOne',
+                color: Colors.grey[800],
+              ),
             ),
             actions: [
               TextButton(
                 onPressed: () {
-                  Navigator.pop(context); // Close the dialog
-                  onCancel(); // Revert the toggle state if needed
+                  Navigator.pop(context);
+                  onCancel();
                 },
-                child: Text('Cancel'),
+                child: Text(
+                  'Cancel',
+                  style: TextStyle(
+                    color: Colors.blue,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'SansitaOne',
+                  ),
+                ),
               ),
               TextButton(
                 onPressed: () {
-                  Navigator.pop(context); // Close the dialog
-                  openAppSettings(); // Open system app settings
+                  Navigator.pop(context);
+                  openAppSettings();
                 },
-                child: Text('Open Settings'),
+                child: Text(
+                  'Open Settings',
+                  style: TextStyle(
+                    color: Colors.blue,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'SansitaOne',
+                  ),
+                ),
               ),
             ],
           ),
@@ -165,55 +186,7 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
-  // ------------------------------------------------------
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        leading: GestureDetector(
-          onTap: () => Navigator.pop(context),
-          child: Padding(
-            padding: const EdgeInsets.only(left: 8.0),
-            child: Row(
-              children: [
-                Icon(Icons.arrow_back, color: Colors.black),
-                SizedBox(width: 4),
-                Text(
-                  "BACK",
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'SansitaOne',
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-        leadingWidth: 120,
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          // Use a Column with extra spacing
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              buildSettingsList(),
-              SizedBox(height: 30), // Extra spacing to make the screen fuller
-              buildVersionInfo(),
-              SizedBox(height: 40), // Even more space before sign out
-              buildSignOutButton(),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
+  // UI Components
   Widget buildSettingsList() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -242,7 +215,6 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
-  // Only shows version now
   Widget buildVersionInfo() {
     return Column(
       children: [
@@ -261,9 +233,7 @@ class _SettingsPageState extends State<SettingsPage> {
             borderRadius: BorderRadius.circular(8),
           ),
         ),
-        onPressed: () {
-          NavigationUtils.navigateToLoginPage(context);
-        },
+        onPressed: () => NavigationUtils.navigateToLoginPage(context),
         icon: Icon(Icons.logout, color: Colors.white),
         label: Text(
           "SIGN OUT",
@@ -308,7 +278,7 @@ class _SettingsPageState extends State<SettingsPage> {
         Switch(
           value: value,
           onChanged: onChanged,
-          activeColor: Colors.purple,
+          activeColor: Colors.blue,
         ),
       ],
     );
@@ -335,6 +305,72 @@ class _SettingsPageState extends State<SettingsPage> {
           ),
         ),
       ],
+    );
+  }
+
+  Widget buildBackButton(BuildContext context) {
+    return Positioned(
+      top: 40,
+      left: 16,
+      child: GestureDetector(
+        onTap: () {
+          Navigator.pop(context);
+        },
+        child: Row(
+          children: [
+            Icon(Icons.arrow_back, color: Colors.black),
+            SizedBox(width: 4),
+            Text(
+              "BACK",
+              style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'SansitaOne',
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLogo() {
+    return Image.asset(
+      'lib/assets/logo.png',
+      height: 100,
+    );
+  }
+
+  Widget _buildTitle() {
+    return const TitleWidget(
+      icon: Icons.settings,
+      text: "Settings",
+    );
+  }
+
+  // Main Widget
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              buildBackButton(context),
+              _buildLogo(),
+              _buildTitle(),
+              buildSettingsList(),
+              const SizedBox(height: 30),
+              buildVersionInfo(),
+              const SizedBox(height: 30),
+              buildSignOutButton(),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

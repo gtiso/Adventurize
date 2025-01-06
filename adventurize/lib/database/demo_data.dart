@@ -17,15 +17,23 @@ Future<void> insDummyChallenges() async {
       desc:
           'Show us the energy of Paris after dark. Whether it’s a vibrant club, '
           'a cozy bar, or the sparkling city lights. Snap a photo that captures the magic of the night!',
-      points: 700,
+      points: 730,
       photoPath: 'lib/assets/challenges/vibe.jpg',
+    ),
+    Challenge(
+      title: 'Timeless Wonders!',
+      desc:
+          'Capture the essence of ancient Athens at the Acropolis. Whether it’s the Parthenon glowing at sunset, '
+          'the breathtaking ruins, or the panoramic city view. Share a photo that showcases the spirit of history and beauty!',
+      points: 850,
+      photoPath: 'lib/assets/challenges/acropolis.jpg',
     ),
     Challenge(
       title: 'Taste the local!',
       desc:
           'Capture a photo of a delicious local dish that represents the heart of Parisian cuisine. '
           'Whether it’s a fresh croissant, or a colorful macaron, let your plate tell a story! Bon appétit!',
-      points: 300,
+      points: 330,
       photoPath: 'lib/assets/challenges/food.jpg',
     ),
     Challenge(
@@ -33,7 +41,7 @@ Future<void> insDummyChallenges() async {
       desc:
           'Take a photo of the Eiffel Tower! Whether it is a classic shot or something unique, '
           'capture its beauty from any angle you like. Show off your creativity and stand out with your best snap!',
-      points: 800,
+      points: 870,
       photoPath: 'lib/assets/challenges/view.jpg',
     ),
     Challenge(
@@ -41,7 +49,7 @@ Future<void> insDummyChallenges() async {
       desc:
           'Take a photo of this stunning spot overlooking the Eiffel Tower, framed by the geometric patterns '
           'of the Trocadéro plaza. Whether it’s sunrise, sunset, or midday, showcase the beauty of this breathtaking location!',
-      points: 900,
+      points: 420,
       photoPath: 'lib/assets/challenges/step.jpg',
     ),
   ];
@@ -146,6 +154,18 @@ Future<void> insDummyMemories() async {
       date: "July 12, 2023",
       latitude: 48.858455794286066,
       longitude: 2.294481966376659,
+    ),
+    Memory(
+      title: "Acropolis of Athens, Greece",
+      userID: 2,
+      userAvatarPath: 'lib/assets/avatars/avatar2.png',
+      userName: 'robert_j',
+      description:
+          "Explored the historic Acropolis and its breathtaking ruins.",
+      imagePath: "lib/assets/challenges/acropolis.jpg",
+      date: "August 15, 2023",
+      latitude: 37.971532,
+      longitude: 23.725749,
     ),
     Memory(
       title: "Louvre Museum, Paris",

@@ -44,6 +44,7 @@ flutter:
     - lib/assets/challenges/step.jpg
     - lib/assets/challenges/vibe.jpg
     - lib/assets/challenges/view.jpg
+    - lib/assets/challenges/acropolis.jpg
     - lib/assets/avatars/avatar1.png
     - lib/assets/avatars/avatar2.png
     - lib/assets/avatars/avatar3.png

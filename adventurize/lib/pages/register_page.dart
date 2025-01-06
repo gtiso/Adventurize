@@ -24,6 +24,17 @@ class _RegisterPageState extends State<RegisterPage> {
       initialDate: DateTime.now(),
       firstDate: DateTime(1900),
       lastDate: DateTime.now(),
+      builder: (BuildContext context, Widget? child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            textTheme: Theme.of(context).textTheme.apply(
+                  fontFamily: 'SansitaOne',
+                ),
+            colorScheme: ColorScheme.light(primary: Colors.blue),
+          ),
+          child: child!,
+        );
+      },
     );
 
     if (pickedDate != null) {
