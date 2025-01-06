@@ -29,6 +29,7 @@ dependencies:
   mobile_scanner: ^6.0.2
   permission_handler: ^10.4.0
   flutter_haptic_feedback: ^1.0.1
+  confetti: ^0.8.0
 
 dev_dependencies:
   flutter_test:

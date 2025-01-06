@@ -256,4 +256,5 @@ Future<void> insDummyFriends() async {
   final db = DatabaseHelper();
   await db.insFriend(1, 2);
   await db.insFriend(1, 3);
+  await db.insFriend(1, 5);
 }

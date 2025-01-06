@@ -7,6 +7,7 @@ import 'package:adventurize/models/challenge_model.dart';
 import 'package:adventurize/database/db_helper.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:confetti/confetti.dart';
 import 'package:adventurize/utils/navigation_utils.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter/services.dart';
@@ -31,7 +32,21 @@ class _PostMemoryPageState extends State<PostMemoryPage> {
   final TextEditingController _locationController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final db = DatabaseHelper();
+  late ConfettiController _confettiController;
   int _counter = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _confettiController =
+        ConfettiController(duration: const Duration(seconds: 2));
+  }
+
+  @override
+  void dispose() {
+    _confettiController.dispose();
+    super.dispose();
+  }
 
   Future<void> _onPostPhotoButtonPressed() async {
     try {
@@ -63,7 +78,7 @@ class _PostMemoryPageState extends State<PostMemoryPage> {
         userName: widget.user.username ?? '',
         title: location.isEmpty ? 'Untitled Memory' : location,
         description: description,
-        imagePath: filePath, // Use the saved image's path
+        imagePath: filePath,
         date: formattedDate,
         latitude: currentLocation.latitude,
         longitude: currentLocation.longitude,
@@ -73,12 +88,13 @@ class _PostMemoryPageState extends State<PostMemoryPage> {
       await db.insMemory(memory);
 
       // Provide haptic feedback
-      HapticFeedback.mediumImpact();
+      HapticFeedback.vibrate();
       setState(() {
         _counter++;
       });
 
       if (mounted) {
+        _confettiController.play();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Memory posted successfully!')),
         );
@@ -105,7 +121,9 @@ class _PostMemoryPageState extends State<PostMemoryPage> {
       updatedUser = updatedUser.copyWith(points: newPoints);
     }
 
-    NavigationUtils.navigateToMainPage(context, updatedUser);
+    Future.delayed(const Duration(seconds: 2), () {
+      NavigationUtils.navigateToMainPage(context, updatedUser);
+    });
   }
 
   @override
@@ -162,10 +180,22 @@ class _PostMemoryPageState extends State<PostMemoryPage> {
               _buildDescriptionField(),
               SizedBox(height: 16),
               _buildPostPhotoButton(),
+              _buildConfetti(),
             ],
           ),
         ),
       );
+
+  Widget _buildConfetti() {
+    return ConfettiWidget(
+      confettiController: _confettiController,
+      blastDirectionality: BlastDirectionality.explosive,
+      emissionFrequency: 0.05,
+      numberOfParticles: 30,
+      shouldLoop: false,
+      colors: [Colors.blue, Colors.green, Colors.purple, Colors.pink],
+    );
+  }
 
   Widget _buildAddLocationField() => GestureDetector(
         onTap: () => _showTextFieldDialog(
@@ -254,19 +284,14 @@ class _PostMemoryPageState extends State<PostMemoryPage> {
       context: context,
       builder: (context) => AlertDialog(
         backgroundColor: Colors.black,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
         title: Row(
           children: [
-            Icon(
-              titleIcon,
-              color: Colors.white,
-            ),
+            Icon(titleIcon, color: Colors.white),
             SizedBox(width: 10),
             Text(
               title,
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
                 fontFamily: 'SansitaOne',
@@ -276,9 +301,7 @@ class _PostMemoryPageState extends State<PostMemoryPage> {
         ),
         content: TextField(
           controller: controller,
-          style: TextStyle(
-            color: Colors.white,
-          ),
+          style: const TextStyle(color: Colors.white),
           cursorColor: Colors.white,
           decoration: InputDecoration(
             hintText: title,
@@ -291,32 +314,27 @@ class _PostMemoryPageState extends State<PostMemoryPage> {
           ),
         ),
         actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: Text(
-              'CANCEL',
-              style: TextStyle(
-                color: Colors.grey,
-                fontWeight: FontWeight.bold,
-                fontFamily: 'SansitaOne',
-              ),
-            ),
-          ),
-          TextButton(
-            onPressed: () {
-              setState(() {});
-              Navigator.of(context).pop();
-            },
-            child: Text(
-              'OK',
-              style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                fontFamily: 'SansitaOne',
-              ),
-            ),
-          ),
+          _buildDialogButton(
+              'CANCEL', Colors.grey, () => Navigator.pop(context)),
+          _buildDialogButton('OK', Colors.white, () {
+            setState(() {});
+            Navigator.pop(context);
+          }),
         ],
+      ),
+    );
+  }
+
+  Widget _buildDialogButton(String text, Color color, VoidCallback onPressed) {
+    return TextButton(
+      onPressed: onPressed,
+      child: Text(
+        text,
+        style: TextStyle(
+          color: color,
+          fontWeight: FontWeight.bold,
+          fontFamily: 'SansitaOne',
+        ),
       ),
     );
   }

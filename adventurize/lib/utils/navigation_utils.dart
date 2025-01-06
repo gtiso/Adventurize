@@ -19,38 +19,6 @@ import 'package:adventurize/utils/animated_transitions.dart';
 import 'dart:io';
 
 class NavigationUtils {
-  static void handleHorizontalDragMain(
-      BuildContext context, DragEndDetails details, User user) {
-    if (details.primaryVelocity != null && details.primaryVelocity! > 0) {
-      // Swiped right
-      NavigationUtils.navigateToChallenges(context, user);
-    } else if (details.primaryVelocity != null &&
-        details.primaryVelocity! < 0) {
-      // Swiped left
-      NavigationUtils.navigateToMemoryHistory(context, user);
-    }
-  }
-
-  static void handleVerticalDragMain(
-      BuildContext context, DragEndDetails details, User user) {
-    if (details.primaryVelocity != null && details.primaryVelocity! > 0) {
-      // Swiped down
-      NavigationUtils.navigateToProfile(context, user);
-    } else if (details.primaryVelocity != null &&
-        details.primaryVelocity! < 0) {
-      // Swiped up
-      NavigationUtils.navigateToLeaderboard(context, user);
-    }
-  }
-
-  static void handleHorizontalDragMemoryHistory(
-      BuildContext context, DragEndDetails details, User user) {
-    if (details.primaryVelocity != null && details.primaryVelocity! > 0) {
-      // Swiped right
-      NavigationUtils.navigateToMainPage(context, user);
-    }
-  }
-
   static void handleHorizontalDragChallenges(
       BuildContext context, DragEndDetails details, User user) {
     if (details.primaryVelocity != null && details.primaryVelocity! < 0) {

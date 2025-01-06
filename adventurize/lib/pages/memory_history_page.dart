@@ -101,11 +101,9 @@ class _MemoryHistoryPageState extends State<MemoryHistoryPage> {
 
   Widget _buildBackButton(BuildContext context) {
     return Align(
-      alignment:
-          Alignment.centerLeft, // Aligns to the vertical center, left edge
+      alignment: Alignment.centerLeft,
       child: Padding(
-        padding:
-            const EdgeInsets.only(left: 10), // Adds space from the left edge
+        padding: const EdgeInsets.only(left: 10),
         child: IconButton(
           onPressed: () => Navigator.pop(context),
           icon: Icon(
