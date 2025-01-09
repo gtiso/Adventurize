@@ -12,7 +12,7 @@
 ## Οδηγίες Εγκατάστασης
 
 1. **Κατεβάστε το APK**:
-   - Κατεβάστε το αρχείο `adventurize.apk` από [παρέχετε τον σύνδεσμο εδώ].
+   - Κατεβάστε το αρχείο `adventurize.apk`.
 
 2. **Εγκαταστήστε την Εφαρμογή**:
    - Μεταφέρετε το αρχείο APK στη συσκευή σας Android.
@@ -88,18 +88,20 @@
 ## Απαιτήσεις Συστήματος
 
 - **Android SDK Version**: 33 (Android 13).
-- **Υποστήριξη Google API Services**: Απαιτείται.
-- **Πρόσβαση σε Αισθητήρες**: Κάμερα, GPS.
+- **Υποστήριξη Google Maps API**: Υπάρχει ήδη API Key φορτωμένο, δεν χρειάζεται να κάνει κάτι ο χρήστης.
+- **Πρόσβαση σε Αισθητήρες**: Κάμερα, Μικρόφωνο, GPS.
+- **GitHub Repository**: https://github.com/gtiso/Adventurize-HCI-NTUA.git.
+- **Adventurize APK**: https://ntuagr-my.sharepoint.com/:u:/g/personal/el21827_ntua_gr/EWYLeGDsUnZDoJgtMU-J0OIBD5tJ3_dtaKiRnLHjahp1wQ?e=3a1BK7. 
 
 ---
 
 ## Διαφορές από το Prototype
 
-- Γενικότερα η εφαρμογή μας θα έπρεπε να έχει cloud-based database αφού κάθε χρήστης θα πρέπει να αλλάζει data globally και όχι μόνο locally που κάνουμε τώρα, οπότε θα έπρεπε να χρησιμοποιηθεί ένα database service σαν το firebase.
+- Η εφαρμογή μας θα έπρεπε να έχει cloud-based database αφού κάθε χρήστης θα πρέπει να αλλάζει data globally και όχι μόνο locally που κάνουμε τώρα, οπότε θα έπρεπε να χρησιμοποιηθεί ένα database service σαν το firebase.
 - Η δυνατότητα like μεταξύ χρηστών.
 
 ---
 
 ## Παρουσίαση
 
-Δείτε μια σύντομη παρουσίαση της εφαρμογής εδώ: [παρέχετε τον σύνδεσμο για το βίντεο].
+Δείτε μια σύντομη παρουσίαση της εφαρμογής εδώ: https://ntuagr-my.sharepoint.com/:v:/g/personal/el21827_ntua_gr/EfmxuskO3ztJtqZVTcyLitIBqWWRTh-0hblZ0YLDwd_f3Q?e=dK3IEC.
