@@ -90,7 +90,7 @@
 - **Android SDK Version**: 33 (Android 13).
 - **Υποστήριξη Google Maps API**: Υπάρχει ήδη API Key φορτωμένο, δεν χρειάζεται να κάνει κάτι ο χρήστης.
 - **Πρόσβαση σε Αισθητήρες**: Κάμερα, Μικρόφωνο, GPS.
-- **GitHub Repository**: https://github.com/gtiso/Adventurize-HCI-NTUA.git.
+- **GitHub Repository**: https://github.com/gtiso/Adventurize-HCI-NTUA.git (για ευνόητους λόγους έχει αφαιρεθεί το api key).
 - **Adventurize APK**: https://ntuagr-my.sharepoint.com/:u:/g/personal/el21827_ntua_gr/EWYLeGDsUnZDoJgtMU-J0OIBD5tJ3_dtaKiRnLHjahp1wQ?e=3a1BK7. 
 
 ---
