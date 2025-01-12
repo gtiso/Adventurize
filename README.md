@@ -91,7 +91,7 @@
 - **Υποστήριξη Google Maps API**: Υπάρχει ήδη API Key φορτωμένο, δεν χρειάζεται να κάνει κάτι ο χρήστης.
 - **Πρόσβαση σε Αισθητήρες**: Κάμερα, Μικρόφωνο, GPS.
 - **GitHub Repository**: https://github.com/gtiso/Adventurize-HCI-NTUA.git (για ευνόητους λόγους έχει αφαιρεθεί το api key).
-- **Adventurize APK**: [APK Link](https://ntuagr-my.sharepoint.com/:u:/g/personal/el21827_ntua_gr/EWYLeGDsUnZDoJgtMU-J0OIBD5tJ3_dtaKiRnLHjahp1wQ). 
+- **Adventurize APK**: [APK Link](https://drive.google.com/file/d/1IPofmeMLQSznGjqnbIUqkoWQWF_h_mHM/view?usp=sharing). 
 
 ---
 
